@@ -1,0 +1,83 @@
+.about-project {
+    max-width: 1280px;
+    min-height: calc(608px - 110px);
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 110px 70px 0;
+    box-sizing: border-box;
+}
+
+.about-project__info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 70px;
+}
+
+.steps-info {
+    display: flex;
+    flex-direction: column;
+    max-width: calc(50% - 20px);
+}
+
+.steps-info__title {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.2;
+    text-align: left;
+    color: #000000;
+    letter-spacing: -0.04em;
+    margin: 0;
+}
+
+.steps-info__text {
+    text-align: left;
+    margin: 26px 0 0;
+}
+
+.deadline {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-areas:
+     "deadline_back deadline_front deadline_front deadline_front deadline_front"
+     "under-text_back under-text_front under-text_front under-text_front under-text_front";
+    gap: 14px 0;
+    margin: 110px auto;
+}
+
+.deadline__rec {
+    min-height: 36px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.deadline__rec_back {
+    grid-area: deadline_back;
+    background: #2BE080;
+}
+
+.deadline__rec_front {
+    grid-area: deadline_front;
+    background: #F2F2F2;
+}
+
+.deadline__text {
+    margin: 0;
+}
+
+.deadline__under-text {
+    font-weight: 500;
+    text-align: center;
+    color: #A0A0A0;
+}
+
+.deadline__under-text_back {
+    grid-area: under-text_back;
+}
+
+.deadline__under-text_front {
+    grid-area: under-text_front;
+}

@@ -1,0 +1,52 @@
+.register-and-login {
+    max-width: 396px;
+    min-height: 592px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.register-and-login__title {
+    text-align: left;
+    margin: 40px 0;
+}
+
+.register-and-login__name-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.register-and-login__name-area_hidden {
+    display: none;
+}
+
+.register-and-login__sign {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.register-and-login__sign-text {
+    color: #A0A0A0;
+    margin: 0;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.register-and-login__sign-text:hover {
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
+}
+
+.register-and-login__sign-link {
+    color: #2BE080;
+    text-decoration: none;
+    margin-left: 6px;
+    opacity: 1;
+}
+
+.register-and-login__sign-link:hover {
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
+}

@@ -1,0 +1,74 @@
+.movies-card {
+    width: 364px;
+    height: 271px;
+    display: grid;
+    grid-template-columns: 294px 70px;
+    grid-template-rows: 41px 27px 203px;
+    grid-template-areas:
+    "movies-card__nameRU movies-card__button"
+    "movies-card__duration movies-card__button"
+    "movies-card__image movies-card__image";
+}
+
+.movies-card__nameRU {
+    grid-area: movies-card__nameRU;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.2;
+    text-align: left;
+    color: #000000;
+    margin: 14px 14px 9px;
+}
+
+.movies-card__duration {
+    grid-area: movies-card__duration;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 1.18;
+    text-align: left;
+    color: #A0A0A0;
+    margin: 0px 14px 14px;
+}
+
+.movies-card__button {
+    grid-area: movies-card__button;
+    width: 30px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    border-radius: 36px;
+    box-sizing: border-box;
+    align-self: center;
+    justify-self: end;
+    margin-right: 14px;
+    padding: 0;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.movies-card__button:hover {
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
+}
+
+.movies-card__save-button_active {
+    background-image: url(../../../src/images/movies-card-save-button.svg);
+    background-color: #2BE080;
+}
+
+.movies-card__save-button_inactive {
+    background-image: url(../../../src/images/movies-card-save-button-inactive.svg);
+    background-color: #F9F9F9;
+}
+
+.movies-card__delete-button {
+    background-image: url(../../../src/images/movies-card-delete-button.svg);
+}
+
+.movies-card__image {
+    grid-area: movies-card__image;
+    width: 364px;
+    height: 203px;
+    object-fit: cover;
+}

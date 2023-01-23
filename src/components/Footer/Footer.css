@@ -1,0 +1,45 @@
+.footer {
+    width: 100%;
+    min-height: calc(172px - 79px);
+    background: #FAFAFA;
+    padding: 79px 70px 20px;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+.footer__text {
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.13;
+    margin: 0;
+}
+
+.footer__about-text {
+    text-align: center;
+    color: #A0A0A0;
+    padding:  0 0 20px;
+    border-bottom: 1px solid #E8E8E8;
+}
+
+.footer__copyright {
+    display: flex;
+    justify-content: space-between;
+    margin: 21px 0 0;
+}
+
+.footer__copyright_companies {
+    display: flex;
+    justify-content: right;
+}
+
+.footer__copyright-year {
+    text-align: left;
+    color: #000000;
+}
+
+.footer__copyright-company {
+    text-align: right;
+    color: #000000;
+    margin-left: 20px;
+}
+

@@ -1,0 +1,30 @@
+import Portfolio from "../Portfolio/Portfolio";
+
+function AboutMe() {
+  return (
+    <section id="about-me" className="about-me">
+      <h2 className="title__22-27-reg">Студент</h2>
+      <div className="about-me__info">
+        <div className="about-me__about">
+          <h4 className="title__50-58-reg about-me__title">Мария</h4>
+          <p className="about-me__text">Студентка, 36 лет</p>
+          <p className="about-me__text-about">
+            Я родилась и живу в Санкт-Петербурге. У меня есть муж и две
+            замечательные дочки. Я закончила Университет Кино и Телевидения,
+            работала проектировщицей электрических сетей. Давно хотела начать
+            изучать JS, а в прошлом году решилась-таки реализовать свои планы. С
+            этой целью выбрала курс Веб-разработчика от Яндекс Практикума, после
+            окончания которого надеюсь найти работу в новой сфере. Я люблю петь,
+            танцевать, кататься на лошадях и проводить время с семьёй и
+            друзьями!
+          </p>
+          <p className="about-me__text-github">Github</p>
+        </div>
+        <div className="about-me__avatar"></div>
+      </div>
+      <Portfolio />
+    </section>
+  );
+}
+
+export default AboutMe;

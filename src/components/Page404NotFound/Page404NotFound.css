@@ -1,0 +1,33 @@
+.page-404-not-found {
+    width: 100%;
+    min-height: 700px;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-404-not-found__title {
+    font-weight: 400;
+    font-size: 140px;
+    line-height: 1.2;
+    text-align: center;
+    color: #000000;
+    margin: 246px auto 0;
+}
+
+.page-404-not-found__text {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.19;
+    text-align: center;
+    color: #000000;
+    margin: 5px auto 0;
+}
+
+.page-404-not-found__button {
+    color: #2BE080;
+    text-decoration: none;
+    margin: 185px auto 60px;
+    border: none;
+    background: none;
+    padding: 0;
+}

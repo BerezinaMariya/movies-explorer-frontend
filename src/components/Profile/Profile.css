@@ -1,0 +1,112 @@
+.profile {
+    width: 100%;
+    min-height: 626px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.profile__title {
+    margin: 74px 0 0;
+    text-align: center;
+}
+
+.profile-form {
+    width: 410px;
+    margin-top: 123px;
+    display: grid;
+    grid-template-columns: 288px 122px;
+    grid-template-areas:
+    "name-input user-name"
+    "name-input-error name-input-error"
+    "email-input user-email"
+    "email-input-error email-input-error"
+    "submit-button submit-button";
+}
+
+.profile-form__user-name {
+    color: #000000;
+    grid-area: user-name;
+    margin: 0;
+}
+
+.profile-form__user-email {
+    color: #000000;
+    grid-area: user-email;
+    margin: 16px 0 0;
+}
+
+.profile-form__name-input {
+    color: #000000;
+    grid-area: name-input;
+    width: 288px;
+    border: none;
+    padding: 0;
+}
+
+.profile-form__email-input {
+    color: #000000;
+    grid-area: email-input;
+    width: 288px;
+    border: none;
+    padding: 0;
+    margin-top: 16px;
+}
+
+.profile-form__input_error {
+    color: #EE3465;
+}    
+
+.profile-form__name-input-error {
+    grid-area: name-input-error;
+    min-height: 13px;
+    margin: 3px 0;
+    text-align: left;
+    color: #EE3465;
+    border-bottom: 1px solid #E8E8E8;
+
+}
+
+.profile-form__input-error_active {
+    color: #EE3465;
+}
+
+.profile-form__email-input-error {
+    grid-area: email-input-error;
+    text-align: left;
+}
+
+.profile-form__text {
+    font-size: 13px;
+    line-height: 1.23;
+    text-align: center;
+}
+
+.profile-form__submit-button {
+    grid-area: submit-button;
+    margin-top: 218px;
+    border: none;
+    background: none;
+    font-weight: 400;
+    color: #000000;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.profile-form__submit-button:hover {
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
+}
+
+.profile__signuot-link {
+    font-weight: 500;
+    color: #EE3465;
+    text-decoration: none;
+    cursor: pointer;
+    margin: 15px auto 0;
+    opacity: 1;
+}
+
+.profile__signuot-link:hover {
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
+}

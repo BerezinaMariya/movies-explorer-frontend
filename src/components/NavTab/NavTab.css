@@ -1,0 +1,23 @@
+.nav-tab__button {
+    width: 96px;
+    height: 36px;
+    background: #E8E8E8;
+    border: none;
+    border-radius: 10px;
+    margin: 0 5px 30px;
+    padding: 0;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.nav-tab__button:hover {
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
+}
+
+.nav-tab__link {
+    text-align: center;
+    text-decoration: none;
+    color: #000000;
+    cursor: pointer;
+}
