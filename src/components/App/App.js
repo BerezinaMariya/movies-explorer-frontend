@@ -7,7 +7,6 @@ import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
-import Page404NotFound from "../Page404NotFound/Page404NotFound";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
 
 import { RegistrationInfoContext } from "../../contexts/RegistrationInfoContext";
@@ -26,16 +25,16 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [moviesCards, setMoviesCards] = useState([]);
   const [savedMoviesCards, setSavedMoviesCards] = useState({});
-  const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
+  const [isPopupOpen, setPopupOpen] = useState(false);
   const [successStatusMessage, setSuccessStatusMessage] = useState("");
   const [RegOrLogSucsessStatus, setRegOrLogSucsessStatus] = useState(false);
 
-  function closeInfoTooltip() {
-    setInfoTooltipOpen(false);
+  function closePopup() {
+    setPopupOpen(false);
   }
 
   function handleRegister() {
-    setInfoTooltipOpen(true);
+    setPopupOpen(true);
     setRegOrLogSucsessStatus(true);
     setSuccessStatusMessage("Вы успешно зарегистрировались!");
     history.push("/signin");
@@ -45,20 +44,20 @@ function App() {
     history.push("/movies");
   }
 
-  //Закрытие InfoTooltip по клику по overlay
-  function setCloseByOverlayListener(infoTooltip) {
-    infoTooltip.addEventListener("mousedown", (evt) => {
+  //Закрытие popup по клику по overlay
+  function setCloseByOverlayListener(popup) {
+    popup.addEventListener("mousedown", (evt) => {
       const targetClasses = evt.target.classList;
-      if (targetClasses.contains("info-tooltip_opened")) {
-        closeInfoTooltip();
+      if (targetClasses.contains("popup_opened")) {
+        closePopup();
       }
     });
   }
 
-  //Закрытие InfoTooltip при нажатии на Esc
+  //Закрытие popup при нажатии на Esc
   function handleCloseByEsc(evt) {
     if (evt.key === "Escape") {
-      closeInfoTooltip();
+      closePopup();
     }
   }
 
@@ -74,46 +73,39 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
         <MoviesCardsContext.Provider value={moviesCards}>
           <SavedMoviesCardsContext.Provider value={savedMoviesCards}>
-            <Switch>
-              <Route exact path="/">
-                <Main />
-              </Route>
-              <Route path="/movies">
-                <Movies />
-              </Route>
-              <Route path="/saved-movies">
-                <SavedMovies />
-              </Route>
-              <Route path="/profile">
-                <Profile />
-              </Route>
-              <RegistrationInfoContext.Provider value={registrationData}>
-                <Route path="/signup">
-                  <Register
-                    onRegister={handleRegister}
-                  />
+            <RegistrationInfoContext.Provider value={registrationData}>
+              <Switch>
+                <Route exact path="/">
+                  <Main />
                 </Route>
-              <Route path="/signin">
-                <Login
-                  onLogin={handleLogin}
-                />
-              </Route>
-              </RegistrationInfoContext.Provider>
-              <Route path="/404">
-                <Page404NotFound />
-              </Route>
-              {/* <Route path="/">
+                <Route path="/movies">
+                  <Movies />
+                </Route>
+                <Route path="/saved-movies">
+                  <SavedMovies />
+                </Route>
+                <Route path="/profile">
+                  <Profile />
+                </Route>
+                <Route path="/signup">
+                  <Register onRegister={handleRegister} />
+                </Route>
+                <Route path="/signin">
+                  <Login onLogin={handleLogin} />
+                </Route>
+                {/* <Route path="/">
                 {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
               </Route> */}
-            </Switch>
+              </Switch>
+            </RegistrationInfoContext.Provider>
           </SavedMoviesCardsContext.Provider>
         </MoviesCardsContext.Provider>
       </CurrentUserContext.Provider>
       <InfoTooltip
-        isOpen={isInfoTooltipOpen}
+        isOpen={isPopupOpen}
         successStatusMessage={successStatusMessage}
         isRegOrLogSucsess={RegOrLogSucsessStatus}
-        onClose={closeInfoTooltip}
+        onClose={closePopup}
         onCloseByOverlay={setCloseByOverlayListener}
         onCloseByEsc={handleCloseByEsc}
       />

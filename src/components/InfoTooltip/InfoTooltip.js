@@ -5,15 +5,15 @@ import unsucsess from "../../images/info-tooltip-unsucsess.svg";
 function InfoTooltip(props) {
   const { isOpen, successStatusMessage, isRegOrLogSucsess, onClose, onCloseByOverlay, onCloseByEsc } = props;
   
-  const infoTooltipRef = useRef();
+  const popupRef = useRef();
   const [sucsessImage, setSucsessImage] = useState("");
 
   useEffect(() => {
-    onCloseByOverlay(infoTooltipRef.current);
+    onCloseByOverlay(popupRef.current);
   }, []);
 
   useEffect(() => {
-    if (isOpen) {
+    if (props.isOpen) {
       // Список действий внутри одного хука
       document.addEventListener("keydown", onCloseByEsc);
       // Возвращаем функцию, которая удаляет эффекты
@@ -33,15 +33,15 @@ function InfoTooltip(props) {
 
   return (
     <div
-      className={`info-tooltip ${
-        isOpen ? "info-tooltip_opened" : ""
+      className={`popup info-tooltip ${
+        isOpen ? "popup_opened" : ""
       }`}
-      ref={infoTooltipRef}
+      ref={popupRef}
     >
       <div className="info-tooltip__container">
         <button
           type="button"
-          className="info-tooltip__close-button"
+          className="button-hover info-tooltip__close-button"
           onClick={onClose}
           aria-label="Закрыть"
         ></button>
@@ -50,7 +50,7 @@ function InfoTooltip(props) {
           src={sucsessImage}
           alt={`Статус регистрации или авторизации (удачная или нет)`}
         />
-        <h3 className="info-tooltip__title">{successStatusMessage}</h3>
+        <h3 className="title__24-29-med info-tooltip__title">{successStatusMessage}</h3>
       </div>
     </div>
   );

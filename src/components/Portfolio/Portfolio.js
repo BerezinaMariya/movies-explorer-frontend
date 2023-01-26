@@ -6,45 +6,45 @@ function Portfolio() {
       <h3 className="portfolio__title">Портфолио</h3>
       <ul className="portfolio__list">
         <li className="portfolio__list-item portfolio__list-item_underlined">
-          <p className="portfolio__list-item-text">Статичный сайт</p>
+          <p className="portfolio__text">Статичный сайт</p>
           <a
-            className="portfolio__link"
+            className="button-hover portfolio__link"
             target="_blank"
             href="https://berezinamariya.github.io/how-to-learn/"
             rel="noreferrer"
           >
             <img
-              className="portfolio__link_img"
+              className="portfolio__link-img"
               src={portfoliolink}
               alt="Ссылка на статичный сайт из портфолио - проект Научиться учиться"
             />
           </a>
         </li>
         <li className="portfolio__list-item portfolio__list-item_underlined">
-          <p className="portfolio__list-item-text">Адаптивный сайт</p>
+          <p className="portfolio__text">Адаптивный сайт</p>
           <a
-            className="portfolio__link"
+            className="button-hover portfolio__link"
             target="_blank"
             href="https://berezinamariya.github.io/russian-travel/index.html"
             rel="noreferrer"
           >
             <img
-              className="portfolio__link_img"
+              className="portfolio__link-img"
               src={portfoliolink}
               alt="Ссылка на адаптивный сайт из портфолио - проект Путешествие по России"
             />
           </a>
         </li>
         <li className="portfolio__list-item">
-          <p className="portfolio__list-item-text">Одностраничное приложение</p>
+          <p className="portfolio__text">Одностраничное приложение</p>
           <a
-            className="portfolio__link"
+            className="button-hover portfolio__link"
             target="_blank"
             href="https://mesto.berezina.nomoredomains.club"
             rel="noreferrer"
           >
             <img
-              className="portfolio__link_img"
+              className="portfolio__link-img"
               src={portfoliolink}
               alt="Ссылка на одностраничное приложение из портфолио - проект Mesto"
             />

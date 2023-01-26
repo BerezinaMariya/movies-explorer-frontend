@@ -1,36 +1,36 @@
 function AboutProject() {
   return (
-    <section id="about-project" className="about-project">
-      <h2 className="title__22-27-reg">О проекте</h2>
+    <section className="about-project">
+      <h2 className="title__22-27-reg_underlined">О проекте</h2>
       <div className="about-project__info">
-        <div className="steps-info">
-          <h3 className="steps-info__title">
+        <div className="about-project__stages">
+          <h3 className="title__20-24-reg about-project__title">
             Дипломный проект включал 5 этапов
           </h3>
-          <p className="text__14-20-reg steps-info__text">
+          <p className="text__14-20-reg about-project__text">
             Составление плана, работу над бэкендом, вёрстку, добавление
             функциональности и финальные доработки.
           </p>
         </div>
-        <div className="steps-info">
-          <h3 className="steps-info__title">
+        <div className="about-project__stages">
+          <h3 className="title__20-24-reg about-project__title">
             На выполнение диплома ушло 5 недель
           </h3>
-          <p className="text__14-20-reg steps-info__text">
+          <p className="text__14-20-reg about-project__text">
             У каждого этапа был мягкий и жёсткий дедлайн, которые нужно было
             соблюдать, чтобы успешно защититься.
           </p>
         </div>
         </div>
-        <div className="deadline">
-          <div className="deadline__rec deadline__rec_back">
-            <p className="text__14-17-reg deadline__text">1 неделя</p>
+        <div className="about-project__deadline">
+          <div className="about-project__deadline-rec about-project__deadline-rec_back">
+            <p className="text__14-17-reg about-project__deadline-text">1 неделя</p>
           </div>
-          <span className="text__14-17-reg deadline__under-text deadline__under-text_back">Back-end</span>
-          <div className="deadline__rec deadline__rec_front">
-            <p className="text__14-17-reg deadline__text">4 недели</p>
+          <span className="text__14-17-reg about-project__deadline-under-text about-project__deadline-under-text_back">Back-end</span>
+          <div className="about-project__deadline-rec about-project__deadline-rec_front">
+            <p className="text__14-17-reg about-project__deadline-text">4 недели</p>
           </div>
-          <span className="text__14-17-reg deadline__under-text deadline__under-text_front">Front-end</span>
+          <span className="text__14-17-reg about-project__deadline-under-text about-project__deadline-under-text_front">Front-end</span>
         </div>
       </section>
 

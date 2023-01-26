@@ -11,6 +11,14 @@
     margin: 40px 0;
 }
 
+@media screen and (max-width: 767px) {
+    .register-and-login__title {
+        margin-top: 50px;
+        margin-bottom: 80px;
+        text-align: center;
+    }
+}
+
 .register-and-login__name-area {
     width: 100%;
     display: flex;
@@ -30,23 +38,24 @@
 .register-and-login__sign-text {
     color: #A0A0A0;
     margin: 0;
-    cursor: pointer;
-    opacity: 1;
 }
 
-.register-and-login__sign-text:hover {
-    opacity: 0.6;
-    transition: opacity 0.5s ease;
+@media screen and (max-width: 767px) {
+    .register-and-login__sign-text {
+        font-size: 12px;
+        line-height: 15px;
+    }
 }
 
 .register-and-login__sign-link {
     color: #2BE080;
     text-decoration: none;
     margin-left: 6px;
-    opacity: 1;
 }
 
-.register-and-login__sign-link:hover {
-    opacity: 0.6;
-    transition: opacity 0.5s ease;
+@media screen and (max-width: 767px) {
+    .register-and-login__sign-link {
+        font-size: 12px;
+        line-height: 15px;
+    }
 }

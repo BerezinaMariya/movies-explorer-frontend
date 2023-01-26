@@ -5,14 +5,19 @@
     border: none;
     border-radius: 10px;
     margin: 0 5px 30px;
-    padding: 0;
+    padding: 0 0 4px;
     cursor: pointer;
-    opacity: 1;
 }
 
-.nav-tab__button:hover {
-    opacity: 0.6;
-    transition: opacity 0.5s ease;
+@media screen and (max-width: 767px) {
+    .nav-tab__button {
+        width: calc((100vw - 320px)/(767 - 320)*(96 - 82) + 82px);
+        height: calc((100vw - 320px)/(767 - 320)*(36 - 26) + 26px);
+        margin-right: calc((100vw - 320px)/(767 - 320)*(5 - 3) + 3px);
+        margin-left: calc((100vw - 320px)/(767 - 320)*(5 - 3) + 3px);
+        margin-bottom: calc((100vw - 320px)/(767 - 320)*(30 - 17) + 17px);
+        border-radius: 6px;
+    }
 }
 
 .nav-tab__link {
@@ -20,4 +25,11 @@
     text-decoration: none;
     color: #000000;
     cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+    .nav-tab__link {
+        font-size: 10px;
+        line-height: 16px;
+    }
 }

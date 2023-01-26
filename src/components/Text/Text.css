@@ -25,7 +25,15 @@
     line-height: 1.33;
 }
 
+.text__13-16-reg {
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.23;
+    margin: 0;
+}
+
 .text__13-18 {
+    font-weight: 400;
     font-size: 13px;
     line-height: 1.38;
     color: #000000;

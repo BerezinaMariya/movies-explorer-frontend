@@ -1,8 +1,8 @@
-import Header from "../Header/Header";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { FormValidator } from "../FormValidator/FormValidator";
+import Header from "../Header/Header";
 
 function Profile() {
   const currentUser = useContext(CurrentUserContext);
@@ -29,7 +29,7 @@ function Profile() {
           {currentUser.name}
         </p>
         <input
-          className={`text__11-13-med profile-form__name-input ${
+          className={`text__11-13-med profile-form__input profile-form__input_name ${
             errors.name ? "profile-form__input_error" : ""
           }`}
           type="text"
@@ -44,7 +44,7 @@ function Profile() {
         />
         <span
           name="name"
-          className={`text__11-13-reg profile-form__name-input-error ${
+          className={`text__11-13-reg profile-form__input_name-error ${
             errors.name ? "profile-form__input-error_active" : ""
           }`}
         >
@@ -54,7 +54,7 @@ function Profile() {
           {currentUser.email}
         </p>
         <input
-          className={`text__11-13-med profile-form__email-input ${
+          className={`text__11-13-med profile-form__input profile-form__input_email ${
             errors.email ? "profile-form__input_error" : ""
           }`}
           type="email"
@@ -66,7 +66,7 @@ function Profile() {
         />
         <span
           name="email"
-          className={`text__11-13-reg profile-form__email-input-error ${
+          className={`text__11-13-reg profile-form__input_email-error ${
             errors.email ? "profile-form__input-error_active" : ""
           }`}
         >
@@ -74,12 +74,15 @@ function Profile() {
         </span>
         <button
           type="submit"
-          className="profile-form__text profile-form__submit-button"
+          className="button-hover profile__text profile-form__submit-button"
         >
           Редактировать
         </button>
       </form>
-      <Link to="./signin" className="profile-form__text profile__signuot-link">
+      <Link
+        to="./signin"
+        className="button-hover profile__text profile__signuot-link"
+      >
         Выйти из аккаунта
       </Link>
     </section>

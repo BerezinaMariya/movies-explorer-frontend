@@ -1,14 +1,20 @@
 function Footer() {
   return (
     <footer className="footer">
-      <p className="footer__text footer__about-text">
+      <p className="text__13-16-reg footer__text footer__text_about">
         Учебный проект Яндекс.Практикум х BeatFilm.
       </p>
       <div className="footer__copyright">
-        <p className="footer__text footer__copyright-year">&copy; 2023</p>
-        <div className="footer__copyright_companies">
-          <p className="footer__text footer__copyright-company">Яндекс.Практикум</p>
-          <p className="footer__text footer__copyright-company">Github</p>
+        <p className="text__13-16-reg footer__text footer__text_copyright-year">
+          &copy; 2023
+        </p>
+        <div className="footer__copyright-companies">
+          <p className="text__13-16-reg footer__text footer__text_copyright-company">
+            Яндекс.Практикум
+          </p>
+          <p className="text__13-16-reg footer__text footer__text_copyright-company">
+            Github
+          </p>
         </div>
       </div>
     </footer>

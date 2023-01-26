@@ -3,7 +3,7 @@ function FilterCheckbox() {
     <div className="filter-checkbox">
       <label className="switch">
         <input type="checkbox" className="switch__input" />
-        <span class="switch__slider switch__slider_round"></span>
+        <span className="switch__slider switch__slider_round"></span>
       </label>
     </div>
   );

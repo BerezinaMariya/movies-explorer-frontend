@@ -30,7 +30,7 @@ function MoviesCard(props) {
       <p className="movies-card__duration">{card.duration}</p>
       <button
         type="button"
-        className={movieCardClassName}
+        className={`button-hover ${movieCardClassName}`}
         aria-label={`${pathName === "/movies" ? "Сохранить" : "Удалить"}`}
         onClick={
           pathName === "/movies" ? handleCardSaveClick : handleCardDeleteClick

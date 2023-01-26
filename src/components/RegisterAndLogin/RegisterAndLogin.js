@@ -1,8 +1,8 @@
-import Header from "../Header/Header";
 import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { RegistrationInfoContext } from "../../contexts/RegistrationInfoContext";
 import { FormValidator } from "../FormValidator/FormValidator";
+import Header from "../Header/Header";
 
 function RegisterAndLogin(props) {
   const registrationInfo = useContext(RegistrationInfoContext);
@@ -104,7 +104,7 @@ function RegisterAndLogin(props) {
         </span>
         <button
           type="submit"
-          className={`text__14-17-med form__submit-button ${
+          className={`button-hover form__submit-button ${
             title === "Рады видеть!" ? "form__submit-button_login" : ""
           }`}
         >
@@ -117,7 +117,7 @@ function RegisterAndLogin(props) {
         </p>
         <Link
           to={`${title === "Рады видеть!" ? "/signup" : "/signin"}`}
-          className="text__14-17-reg register-and-login__sign-link"
+          className="button-hover text__14-17-reg register-and-login__sign-link"
         >
           {signLinkText}
         </Link>

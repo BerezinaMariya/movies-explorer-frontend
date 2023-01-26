@@ -21,21 +21,11 @@ function MoviesCardList() {
   }
 
   return (
-    <section
-      className={`movies-card-list ${
-        history.location.pathname === "/movies"
-          ? "movies-card-list_advanced"
-          : ""
-      }`}
-    >
+    <section className="movies-card-list">
       {handleSetCardList().map((card) => (
         <MoviesCard
           key={card._id}
           card={card}
-          // currentUser={currentUser}
-          // onCardClick={props.onCardClick}
-          // onCardLike={props.onCardLike}
-          // onCardDeleteClick={props.onCardDeleteClick}
         />
       ))}
     </section>

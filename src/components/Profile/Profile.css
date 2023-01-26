@@ -5,22 +5,48 @@
     flex-direction: column;
     align-items: center;
 }
+
 .profile__title {
     margin: 74px 0 0;
     text-align: center;
+}
+
+@media screen and (max-width: 1279px) {
+    .profile__title {
+        margin-top: 236px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .profile__title {
+        margin-top: 70px;
+    }
 }
 
 .profile-form {
     width: 410px;
     margin-top: 123px;
     display: grid;
-    grid-template-columns: 288px 122px;
+    grid-template-columns: repeat(2, max-content);
     grid-template-areas:
-    "name-input user-name"
-    "name-input-error name-input-error"
-    "email-input user-email"
-    "email-input-error email-input-error"
-    "submit-button submit-button";
+        "name-input user-name"
+        "name-input-error name-input-error"
+        "email-input user-email"
+        "email-input-error email-input-error"
+        "submit-button submit-button";
+}
+
+@media screen and (max-width: 1279px) {
+    .profile-form {
+        margin-top: 96px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .profile-form {
+        width: 260px;
+        margin-top: 80px;
+    }
 }
 
 .profile-form__user-name {
@@ -35,66 +61,82 @@
     margin: 16px 0 0;
 }
 
-.profile-form__name-input {
+.profile-form__input {
     color: #000000;
-    grid-area: name-input;
-    width: 288px;
     border: none;
     padding: 0;
+    outline: none;
 }
 
-.profile-form__email-input {
-    color: #000000;
+.profile-form__input_name {
+    grid-area: name-input;
+}
+
+.profile-form__input_email {
     grid-area: email-input;
-    width: 288px;
-    border: none;
-    padding: 0;
     margin-top: 16px;
 }
 
-.profile-form__input_error {
+.profile-form__input_error,
+.profile-form__input-error_active {
     color: #EE3465;
-}    
+    outline-color: #EE3465;
+}
 
-.profile-form__name-input-error {
+.profile-form__input_name-error {
     grid-area: name-input-error;
+    width: 410px;
     min-height: 13px;
     margin: 3px 0;
     text-align: left;
-    color: #EE3465;
     border-bottom: 1px solid #E8E8E8;
-
 }
 
-.profile-form__input-error_active {
-    color: #EE3465;
+@media screen and (max-width: 767px) {
+    .profile-form__input_name-error {
+        width: 260px;
+    }
 }
 
-.profile-form__email-input-error {
+.profile-form__input_email-error {
     grid-area: email-input-error;
+    margin: 3px 0;
     text-align: left;
 }
 
-.profile-form__text {
+.profile__text {
     font-size: 13px;
     line-height: 1.23;
     text-align: center;
 }
 
+@media screen and (max-width: 767px) {
+    .profile__text {
+        font-size: 12px;
+        line-height: 15px;
+    }
+}
+
 .profile-form__submit-button {
     grid-area: submit-button;
-    margin-top: 218px;
+    margin-top: 200px;
     border: none;
     background: none;
     font-weight: 400;
     color: #000000;
     cursor: pointer;
-    opacity: 1;
 }
 
-.profile-form__submit-button:hover {
-    opacity: 0.6;
-    transition: opacity 0.5s ease;
+@media screen and (max-width: 1279px) {
+    .profile-form__submit-button {
+        margin-top: 190px;
+    }
+}
+
+@media screen and (max-width: 1279px) {
+    .profile-form__submit-button {
+        margin-top: 372px;
+    }
 }
 
 .profile__signuot-link {
@@ -103,10 +145,4 @@
     text-decoration: none;
     cursor: pointer;
     margin: 15px auto 0;
-    opacity: 1;
-}
-
-.profile__signuot-link:hover {
-    opacity: 0.6;
-    transition: opacity 0.5s ease;
 }
