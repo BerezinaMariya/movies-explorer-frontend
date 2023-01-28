@@ -1,38 +1,38 @@
-.text__10-12-reg {
+.texts__text_10-12-reg {
     font-weight: 400;
     font-size: 10px;
     line-height: 1.2;
     text-align: left;
 }
 
-.text__11-13-reg {
+.texts__text_11-13-reg {
     font-weight: 400;
     font-size: 11px;
     line-height: 1.18;
     text-align: right;
 }
 
-.text__11-13-med {
+.texts__text_11-13-med {
     font-weight: 500;
     font-size: 11px;
     line-height: 1.18;
     text-align: left;
 }
 
-.text__12-16-med {
+.texts__text_12-16-med {
     font-weight: 500;
     font-size: 12px;
     line-height: 1.33;
 }
 
-.text__13-16-reg {
+.texts__text_13-16-reg {
     font-weight: 400;
     font-size: 13px;
     line-height: 1.23;
     margin: 0;
 }
 
-.text__13-18 {
+.texts__text_13-18 {
     font-weight: 400;
     font-size: 13px;
     line-height: 1.38;
@@ -40,19 +40,19 @@
     cursor: pointer;
 }
 
-.text__14-17-reg {
+.texts__text_14-17-reg {
     font-weight: 400;
     font-size: 14px;
     line-height: 1.21;
 }
 
-.text__14-17-med {
+.texts__text_14-17-med {
     font-weight: 500;
     font-size: 14px;
     line-height: 1.21;
 }
 
-.text__14-20-reg {
+.texts__text_14-20-reg {
     font-weight: 400;
     font-size: 14px;
     line-height: 1.43;

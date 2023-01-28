@@ -40,7 +40,7 @@ function SearchForm() {
 
           <div className="search-form__short-films-filter">
             <FilterCheckbox />
-            <p className="text__13-18 search-form__text">Короткометражки</p>
+            <p className="texts__text_13-18 search-form__text">Короткометражки</p>
           </div>
         </div>
       </div>

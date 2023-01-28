@@ -21,13 +21,13 @@ function Profile() {
 
   return (
     <section className="profile">
-      <h3 className="title__24-29-med profile__title">{`Привет, ${currentUser.name}!`}</h3>
+      <h3 className="titles__title_24-29-med profile__title">{`Привет, ${currentUser.name}!`}</h3>
       <form className="profile-form" onSubmit={handleSubmit} noValidate>
-        <p className="text__11-13-reg profile-form__user-name">
+        <p className="texts__text_11-13-reg profile-form__user-name">
           {currentUser.name}
         </p>
         <input
-          className={`text__11-13-med profile-form__input profile-form__input_name ${
+          className={`texts__text_11-13-med profile-form__input profile-form__input_name ${
             errors.name ? "profile-form__input_error" : ""
           }`}
           type="text"
@@ -42,17 +42,17 @@ function Profile() {
         />
         <span
           name="name"
-          className={`text__11-13-reg profile-form__input_name-error ${
+          className={`texts__text_11-13-reg profile-form__input_name-error ${
             errors.name ? "profile-form__input-error_active" : ""
           }`}
         >
           {`${errors.name ? errors.name : ""}`}
         </span>
-        <p className="text__11-13-reg profile-form__user-email">
+        <p className="texts__text_11-13-reg profile-form__user-email">
           {currentUser.email}
         </p>
         <input
-          className={`text__11-13-med profile-form__input profile-form__input_email ${
+          className={`texts__text_11-13-med profile-form__input profile-form__input_email ${
             errors.email ? "profile-form__input_error" : ""
           }`}
           type="email"
@@ -64,7 +64,7 @@ function Profile() {
         />
         <span
           name="email"
-          className={`text__11-13-reg profile-form__input_email-error ${
+          className={`texts__text_11-13-reg profile-form__input_email-error ${
             errors.email ? "profile-form__input-error_active" : ""
           }`}
         >

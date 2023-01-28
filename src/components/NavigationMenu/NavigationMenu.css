@@ -15,7 +15,7 @@
 
 .navigation-menu__container_small-screens {
         width: 520px;
-        min-height: 100%;
+        min-height: 100vh;
         position: fixed;
         top: 0;
         right: 0;

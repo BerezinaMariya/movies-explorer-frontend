@@ -34,8 +34,8 @@ function InfoTooltip(props) {
 
   return (
     <div
-      className={`info-tooltip ${
-        isOpen ? "popup_opened" : "popup_closed"
+      className={`info-tooltip popup ${
+        isOpen ? "popup_opened" : ""
       }`}
       ref={popupRef}
     >
@@ -51,7 +51,7 @@ function InfoTooltip(props) {
           src={sucsessImage}
           alt={`Статус регистрации или авторизации (удачная или нет)`}
         />
-        <h3 className="title__24-29-med info-tooltip__title">{successStatusMessage}</h3>
+        <h3 className="titles__title_24-29-med info-tooltip__title">{successStatusMessage}</h3>
       </div>
     </div>
   );

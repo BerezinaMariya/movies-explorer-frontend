@@ -49,9 +49,11 @@ function NavigationMenu(props) {
           ? pathName === "/signup" || pathName === "/signin"
             ? "navigation-menu_hidden"
             : "navigation-menu"
-          : isOpen
+          : "popup navigation-menu"}
+          ${ width < 1024 & isOpen
             ? "popup_opened"
-            : "popup_closed"
+            : "" }
+
       }`}
       ref={popupRef}
     >

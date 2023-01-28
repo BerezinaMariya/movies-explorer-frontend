@@ -1,5 +1,5 @@
 /* Заголовки в секции Main в компонентах Promo, Techs, AboutMe */
-.title__50-58-reg {
+.titles__title_50-58-reg {
     font-weight: 400;
     font-size: 50px;
     line-height: 1.16;
@@ -9,7 +9,7 @@
 }
 
 /* Заголовок в секции AboutProject */
-.title__20-24-reg {
+.titles__title_20-24-reg {
     font-weight: 400;
     font-size: 20px;
     line-height: 1.2;
@@ -20,7 +20,7 @@
 }
 
 /* Заголовки в секции Main в компонентах AboutProject, Techs, AboutMe вверху страницы */
-.title__22-27-reg_underlined {
+.titles__title_22-27-reg-underlined {
     font-weight: 400;
     font-size: 22px;
     line-height: 1.23;
@@ -33,7 +33,7 @@
 }
 
 @media screen and (max-width: 767px) {
-    .title__22-27-reg_underlined {
+    .titles__title_22-27-reg-underlined {
         font-size: calc((100vw - 320px) / (767 - 320) * (22 - 18) + 18px);
         line-height: calc((100vw - 320px) / (767 - 320) * (27 - 22) + 22px);
         padding-bottom: calc((100vw - 320px) / (767 - 320) * (23 - 28) + 28px);;
@@ -41,7 +41,7 @@
 }
 
 /* Заголовки в секции в компонентах InfoTooltip */
-.title__24-29-med {
+.titles__title_24-29-med {
     font-weight: 500;
     font-size: 24px;
     line-height: 1.21;

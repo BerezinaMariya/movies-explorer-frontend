@@ -3,10 +3,10 @@ import Portfolio from "../Portfolio/Portfolio";
 function AboutMe() {
   return (
     <section id="about-me" className="about-me">
-      <h2 className="title__22-27-reg_underlined">Студент</h2>
+      <h2 className="titles__title_22-27-reg-underlined">Студент</h2>
       <div className="about-me__info">
         <div className="about-me__about">
-          <h3 className="title__50-58-reg about-me__title">Мария</h3>
+          <h3 className="titles__title_50-58-reg about-me__title">Мария</h3>
           <h4 className="about-me__text_prof">Студентка, 36 лет</h4>
           <p className="about-me__text_about">
             Я родилась и живу в Санкт-Петербурге. У меня есть муж и две замечательные дочки. Я люблю петь, танцевать, кататься на лошадях и проводить время с семьёй и друзьями!
