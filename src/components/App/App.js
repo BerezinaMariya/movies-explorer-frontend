@@ -1,12 +1,21 @@
 import { useState, useEffect } from "react";
-import { Route, Switch, Redirect, useHistory } from "react-router-dom";
+import {
+  Route,
+  Switch,
+  Redirect,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 
+import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
+import Footer from "../Footer/Footer";
 import Profile from "../Profile/Profile";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
+import Page404NotFound from "../Page404NotFound/Page404NotFound";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
 
 import { RegistrationInfoContext } from "../../contexts/RegistrationInfoContext";
@@ -20,21 +29,26 @@ import SavedMoviesCards from "../../utils/SavedMoviesCards";
 
 function App() {
   const history = useHistory();
+  const location = useLocation();
+
+  const [pathName, setPathName] = useState("");
 
   const [registrationData, setRegistrationData] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [moviesCards, setMoviesCards] = useState([]);
   const [savedMoviesCards, setSavedMoviesCards] = useState({});
-  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
+  const [isNavigationMenuOpen, setNavigationMenuOpen] = useState(false);
   const [successStatusMessage, setSuccessStatusMessage] = useState("");
   const [RegOrLogSucsessStatus, setRegOrLogSucsessStatus] = useState(false);
 
-  function closePopup() {
-    setPopupOpen(false);
+  function closeAllPopups() {
+    setInfoTooltipOpen(false);
+    setNavigationMenuOpen(false);
   }
 
   function handleRegister() {
-    setPopupOpen(true);
+    setInfoTooltipOpen(true);
     setRegOrLogSucsessStatus(true);
     setSuccessStatusMessage("Вы успешно зарегистрировались!");
     history.push("/signin");
@@ -44,12 +58,16 @@ function App() {
     history.push("/movies");
   }
 
+  function handleMenuButtonClick() {
+    setNavigationMenuOpen(true);
+  }
+
   //Закрытие popup по клику по overlay
   function setCloseByOverlayListener(popup) {
     popup.addEventListener("mousedown", (evt) => {
       const targetClasses = evt.target.classList;
       if (targetClasses.contains("popup_opened")) {
-        closePopup();
+        closeAllPopups();
       }
     });
   }
@@ -57,9 +75,13 @@ function App() {
   //Закрытие popup при нажатии на Esc
   function handleCloseByEsc(evt) {
     if (evt.key === "Escape") {
-      closePopup();
+      closeAllPopups();
     }
   }
+
+  useEffect(() => {
+    setPathName(location.pathname);
+  }, [location.pathname]);
 
   useEffect(() => {
     document.title = "MoviesExplorer";
@@ -70,6 +92,14 @@ function App() {
 
   return (
     <>
+      <Header
+        pathName={pathName}
+        isOpen={isNavigationMenuOpen}
+        onMenuButtonClick={handleMenuButtonClick}
+        onClose={closeAllPopups}
+        onCloseByOverlay={setCloseByOverlayListener}
+        onCloseByEsc={handleCloseByEsc}
+      />
       <CurrentUserContext.Provider value={currentUser}>
         <MoviesCardsContext.Provider value={moviesCards}>
           <SavedMoviesCardsContext.Provider value={savedMoviesCards}>
@@ -93,6 +123,9 @@ function App() {
                 <Route path="/signin">
                   <Login onLogin={handleLogin} />
                 </Route>
+                <Route path="/404">
+                  <Page404NotFound />
+                </Route>
                 {/* <Route path="/">
                 {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
               </Route> */}
@@ -102,13 +135,14 @@ function App() {
         </MoviesCardsContext.Provider>
       </CurrentUserContext.Provider>
       <InfoTooltip
-        isOpen={isPopupOpen}
+        isOpen={isInfoTooltipOpen}
         successStatusMessage={successStatusMessage}
         isRegOrLogSucsess={RegOrLogSucsessStatus}
-        onClose={closePopup}
+        onClose={closeAllPopups}
         onCloseByOverlay={setCloseByOverlayListener}
         onCloseByEsc={handleCloseByEsc}
       />
+      <Footer pathName={pathName} />
     </>
   );
 }

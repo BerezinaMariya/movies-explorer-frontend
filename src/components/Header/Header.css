@@ -1,23 +1,27 @@
 .header {
-  width: 100%;
-  min-height: 74px;
-  display: flex;
-  align-items: center;
-  margin: 0;
-  padding: 0 70px;
-  box-sizing: border-box;
+    width: 100%;
+    min-height: 74px;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0 70px;
+    box-sizing: border-box;
+}
+
+.header_hidden {
+    display: none;
 }
 
 @media screen and (max-width: 1279px) {
-  .header {
-    padding-left: calc((100vw - 768px) / (1279 - 768) * (70 - 30) + 30px);
-    padding-right: calc((100vw - 768px) / (1279 - 768) * (70 - 30) + 30px);
-  }
+    .header {
+        padding-left: calc((100vw - 768px) / (1279 - 768) * (70 - 30) + 30px);
+        padding-right: calc((100vw - 768px) / (1279 - 768) * (70 - 30) + 30px);
+    }
 }
 
 @media screen and (max-width: 767px) {
-  .header {
-    padding-left: calc((100vw - 320px) / (767 - 320) * (30 - 14) + 14px);
-    padding-right: calc((100vw - 320px) / (767 - 320) * (30 - 14) + 14px);
-  }
+    .header {
+        padding-left: calc((100vw - 320px) / (767 - 320) * (30 - 14) + 14px);
+        padding-right: calc((100vw - 320px) / (767 - 320) * (30 - 14) + 14px);
+    }
 }

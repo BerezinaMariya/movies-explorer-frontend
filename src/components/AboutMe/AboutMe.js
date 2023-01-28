@@ -6,8 +6,8 @@ function AboutMe() {
       <h2 className="title__22-27-reg_underlined">Студент</h2>
       <div className="about-me__info">
         <div className="about-me__about">
-          <h4 className="title__50-58-reg about-me__title">Мария</h4>
-          <p className="about-me__text_prof">Студентка, 36 лет</p>
+          <h3 className="title__50-58-reg about-me__title">Мария</h3>
+          <h4 className="about-me__text_prof">Студентка, 36 лет</h4>
           <p className="about-me__text_about">
             Я родилась и живу в Санкт-Петербурге. У меня есть муж и две замечательные дочки. Я люблю петь, танцевать, кататься на лошадях и проводить время с семьёй и друзьями!
             Я закончила Университет Кино и Телевидения, работала проектировщицей электрических сетей. 

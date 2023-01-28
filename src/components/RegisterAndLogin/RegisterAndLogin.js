@@ -2,7 +2,6 @@ import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { RegistrationInfoContext } from "../../contexts/RegistrationInfoContext";
 import { FormValidator } from "../FormValidator/FormValidator";
-import Header from "../Header/Header";
 
 function RegisterAndLogin(props) {
   const registrationInfo = useContext(RegistrationInfoContext);
@@ -28,8 +27,7 @@ function RegisterAndLogin(props) {
   }, []);
 
   return (
-    <section className="register-and-login">
-      <Header />
+    <div className="register-and-login">
       <h3 className="title__24-29-med register-and-login__title">{title}</h3>
       <form className="form" onSubmit={handleSubmit} noValidate>
         <div
@@ -122,7 +120,7 @@ function RegisterAndLogin(props) {
           {signLinkText}
         </Link>
       </div>
-    </section>
+    </div>
   );
 }
 

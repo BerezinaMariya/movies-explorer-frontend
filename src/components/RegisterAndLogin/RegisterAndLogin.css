@@ -1,6 +1,6 @@
 .register-and-login {
     max-width: 396px;
-    min-height: 592px;
+    min-height: 575px;
     display: flex;
     flex-direction: column;
     margin: 0 auto;
@@ -32,7 +32,19 @@
 .register-and-login__sign {
     display: flex;
     justify-content: center;
-    margin: 0 auto;
+    margin: 0 auto 70px;
+}
+
+@media screen and (max-width: 1023px) {
+    .register-and-login__sign {
+        margin-bottom: 232px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .register-and-login__sign {
+        margin-bottom: 30px;
+    }
 }
 
 .register-and-login__sign-text {

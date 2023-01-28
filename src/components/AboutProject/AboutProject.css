@@ -41,6 +41,16 @@
     }
 }
 
+.about-project__title {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.2;
+    text-align: left;
+    color: #000000;
+    letter-spacing: -0.04em;
+    margin: 0;
+}
+
 @media screen and (max-width: 767px) {
     .about-project__title {
         font-size: calc((100vw - 320px) / (767 - 320) * (20 - 18) + 18px);

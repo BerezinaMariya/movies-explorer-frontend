@@ -6,13 +6,13 @@ function Portfolio() {
       <h3 className="portfolio__title">Портфолио</h3>
       <ul className="portfolio__list">
         <li className="portfolio__list-item portfolio__list-item_underlined">
-          <p className="portfolio__text">Статичный сайт</p>
           <a
             className="button-hover portfolio__link"
             target="_blank"
             href="https://berezinamariya.github.io/how-to-learn/"
             rel="noreferrer"
           >
+            <p className="portfolio__text">Статичный сайт</p>
             <img
               className="portfolio__link-img"
               src={portfoliolink}
@@ -21,13 +21,13 @@ function Portfolio() {
           </a>
         </li>
         <li className="portfolio__list-item portfolio__list-item_underlined">
-          <p className="portfolio__text">Адаптивный сайт</p>
           <a
             className="button-hover portfolio__link"
             target="_blank"
             href="https://berezinamariya.github.io/russian-travel/index.html"
             rel="noreferrer"
           >
+            <p className="portfolio__text">Адаптивный сайт</p>
             <img
               className="portfolio__link-img"
               src={portfoliolink}
@@ -36,13 +36,13 @@ function Portfolio() {
           </a>
         </li>
         <li className="portfolio__list-item">
-          <p className="portfolio__text">Одностраничное приложение</p>
           <a
             className="button-hover portfolio__link"
             target="_blank"
             href="https://mesto.berezina.nomoredomains.club"
             rel="noreferrer"
           >
+            <p className="portfolio__text">Одностраничное приложение</p>
             <img
               className="portfolio__link-img"
               src={portfoliolink}

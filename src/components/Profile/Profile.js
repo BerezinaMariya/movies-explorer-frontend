@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { FormValidator } from "../FormValidator/FormValidator";
-import Header from "../Header/Header";
 
 function Profile() {
   const currentUser = useContext(CurrentUserContext);
@@ -22,7 +21,6 @@ function Profile() {
 
   return (
     <section className="profile">
-      <Header />
       <h3 className="title__24-29-med profile__title">{`Привет, ${currentUser.name}!`}</h3>
       <form className="profile-form" onSubmit={handleSubmit} noValidate>
         <p className="text__11-13-reg profile-form__user-name">

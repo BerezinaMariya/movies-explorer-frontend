@@ -46,9 +46,6 @@
 }
 
 .portfolio__list-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin: 0;
     padding: 20px 0 19px;
 }
@@ -89,14 +86,19 @@
 }
 
 .portfolio__link {
-    margin-top: 5px;
-    margin-right: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: #000000;
     cursor: pointer;
 }
 
 .portfolio__link-img {
     width: 18px;
     height: 17px;
+    margin-top: 5px;
+    margin-right: 5px;
 }
 
 @media screen and (max-width: 767px) {

@@ -1,6 +1,16 @@
-function Footer() {
+function Footer(props) {
+  const { pathName } = props;
+
   return (
-    <footer className="footer">
+    <footer 
+    className={`${
+      pathName === "/" ||
+      pathName === "/movies" ||
+      pathName === "/saved-movies"
+        ? "footer"
+        : "footer_hidden"
+    }`}
+    >
       <p className="text__13-16-reg footer__text footer__text_about">
         Учебный проект Яндекс.Практикум х BeatFilm.
       </p>

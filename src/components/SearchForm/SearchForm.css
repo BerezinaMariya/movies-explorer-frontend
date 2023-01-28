@@ -107,6 +107,10 @@
     outline: none;
 }
 
+.search-form-form__input:focus {
+    border-bottom: 1px solid #2BE080;
+}
+
 @media screen and (max-width: 767px) {
     .search-form-form__input {
       font-size: 14px;

@@ -5,9 +5,21 @@
     justify-content: space-between;
 }
 
+.navigation_logout {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .navigation__tab {
     display: flex;
     align-items: center;
+}
+
+.navigation__logo {
+    width: 38px;
+    height: 38px;
 }
 
 .navigation__logo-link {
@@ -17,21 +29,37 @@
     border: none;
 }
 
-.navigation__logo-link_logout {
-    margin-left: -70px;
-    margin-top: 70px;
+.navigation__logo-link-block {
+    width: 38px;
+    height: 38px;
 }
 
-@media screen and (max-width: 1279px) {
-    .navigation__logo-link_logout {
-        margin-left: calc((100vw - 768px)/(1279 - 768)*(30 - 70) - 30px);
-        margin-top: calc((100vw - 768px)/(1279 - 768)*(70 - 232) + 232px);
+.navigation__logo-link-block_logout {
+    width: 396px;
+    display: flex;
+    justify-content: left;
+    padding-top: 70px;
+}
+
+@media screen and (max-width: 1023px) {
+    .navigation__logo-link-block_logout {
+        padding-top: calc((100vw - 768px) / (1023 - 768) * (70 - 232) + 232px);
+
     }
 }
 
 @media screen and (max-width: 767px) {
-    .navigation__logo-link_logout {
-        margin: 56px auto 0;
+    .navigation__logo-link-block_logout {
+        width: 260px;
+        padding-top: calc((100vw - 320px) / (767 - 320) * (262 - 56) + 56px);
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .navigation__logo-link-block_logout {
+        padding-top: 56px;
+
     }
 }
 
@@ -87,32 +115,32 @@
     }
 }
 
-    .navigation__button_hidden {
-        display: none;
-    }
+.navigation__button_hidden {
+    display: none;
+}
 
+.navigation__menu-button {
+    display: none;
+    width: 44px;
+    height: 44px;
+    background-image: url(../../../src/images/navigation-menu-button.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #FFFFFF;
+    border: none;
+    object-fit: cover;
+    padding: 0;
+}
+
+.navigation__menu-button_hidden {
+    display: none;
+}
+
+@media screen and (max-width: 1023px) {
     .navigation__menu-button {
-        display: none;
-        width: 44px;
-        height: 44px;
-        background-image: url(../../../src/images/navigation-menu-button.svg);
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-color: #FFFFFF;
-        border: none;
-        object-fit: cover;
-        padding: 0;
+        display: block;
+        width: 40px;
+        height: 43px;
     }
-
-    .navigation__menu-button_hidden {
-        display: none;
-    }
-
-    @media screen and (max-width: 1023px) {
-        .navigation__menu-button {
-            display: block;
-            width: 40px;
-            height: 43px;
-        }
-    }
+}

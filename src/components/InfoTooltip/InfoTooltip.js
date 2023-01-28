@@ -6,6 +6,7 @@ function InfoTooltip(props) {
   const { isOpen, successStatusMessage, isRegOrLogSucsess, onClose, onCloseByOverlay, onCloseByEsc } = props;
   
   const popupRef = useRef();
+  
   const [sucsessImage, setSucsessImage] = useState("");
 
   useEffect(() => {
@@ -13,7 +14,7 @@ function InfoTooltip(props) {
   }, []);
 
   useEffect(() => {
-    if (props.isOpen) {
+    if (isOpen) {
       // Список действий внутри одного хука
       document.addEventListener("keydown", onCloseByEsc);
       // Возвращаем функцию, которая удаляет эффекты
@@ -33,8 +34,8 @@ function InfoTooltip(props) {
 
   return (
     <div
-      className={`popup info-tooltip ${
-        isOpen ? "popup_opened" : ""
+      className={`info-tooltip ${
+        isOpen ? "popup_opened" : "popup_closed"
       }`}
       ref={popupRef}
     >

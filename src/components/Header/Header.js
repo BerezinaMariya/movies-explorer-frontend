@@ -1,18 +1,18 @@
-import { useHistory } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
 
-function Header() {
-  const history = useHistory();
-  const pathName = history.location.pathname;
+function Header(props) {
+  const {
+    pathName,
+    isOpen,
+    onMenuButtonClick,
+    onClose,
+    onCloseByOverlay,
+    onCloseByEsc,
+  } = props;
 
   function setLoggedIn() {
     let loggedIn = false;
-    if (
-      pathName === "/signin" ||
-      pathName === "/signup" ||
-      pathName === "/" ||
-      pathName === "/"
-    ) {
+    if (pathName === "/signin" || pathName === "/signup" || pathName === "/") {
       loggedIn = false;
     } else if (
       pathName === "/movies" ||
@@ -26,8 +26,27 @@ function Header() {
   }
 
   return (
-    <header className="header">
-      <Navigation loggedIn={setLoggedIn()} />
+    <header
+      className={`${
+        pathName === "/" ||
+        pathName === "/movies" ||
+        pathName === "/saved-movies" ||
+        pathName === "/profile" ||
+        pathName === "/signin" ||
+        pathName === "/signup"
+          ? "header"
+          : "header_hidden"
+      }`}
+    >
+      <Navigation
+        loggedIn={setLoggedIn()}
+        pathName={pathName}
+        isOpen={isOpen}
+        onMenuButtonClick={onMenuButtonClick}
+        onClose={onClose}
+        onCloseByOverlay={onCloseByOverlay}
+        onCloseByEsc={onCloseByEsc}
+      />
     </header>
   );
 }

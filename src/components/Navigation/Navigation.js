@@ -1,37 +1,43 @@
-import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import NavigationMenu from "../NavigationMenu/NavigationMenu";
 import navigationLogo from "../../images/navigation-logo.svg";
 
 function Navigation(props) {
-  const { loggedIn } = props;
-
-  const history = useHistory();
-  const pathName = history.location.pathname;
-
-  const [isMenuOpen, setMenuOpen] = useState(false);
+  const { loggedIn, pathName, isOpen, onMenuButtonClick, onClose, onCloseByOverlay, onCloseByEsc } = props;
 
   function handleButtonClick() {
-    setMenuOpen(!isMenuOpen);
+    onMenuButtonClick();
   }
 
   return (
-    <div className="navigation">
+    <div
+    className={`${
+      pathName === "/signin" || pathName === "/signup"
+        ? "navigation_logout"
+        : "navigation"
+    }`}
+    >
+      <div 
+      className={`${
+        pathName === "/signin" || pathName === "/signup"
+          ? "navigation__logo-link-block_logout"
+          : "navigation__logo-link-block"
+      }`}
+      >
       <Link
         to="/"
-        className={`button-hover navigation__logo-link ${
-          pathName === "/signin" || pathName === "/signup"
-            ? "navigation__logo-link_logout"
-            : ""
-        }`}
-      >
-        <img src={navigationLogo} alt="Логотип проекта" />
+        className="button-hover navigation__logo-link">
+        <img className="button-hover navigation__logo" src={navigationLogo} alt="Логотип проекта" />
       </Link>
+      </div>
 
         <NavigationMenu
+          pathName={pathName}
           loggedIn={loggedIn}
-          isMenuOpen={isMenuOpen}
-          onMenuOpen={handleButtonClick}
+          isOpen={isOpen}
+          onClose={onClose}
+          onCloseByOverlay={onCloseByOverlay}
+          onCloseByEsc={onCloseByEsc}
         />
 
       <div
