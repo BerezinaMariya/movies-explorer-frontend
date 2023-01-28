@@ -6,7 +6,7 @@ import {
   useHistory,
   useLocation,
 } from "react-router-dom";
-import  { renderToString } from 'react-dom/server'
+// import  { renderToString } from 'react-dom/server'
 
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -85,7 +85,7 @@ function App() {
   }, [location.pathname]);
 
   useEffect(() => {
-    console.log(renderToString(<Main />));
+    // console.log(renderToString(<Main />));
     document.title = "MoviesExplorer";
     setCurrentUser(CurrentUser);
     setMoviesCards(MoviesCards);
