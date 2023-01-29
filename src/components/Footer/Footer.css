@@ -25,11 +25,49 @@
     }
 }
 
+.footer__text {
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.23;
+    margin: 0;
+}
+
+@media screen and (max-width: 767px) {
+    .footer__text {
+        font-size: 12px;
+        line-height: 15px;
+    }
+}
+
 .footer__text_about {
     text-align: center;
     color: #A0A0A0;
     padding:  0 0 20px;
     border-bottom: 1px solid #E8E8E8;
+}
+
+.footer__text_year {
+    text-align: left;
+    color: #000000;
+}
+
+@media screen and (max-width: 767px) {
+    .footer__text_year {
+        margin-top: 30px;
+    }
+}
+
+.footer__text_company {
+    text-align: right;
+    color: #000000;
+    margin-left: 20px;
+}
+
+@media screen and (max-width: 767px) {
+    .footer__text_company {
+        margin-top: 12px;
+        margin-left: 0;
+    }
 }
 
 .footer__copyright {
@@ -46,45 +84,14 @@
     }
 }
 
-.footer__copyright-companies {
+.footer__companies {
     display: flex;
     justify-content: right;
 }
 
 @media screen and (max-width: 767px) {
-    .footer__copyright-companies {
+    .footer__companies {
         flex-direction: column;
         align-items: center;
-    }
-}
-
-.footer__text_copyright-year {
-    text-align: left;
-    color: #000000;
-}
-
-@media screen and (max-width: 767px) {
-    .footer__text_copyright-year {
-        margin-top: 30px;
-    }
-}
-
-.footer__text_copyright-company {
-    text-align: right;
-    color: #000000;
-    margin-left: 20px;
-}
-
-@media screen and (max-width: 767px) {
-    .footer__text_copyright-company {
-        margin-top: 12px;
-        margin-left: 0;
-    }
-}
-
-@media screen and (max-width: 767px) {
-    .footer__text {
-        font-size: 12px;
-        line-height: 15px;
     }
 }

@@ -1,9 +1,19 @@
-import { Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import NavigationMenu from "../NavigationMenu/NavigationMenu";
 import navigationLogo from "../../images/navigation-logo.svg";
 
 function Navigation(props) {
-  const { loggedIn, pathName, isOpen, onMenuButtonClick, onClose, onCloseByOverlay, onCloseByEsc } = props;
+  const {
+    loggedIn,
+    isOpen,
+    onMenuButtonClick,
+    onClose,
+    onCloseByOverlay,
+    onCloseByEsc,
+  } = props;
+
+  const history = useHistory();
+  const pathName = history.location.pathname;
 
   function handleButtonClick() {
     onMenuButtonClick();
@@ -11,68 +21,63 @@ function Navigation(props) {
 
   return (
     <div
-    className={`${
-      pathName === "/signin" || pathName === "/signup"
-        ? "navigation_logout"
-        : "navigation"
-    }`}
-    >
-      <div 
-      className={`${
+      className={`navigation ${
         pathName === "/signin" || pathName === "/signup"
-          ? "navigation__logo-link-block_logout"
-          : "navigation__logo-link-block"
+          ? "navigation_logOut"
+          : "navigation_logIn"
       }`}
+    >
+      <div
+        className={`navigation__logo-link-block ${
+          pathName === "/signin" || pathName === "/signup"
+            ? "navigation__logo-link-block_logOut"
+            : "navigation__logo-link-block_logIn"
+        }`}
       >
-      <Link
-        to="/"
-        className="button-hover navigation__logo-link">
-        <img className="button-hover navigation__logo" src={navigationLogo} alt="Логотип проекта" />
-      </Link>
+        <Link to="/" className="navigation__logo-link">
+          <img
+            className="navigation__logo"
+            src={navigationLogo}
+            alt="Логотип проекта"
+          />
+        </Link>
       </div>
 
-        <NavigationMenu
-          pathName={pathName}
-          loggedIn={loggedIn}
-          isOpen={isOpen}
-          onClose={onClose}
-          onCloseByOverlay={onCloseByOverlay}
-          onCloseByEsc={onCloseByEsc}
-        />
+      <NavigationMenu
+        loggedIn={loggedIn}
+        isOpen={isOpen}
+        onClose={onClose}
+        onCloseByOverlay={onCloseByOverlay}
+        onCloseByEsc={onCloseByEsc}
+      />
 
       <div
-        className={`${
+        className={`navigation__tab ${
           !loggedIn
             ? pathName === "/signup" || pathName === "/signin"
-              ? "navigation__link_hidden"
-              : "navigation__tab"
-            : "navigation__link_hidden"
+              ? "navigation__tab_hidden"
+              : "navigation__tab_visible"
+            : "navigation__tab_hidden"
         }`}
       >
         <Link
           to="/signup"
-          className="button-hover navigation__link navigation__reg-link"
+          className="navigation__link navigation__link_reg"
         >
           Регистрация
         </Link>
-        <button
-          type="button"
-          className="button-hover navigation__logIn navigation__logIn-button"
+        <Link
+          to="/signin"
+          className="navigation__link navigation__link_logIn"
         >
-          <Link
-            to="/signin"
-            className="button-hover navigation__link navigation__logIn-link"
-          >
-            Войти
-          </Link>
-        </button>
+          Войти
+        </Link>
       </div>
-
       <button
         type="button"
         onClick={handleButtonClick}
-        className={`button-hover ${
-          loggedIn ? "navigation__menu-button" : "navigation__button_hidden"
+        className={`navigation__menu-button ${
+          loggedIn ? "navigation__menu-button_visible" : "navigation__menu-button_hidden"
         }`}
       ></button>
     </div>

@@ -42,16 +42,16 @@ function InfoTooltip(props) {
       <div className="info-tooltip__container">
         <button
           type="button"
-          className="button-hover info-tooltip__close-button"
+          className="info-tooltip__close-button"
           onClick={onClose}
           aria-label="Закрыть"
         ></button>
         <img
           className="info-tooltip__image"
           src={sucsessImage}
-          alt={`Статус регистрации или авторизации (удачная или нет)`}
+          alt="Статус регистрации или авторизации (удачная или нет)"
         />
-        <h3 className="titles__title_24-29-med info-tooltip__title">{successStatusMessage}</h3>
+        <h3 className="info-tooltip__title">{successStatusMessage}</h3>
       </div>
     </div>
   );

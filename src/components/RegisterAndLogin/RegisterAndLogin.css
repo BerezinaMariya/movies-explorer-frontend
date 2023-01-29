@@ -7,6 +7,10 @@
 }
 
 .register-and-login__title {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1.21;
+    color: #000000;
     text-align: left;
     margin: 40px 0;
 }
@@ -17,16 +21,6 @@
         margin-bottom: 80px;
         text-align: center;
     }
-}
-
-.register-and-login__name-area {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.register-and-login__name-area_hidden {
-    display: none;
 }
 
 .register-and-login__sign {
@@ -47,26 +41,38 @@
     }
 }
 
-.register-and-login__sign-text {
+.register-and-login__text {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.21;
     color: #A0A0A0;
     margin: 0;
 }
 
 @media screen and (max-width: 767px) {
-    .register-and-login__sign-text {
+    .register-and-login__text {
         font-size: 12px;
         line-height: 15px;
     }
 }
 
-.register-and-login__sign-link {
+.register-and-login__link {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.21;
     color: #2BE080;
     text-decoration: none;
     margin-left: 6px;
+    opacity: 1;
+}
+
+.register-and-login__link:hover {
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
 }
 
 @media screen and (max-width: 767px) {
-    .register-and-login__sign-link {
+    .register-and-login__link {
         font-size: 12px;
         line-height: 15px;
     }

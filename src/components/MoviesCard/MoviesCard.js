@@ -11,9 +11,9 @@ function MoviesCard(props) {
   const movieCardClassName = `movies-card__button ${
     pathName === "/movies"
       ? isMovieSaved
-        ? "movies-card__save-button_active"
-        : "movies-card__save-button_inactive"
-      : "movies-card__delete-button"
+        ? "movies-card__button_save-button"
+        : "movies-card__button_save-button_inactive"
+      : "movies-card__button_delete-button"
   }`;
 
   function handleCardSaveClick() {
@@ -26,11 +26,11 @@ function MoviesCard(props) {
 
   return (
     <article className="movies-card">
-      <h2 className="movies-card__nameRU">{card.nameRU}</h2>
+      <h3 className="movies-card__nameRU">{card.nameRU}</h3>
       <p className="movies-card__duration">{card.duration}</p>
       <button
         type="button"
-        className={`button-hover ${movieCardClassName}`}
+        className={movieCardClassName}
         aria-label={`${pathName === "/movies" ? "Сохранить" : "Удалить"}`}
         onClick={
           pathName === "/movies" ? handleCardSaveClick : handleCardDeleteClick

@@ -1,16 +1,11 @@
 import { useRef, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 function NavigationMenu(props) {
-  const {
-    pathName,
-    loggedIn,
-    isOpen,
-    onClose,
-    onCloseByOverlay,
-    onCloseByEsc,
-  } = props;
+  const { loggedIn, isOpen, onClose, onCloseByOverlay, onCloseByEsc } = props;
 
+  const history = useHistory();
+  const pathName = history.location.pathname;
   const popupRef = useRef();
 
   const [width, setWidth] = useState(window.innerWidth);
@@ -44,21 +39,19 @@ function NavigationMenu(props) {
 
   return (
     <div
-      className={`${
+      className={`navigation-menu ${
         width >= 1024
           ? pathName === "/signup" || pathName === "/signin"
             ? "navigation-menu_hidden"
-            : "navigation-menu"
-          : "popup navigation-menu"}
-          ${ width < 1024 & isOpen
-            ? "popup_opened"
-            : "" }
-
+            : ""
+          : "popup"
+      }
+          ${(width < 1024) & isOpen ? "popup_opened" : ""}
       }`}
       ref={popupRef}
     >
       <div
-        className={`${
+        className={`navigation-menu__container ${
           width >= 1024
             ? "navigation-menu__container_big-screens"
             : "navigation-menu__container_small-screens"
@@ -67,86 +60,52 @@ function NavigationMenu(props) {
         <button
           type="button"
           onClick={onClose}
-          className="button-hover navigation-menu__close-button"
+          className="navigation-menu__close-button"
         ></button>
         <div
-          className={`${
-            loggedIn ? "navigation-menu__tab" : "navigation-menu__tab_hidden"
-          }`}
-        >
-          <button
-            type="button"
-            onClick={onClose}
-            className={`button-hover navigation-menu__link-button navigation-menu__main-link-button ${
-              pathName === "/" ? "navigation-menu__link-button_active" : ""
-            }`}
-          >
-            <Link
-              to="/"
-              className={`button-hover navigation-menu__link ${
-                pathName === "/" ? "navigation-menu__link_active" : ""
-              }`}
-            >
-              Главная
-            </Link>
-          </button>
-          <button
-            type="button"
-            onClick={onClose}
-            className={`button-hover navigation-menu__link-button navigation-menu__movies-link-button navigation-menu__movies-link-button ${
-              pathName === "/movies"
-                ? "navigation-menu__link-button_active"
-                : ""
-            }`}
-          >
-            <Link
-              to="/movies"
-              onClick={onClose}
-              className={`button-hover navigation-menu__link ${
-                pathName === "/movies" ? "navigation-menu__link_active" : ""
-              }`}
-            >
-              Фильмы
-            </Link>
-          </button>
-          <button
-            type="button"
-            onClick={onClose}
-            className={`button-hover navigation-menu__link-button navigation-menu__movies-link-button navigation-menu__saved-movies-link-button ${
-              pathName === "/saved-movies"
-                ? "navigation-menu__link-button_active"
-                : ""
-            }`}
-          >
-            <Link
-              to="/saved-movies"
-              onClick={onClose}
-              className={`button-hover navigation-menu__link ${
-                pathName === "/saved-movies"
-                  ? "navigation-menu__link_active"
-                  : ""
-              }`}
-            >
-              Сохранённые фильмы
-            </Link>
-          </button>
-        </div>
-        <button
-          type="button"
-          onClick={onClose}
-          className={`button-hover ${
-            loggedIn
-              ? "navigation-menu__profile-button"
-              : "navigation-menu__button_hidden"
+          className={`navigation-menu__tab ${
+            loggedIn ? "" : "navigation-menu__tab_hidden"
           }`}
         >
           <Link
-            to="/profile"
-            className="button-hover navigation-menu__profile-link"
+            to="/"
+            onClick={onClose}
+            className={`navigation-menu__link navigation-menu__link_main-link ${
+              pathName === "/" ? "navigation-menu__link_active" : ""
+            }`}
           >
-            Аккаунт
+            Главная
           </Link>
-        </button>
+          <Link
+            to="/movies"
+            onClick={onClose}
+            className={`navigation-menu__link navigation-menu__link_movies-link ${
+              pathName === "/movies" ? "navigation-menu__link_active" : ""
+            }`}
+          >
+            Фильмы
+          </Link>
+          <Link
+            to="/saved-movies"
+            onClick={onClose}
+            className={`navigation-menu__link navigation-menu__link_saved-movies-link ${
+              pathName === "/saved-movies" ? "navigation-menu__link_active" : ""
+            }`}
+          >
+            Сохранённые фильмы
+          </Link>
+        </div>
+        <Link
+          to="/profile"
+          onClick={onClose}
+          className={`navigation-menu__profile-link ${
+            loggedIn
+              ? ""
+              : "navigation-menu__profile-link_hidden"
+          }`}
+        >
+          Аккаунт
+        </Link>
       </div>
     </div>
   );

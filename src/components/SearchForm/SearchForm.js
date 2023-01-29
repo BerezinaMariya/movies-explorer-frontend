@@ -25,14 +25,13 @@ function SearchForm() {
           >
             <input
               type="text"
-              name="film-name"
-              id="input"
+              name="movieName"
               className="search-form-form__input"
               placeholder="Фильм"
             />
             <button
               type="submit"
-              className="button-hover search-form-form__submit-button"
+              className="search-form-form__submit-button"
             >
               {/* {preLoading()}  */}
             </button>
@@ -40,7 +39,7 @@ function SearchForm() {
 
           <div className="search-form__short-films-filter">
             <FilterCheckbox />
-            <p className="texts__text_13-18 search-form__text">Короткометражки</p>
+            <p className="search-form__text">Короткометражки</p>
           </div>
         </div>
       </div>

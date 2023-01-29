@@ -3,26 +3,26 @@ function Footer(props) {
 
   return (
     <footer 
-    className={`${
+    className={`footer ${
       pathName === "/" ||
       pathName === "/movies" ||
       pathName === "/saved-movies"
-        ? "footer"
+        ? ""
         : "footer_hidden"
     }`}
     >
-      <p className="texts__text_13-16-reg footer__text footer__text_about">
+      <p className="footer__text footer__text_about">
         Учебный проект Яндекс.Практикум х BeatFilm.
       </p>
       <div className="footer__copyright">
-        <p className="texts__text_13-16-reg footer__text footer__text_copyright-year">
+        <p className="footer__text footer__text_year">
           &copy; 2023
         </p>
-        <div className="footer__copyright-companies">
-          <p className="texts__text_13-16-reg footer__text footer__text_copyright-company">
+        <div className="footer__companies">
+          <p className="footer__text footer__text_company">
             Яндекс.Практикум
           </p>
-          <p className="texts__text_13-16-reg footer__text footer__text_copyright-company">
+          <p className="footer__text footer__text_company">
             Github
           </p>
         </div>

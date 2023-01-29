@@ -6,7 +6,6 @@ import {
   useHistory,
   useLocation,
 } from "react-router-dom";
-// import  { renderToString } from 'react-dom/server'
 
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -23,18 +22,76 @@ import { RegistrationInfoContext } from "../../contexts/RegistrationInfoContext"
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { MoviesCardsContext } from "../../contexts/MoviesCardsContext";
 import { SavedMoviesCardsContext } from "../../contexts/SavedMoviesCardsContext";
-
+import { api } from "../../utils/Api";
 import CurrentUser from "../../utils/CurrentUser";
 import MoviesCards from "../../utils/MoviesCards";
 import SavedMoviesCards from "../../utils/SavedMoviesCards";
 
+// function register(
+//   registrationInfo,
+//   setRegistrationInfo,
+//   setSuccessStatusMessage,
+//   setRegOrLogSucsessStatus,
+//   setInfoTooltipOpen,
+//   history
+// ) {
+//   api
+//     .register(registrationInfo.name, registrationInfo.email, registrationInfo.password )
+//     .then((res) => {
+//       if (res) {
+//         setSuccessStatusMessage("Вы успешно зарегистрировались!");
+//         setRegOrLogSucsessStatus(true);
+//         setInfoTooltipOpen(true);
+//         setRegistrationInfo({});
+//       }
+//     })
+//     .then(() => history.push("/signin"))
+//     .catch((err) => {
+//       setSuccessStatusMessage(err.message || "Что-то пошло не так! Попробуйте ещё раз.");
+//       setRegOrLogSucsessStatus(false);
+//       setInfoTooltipOpen(true);
+//     });
+// }
+
+// function authorize(
+//   registrationInfo,
+//   setCurrentUser,
+//   setSuccessStatusMessage,
+//   setLoggedIn,
+//   setRegOrLogSucsessStatus,
+//   setInfoTooltipOpen,
+//   history
+// ) {
+//   if (!registrationInfo.email || !registrationInfo.password) {
+//     console.log("ups")
+//     return;
+//   }
+//   api
+//     .authorize(registrationInfo.email, registrationInfo.password)
+//     .then((res) => {
+//       setLoggedIn(true);
+//       history.push("/movies");
+//       setCurrentUser(res);
+//       localStorage.setItem('loggedIn', true);
+//     })
+//     .catch((err) => {
+//       setSuccessStatusMessage(err.message || "Что-то пошло не так! Попробуйте ещё раз.");
+//       setRegOrLogSucsessStatus(false);
+//       setInfoTooltipOpen(true);
+//     });
+// }
+
 function App() {
+  document.title = "MoviesExplorer";
+  document.documentElement.lang = "ru";
+
   const history = useHistory();
   const location = useLocation();
 
+  const [loggedIn, setLoggedIn] = useState(false);
   const [pathName, setPathName] = useState("");
 
-  const [registrationData, setRegistrationData] = useState({});
+  const [registrationInfo, setRegistrationInfo] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [moviesCards, setMoviesCards] = useState([]);
   const [savedMoviesCards, setSavedMoviesCards] = useState({});
@@ -49,13 +106,30 @@ function App() {
   }
 
   function handleRegister() {
-    setInfoTooltipOpen(true);
-    setRegOrLogSucsessStatus(true);
+    // register(
+    //   registrationInfo,
+    //   setRegistrationInfo,
+    //   setSuccessStatusMessage,
+    //   setRegOrLogSucsessStatus,
+    //   setInfoTooltipOpen,
+    //   history
+    // );
     setSuccessStatusMessage("Вы успешно зарегистрировались!");
+    setRegOrLogSucsessStatus(true);
+    setInfoTooltipOpen(true);
     history.push("/signin");
   }
 
   function handleLogin() {
+    // authorize(
+    //   registrationInfo,
+    //   setCurrentUser,
+    //   setSuccessStatusMessage,
+    //   setLoggedIn,
+    //   setRegOrLogSucsessStatus,
+    //   setInfoTooltipOpen,
+    //   history
+    // );
     history.push("/movies");
   }
 
@@ -85,8 +159,6 @@ function App() {
   }, [location.pathname]);
 
   useEffect(() => {
-    // console.log(renderToString(<Main />));
-    document.title = "MoviesExplorer";
     setCurrentUser(CurrentUser);
     setMoviesCards(MoviesCards);
     setSavedMoviesCards(SavedMoviesCards);
@@ -95,6 +167,7 @@ function App() {
   return (
     <>
       <Header
+        isLoggedIn={loggedIn}
         pathName={pathName}
         isOpen={isNavigationMenuOpen}
         onMenuButtonClick={handleMenuButtonClick}
@@ -105,7 +178,7 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
         <MoviesCardsContext.Provider value={moviesCards}>
           <SavedMoviesCardsContext.Provider value={savedMoviesCards}>
-            <RegistrationInfoContext.Provider value={registrationData}>
+            <RegistrationInfoContext.Provider value={registrationInfo}>
               <Switch>
                 <Route exact path="/">
                   <Main />

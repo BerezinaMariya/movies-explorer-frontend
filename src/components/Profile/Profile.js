@@ -11,8 +11,8 @@ function Profile() {
   function handleSubmit(evt) {
     evt.preventDefault();
     if (isFormValid) {
-      currentUser.name = values.name;
-      currentUser.email = values.email;
+      currentUser.name = values.userName;
+      currentUser.email = values.userEmail;
       resetForm();
     } else {
       alert("Что-то пошло не так");
@@ -21,65 +21,63 @@ function Profile() {
 
   return (
     <section className="profile">
-      <h3 className="titles__title_24-29-med profile__title">{`Привет, ${currentUser.name}!`}</h3>
+      <h3 className="profile__title">{`Привет, ${currentUser.name}!`}</h3>
       <form className="profile-form" onSubmit={handleSubmit} noValidate>
-        <p className="texts__text_11-13-reg profile-form__user-name">
+        <p className="profile-form__hint profile-form__hint_user-name">
           {currentUser.name}
         </p>
         <input
-          className={`texts__text_11-13-med profile-form__input profile-form__input_name ${
-            errors.name ? "profile-form__input_error" : ""
+          className={`profile-form__input profile-form__input_name ${
+            errors.userName ? "profile-form__input_error" : ""
           }`}
           type="text"
-          name="name"
-          id="input-name"
+          name="userName"
           placeholder="Имя"
-          value={`${values.name ? values.name : ""}`}
+          value={`${values.userName ? values.userName : ""}`}
           required
           minLength="2"
           maxLength="30"
           onChange={handleChange}
         />
         <span
-          name="name"
-          className={`texts__text_11-13-reg profile-form__input_name-error ${
-            errors.name ? "profile-form__input-error_active" : ""
+          id="userName"
+          className={`profile-form__input-error profile-form__input-error_name ${
+            errors.userName ? "profile-form__input-error_active" : ""
           }`}
         >
-          {`${errors.name ? errors.name : ""}`}
+          {`${errors.userName ? errors.userName : ""}`}
         </span>
-        <p className="texts__text_11-13-reg profile-form__user-email">
+        <p className="profile-form__hint profile-form__hint_user-email">
           {currentUser.email}
         </p>
         <input
-          className={`texts__text_11-13-med profile-form__input profile-form__input_email ${
-            errors.email ? "profile-form__input_error" : ""
+          className={`profile-form__input profile-form__input_email ${
+            errors.userEmail ? "profile-form__input_error" : ""
           }`}
           type="email"
-          name="email"
-          id="input-email"
+          name="userEmail"
           placeholder="E-mail"
-          value={`${values.email ? values.email : ""}`}
+          value={`${values.userEmail ? values.userEmail : ""}`}
           onChange={handleChange}
         />
         <span
-          name="email"
-          className={`texts__text_11-13-reg profile-form__input_email-error ${
-            errors.email ? "profile-form__input-error_active" : ""
+          id="userEmail"
+          className={`profile-form__input-error profile-form__input-error_email ${
+            errors.userEmail ? "profile-form__input-error_active" : ""
           }`}
         >
-          {`${errors.email ? errors.email : ""}`}
+          {`${errors.userEmail ? errors.userEmail : ""}`}
         </span>
         <button
           type="submit"
-          className="button-hover profile__text profile-form__submit-button"
+          className="profile__text profile-form__submit-button"
         >
           Редактировать
         </button>
       </form>
       <Link
         to="./signin"
-        className="button-hover profile__text profile__signuot-link"
+        className="profile__text profile__signOut-link"
       >
         Выйти из аккаунта
       </Link>

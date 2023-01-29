@@ -1,16 +1,16 @@
 function Techs() {
   return (
     <section id="techs" className="techs">
-      <h2 className="titles__title_22-27-reg-underlined">Технологии</h2>
-      <h4 className="titles__title_50-58-reg techs__title">7 технологий</h4>
-      <p className="texts__text_14-20-reg techs__text">
+      <h2 className="techs__title techs__title_page-up">Технологии</h2>
+      <h4 className="techs__title techs__title_main">7 технологий</h4>
+      <p className="techs__text">
         На курсе веб-разработки мы освоили технологии, которые применили в
         дипломном проекте.
       </p>
       <ul className="techs__list">
-        <li className="button-hover techs__list-item">
+        <li className="techs__list-item">
           <a
-            className="texts__text_14-17-reg techs__link"
+            className="techs__link"
             target="_blank"
             href="https://html.com/"
             rel="noreferrer"
@@ -18,9 +18,9 @@ function Techs() {
             HTML
           </a>
         </li>
-        <li className="button-hover techs__list-item">
+        <li className="techs__list-item">
           <a
-            className="texts__text_14-17-reg techs__link"
+            className="techs__link"
             target="_blank"
             href="https://www.w3.org/Style/CSS/"
             rel="noreferrer"
@@ -28,9 +28,9 @@ function Techs() {
             CSS
           </a>
         </li>
-        <li className="button-hover techs__list-item">
+        <li className="techs__list-item">
           <a
-            className="texts__text_14-17-reg techs__link"
+            className="techs__link"
             target="_blank"
             href="https://www.javascript.com/"
             rel="noreferrer"
@@ -38,9 +38,9 @@ function Techs() {
             JS
           </a>
         </li>
-        <li className="button-hover techs__list-item">
+        <li className="techs__list-item">
           <a
-            className="texts__text_14-17-reg techs__link"
+            className="techs__link"
             target="_blank"
             href="https://reactjs.org/"
             rel="noreferrer"
@@ -48,9 +48,9 @@ function Techs() {
             React
           </a>
         </li>
-        <li className="button-hover techs__list-item">
+        <li className="techs__list-item">
           <a
-            className="texts__text_14-17-reg techs__link"
+            className="techs__link"
             target="_blank"
             href="https://git-scm.com/"
             rel="noreferrer"
@@ -58,9 +58,9 @@ function Techs() {
             Git
           </a>
         </li>
-        <li className="button-hover techs__list-item">
+        <li className="techs__list-item">
           <a
-            className="texts__text_14-17-reg techs__link"
+            className="techs__link"
             target="_blank"
             href="https://expressjs.com/"
             rel="noreferrer"
@@ -68,9 +68,9 @@ function Techs() {
             Express.js
           </a>
         </li>
-        <li className="button-hover techs__list-item">
+        <li className="techs__list-item">
           <a
-            className="texts__text_14-17-reg techs__link"
+            className="techs__link"
             target="_blank"
             href="https://www.mongodb.com/"
             rel="noreferrer"

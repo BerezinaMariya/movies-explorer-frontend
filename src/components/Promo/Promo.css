@@ -31,6 +31,11 @@
 
 .promo__title {
   max-width: 730px;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 1.16;
+  color: #000000;
+  letter-spacing: -0.04em;
   text-align: center;
   margin: 160px 0 151px;
 }

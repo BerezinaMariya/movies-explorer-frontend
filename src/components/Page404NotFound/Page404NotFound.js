@@ -9,7 +9,7 @@ function Page404NotFound() {
       <p className="page-404-not-found__text">Страница не найдена</p>
       <button
           type="button"
-          className="button-hover page-404-not-found__button"
+          className="page-404-not-found__button"
           onClick={history.goBack}
         >
          Назад

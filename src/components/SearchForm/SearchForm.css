@@ -131,6 +131,12 @@
     border-radius: 48px;
     box-sizing: border-box;
     cursor: pointer;
+    opacity: 1;
+}
+
+.search-form-form__submit-button:hover {
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
 }
 
 .search-form__short-films-filter {
@@ -165,6 +171,10 @@
 
 .search-form__text {
     font-weight: 400;
+    font-size: 13px;
+    line-height: 1.38;
+    color: #000000;
+    cursor: pointer;
     text-align: left;
     margin: 0 0 0 14px;
 }

@@ -41,7 +41,27 @@
     }
 }
 
-.about-project__title {
+.about-project__title_page-up {
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.23;
+    text-align: left;
+    color: #000000;
+    padding: 0 0 23px;
+    margin: 0;
+    letter-spacing: -0.04em;
+    border-bottom: 1px solid #000000;
+}
+
+@media screen and (max-width: 767px) {
+    .about-project__title_page-up {
+        font-size: calc((100vw - 320px) / (767 - 320) * (22 - 18) + 18px);
+        line-height: calc((100vw - 320px) / (767 - 320) * (27 - 22) + 22px);
+        padding-bottom: calc((100vw - 320px) / (767 - 320) * (23 - 28) + 28px);;
+    }
+}
+
+.about-project__title_info {
     font-weight: 400;
     font-size: 20px;
     line-height: 1.2;
@@ -52,7 +72,7 @@
 }
 
 @media screen and (max-width: 767px) {
-    .about-project__title {
+    .about-project__title_info {
         font-size: calc((100vw - 320px) / (767 - 320) * (20 - 18) + 18px);
         line-height: calc((100vw - 320px) / (767 - 320) * (24 - 22) + 22px);
         margin-top: 56px;
@@ -78,6 +98,10 @@
 }
 
 .about-project__text {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.43;
+    color: #000000;
     text-align: left;
     margin: 26px 0 0;
 }
@@ -149,6 +173,9 @@
 }
 
 .about-project__deadline-text {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.21;
     margin: 0;
 }
 
@@ -159,23 +186,23 @@
     }
 }
 
-.about-project__deadline-under-text {
+.about-project__deadline-text_under {
     font-weight: 500;
     text-align: center;
     color: #A0A0A0;
 }
 
 @media screen and (max-width: 767px) {
-    .about-project__deadline-under-text {
+    .about-project__deadline-text_under {
         font-size: calc((100vw - 320px) / (767 - 320) * (14 - 11) + 11px);
         line-height: calc((100vw - 320px) / (767 - 320) * (17 - 11) + 11px);
     }
 }
 
-.about-project__deadline-under-text_back {
+.about-project__deadline-text_under_back {
     grid-area: under-text_back;
 }
 
-.about-project__deadline-under-text_front {
+.about-project__deadline-text_under_front {
     grid-area: under-text_front;
 }
