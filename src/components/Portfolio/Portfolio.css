@@ -1,0 +1,115 @@
+.portfolio {
+    max-width: 1280px;
+    display: flex;
+    flex-direction: column;
+    margin: 100px 0 0;
+}
+
+@media screen and (max-width: 1279px) {
+    .portfolio {
+        margin-top: calc((100vw - 768px)/(1279 - 768)*(100 - 90) + 90px);
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .portfolio {
+        margin-top: calc((100vw - 320px)/(767 - 320)*(90 - 70) + 70px);
+    }
+}
+
+.portfolio__title {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.11;
+    text-align: left;
+    color: #A0A0A0;
+    margin: 0;
+}
+
+@media screen and (max-width: 767px) {
+    .portfolio__title {
+        font-size: calc((100vw - 320px)/(767 - 320)*(18 - 14) + 14px);
+        line-height: 20px;
+    }
+}
+
+.portfolio__list {
+    margin: 30px 0 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+@media screen and (max-width: 767px) {
+    .portfolio__list {
+        margin-top: 20px;
+    }
+}
+
+.portfolio__list-item {
+    margin: 0;
+    padding: 20px 0 19px;
+}
+
+.portfolio__list-item_underlined {
+    border-bottom: 1px solid #E8E8E8;
+}
+
+.portfolio__text {
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 1.67;
+    text-align: left;
+    color: #000000;
+    letter-spacing: -0.04em;
+    margin: 0;
+}
+
+@media screen and (max-width: 1279px) {
+    .portfolio__text {
+        font-size: calc((100vw - 768px)/(1279 - 768)*(30 - 28) + 28px);
+        line-height: 50px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .portfolio__text {
+        font-size: calc((100vw - 320px)/(767 - 320)*(28 - 18) + 18px);
+        line-height: calc((100vw - 320px)/(767 - 320)*(50 - 28) + 28px);
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .portfolio__text {
+        font-size: 18px;
+        line-height: 28px;
+    }
+}
+
+.portfolio__link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: #000000;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.portfolio__link:hover {
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
+}
+
+.portfolio__image-link {
+    width: 18px;
+    height: 17px;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+@media screen and (max-width: 767px) {
+    .portfolio__image-link {
+        width: 12px;
+        height: 15px;
+    }
+}

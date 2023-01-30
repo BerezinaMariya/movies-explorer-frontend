@@ -1,0 +1,188 @@
+.techs {
+    max-width: 1280px;
+    min-height: 625px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 100px 70px 100px;
+    background: #F5F5F5;
+    box-sizing: border-box;
+}
+
+@media screen and (max-width: 1279px) {
+    .techs {
+      padding-top: calc((100vw - 768px)/(1279 - 768)*(100 - 90) + 90px);
+      padding-bottom: calc((100vw - 768px)/(1279 - 768)*(100 - 90) + 90px);
+      padding-left: calc((100vw - 768px)/(1279 - 768)*(70 - 50) + 50px);
+      padding-right: calc((100vw - 768px)/(1279 - 768)*(70 - 50) + 50px);
+      min-height: calc((100vw - 768px)/(1279 - 768)*(625 - 567) + 567px);
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .techs {
+        padding-top: calc((100vw - 320px)/(767 - 320)*(90 - 70) + 70px);
+        padding-bottom: calc((100vw - 320px)/(767 - 320)*(90 - 70) + 70px);
+        padding-left: calc((100vw - 320px)/(767 - 320)*(50 - 18) + 18px);
+        padding-right: calc((100vw - 320px)/(767 - 320)*(50 - 18) + 18px);
+        min-height: 651px;
+        background: #FFFFFF;
+    }
+}
+
+.techs__title_page-up {
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.23;
+    text-align: left;
+    color: #000000;
+    padding: 0 0 23px;
+    margin: 0;
+    letter-spacing: -0.04em;
+    border-bottom: 1px solid #000000;
+}
+
+@media screen and (max-width: 767px) {
+    .techs__title_page-up {
+        font-size: calc((100vw - 320px) / (767 - 320) * (22 - 18) + 18px);
+        line-height: calc((100vw - 320px) / (767 - 320) * (27 - 22) + 22px);
+        padding-bottom: calc((100vw - 320px) / (767 - 320) * (23 - 28) + 28px);;
+    }
+}
+
+.techs__title_main {
+    font-weight: 400;
+    font-size: 50px;
+    line-height: 1.16;
+    color: #000000;
+    letter-spacing: -0.04em;
+    text-align: center;
+    margin: 90px auto 0;
+}
+
+@media screen and (max-width: 1279px) {
+    .techs__title_main {
+      margin-top: calc((100vw - 768px)/(1279 - 768)*(90 - 80) + 80px);
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .techs__title_main {
+        font-size: 30px;
+        line-height: 36px;
+        margin-top: 60px;
+    }
+}
+
+.techs__text {
+    max-width: 460px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.43;
+    color: #000000;
+    text-align: center;
+    letter-spacing: -0.04em;
+    margin: 26px auto 0;
+}
+
+@media screen and (max-width: 1279px) {
+    .techs__text {
+      font-size: calc((100vw - 768px)/(1279 - 768)*(14 - 12) + 12px);
+      line-height: calc((100vw - 768px)/(1279 - 768)*(20 - 18) + 18px);
+      margin-top: calc((100vw - 768px)/(1279 - 768)*(26 - 22) + 22px);
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .techs__text {
+        font-size: 11px;
+        line-height: 16px;
+        margin-top: 24px;
+    }
+}
+
+.techs__list {
+    display: flex;
+    margin: 100px auto 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+@media screen and (max-width: 1279px) {
+    .techs__list {
+      margin-top: calc((100vw - 768px)/(1279 - 768)*(100 - 83) + 83px);
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .techs__list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px 10px;
+        margin-top: 50px;
+    }
+}
+
+.techs__list-item {
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    width: 90px;
+    height: 60px;
+    background: #E8E8E8;
+    border: none;
+    border-radius: 10px;
+    margin: 0 5px 0;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 1279px) {
+    .techs__list-item {
+        width: calc((100vw - 768px)/(1279 - 768)*(90 - 84) + 84px);
+        height: calc((100vw - 768px)/(1279 - 768)*(60 - 57) + 57px);
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .techs__list-item {
+        width: 84px;
+        height: 57px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .techs__list-item {
+        margin: 0;
+    }
+}
+
+.techs__link {
+    width: 100%;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.21;
+    text-align: center;
+    color: #000000;
+    text-decoration: none;
+    letter-spacing: -0.04em;
+    opacity: 1;
+}
+
+.techs__link:hover {
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
+}
+
+@media screen and (max-width: 1279px) {
+    .techs__link {
+      font-size: calc((100vw - 768px)/(1279 - 768)*(14 - 12) + 12px);
+      line-height: calc((100vw - 768px)/(1279 - 768)*(20 - 15) + 15px);
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .techs__link {
+      font-size: 12px;
+      line-height: 15px;
+    }
+}

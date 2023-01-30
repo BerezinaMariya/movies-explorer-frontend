@@ -1,0 +1,38 @@
+.nav-tab__link {
+    display: inline-block;
+    width: 96px;
+    height: 36px;
+    background: #E8E8E8;
+    border: none;
+    border-radius: 10px;
+    margin: 0 5px 30px;
+    padding-top: 10px;
+    box-sizing: border-box;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1.33;
+    text-align: center;
+    text-decoration: none;
+    color: #000000;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.nav-tab__link:hover {
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
+}
+
+@media screen and (max-width: 767px) {
+    .nav-tab__link {
+        font-size: 10px;
+        line-height: 16px;
+        width: calc((100vw - 320px)/(767 - 320)*(96 - 82) + 82px);
+        height: calc((100vw - 320px)/(767 - 320)*(36 - 26) + 26px);
+        margin-right: calc((100vw - 320px)/(767 - 320)*(5 - 3) + 3px);
+        margin-left: calc((100vw - 320px)/(767 - 320)*(5 - 3) + 3px);
+        margin-bottom: calc((100vw - 320px)/(767 - 320)*(30 - 17) + 17px);
+        padding-top: calc((100vw - 320px)/(767 - 320)*(10 - 5) + 5px);
+        border-radius: 6px;
+    }
+}
