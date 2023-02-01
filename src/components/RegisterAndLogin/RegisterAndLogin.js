@@ -48,6 +48,7 @@ function RegisterAndLogin(props) {
             required
             minLength="2"
             maxLength="30"
+            pattern="^[A-Za-zА-Яа-яЁё\s\-]+$"
             onChange={handleChange}
             disabled={title === "Добро пожаловать!" ? false : true}
           />

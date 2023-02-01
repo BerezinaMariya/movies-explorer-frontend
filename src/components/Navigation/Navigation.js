@@ -1,4 +1,4 @@
-import { useHistory, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import NavigationMenu from "../NavigationMenu/NavigationMenu";
 import navigationLogo from "../../images/navigation-logo.svg";
 
@@ -12,8 +12,7 @@ function Navigation(props) {
     onCloseByEsc,
   } = props;
 
-  const history = useHistory();
-  const pathName = history.location.pathname;
+  const pathName = window.location.pathname;
 
   function handleButtonClick() {
     onMenuButtonClick();
@@ -53,23 +52,17 @@ function Navigation(props) {
 
       <div
         className={`navigation__tab ${
-          !loggedIn
-            ? pathName === "/signup" || pathName === "/signin"
-              ? "navigation__tab_hidden"
-              : "navigation__tab_visible"
-            : "navigation__tab_hidden"
+          !loggedIn 
+          ? pathName === "/signup" || pathName === "/signin"
+            ? "navigation__tab_hidden"
+            : "navigation__tab_visible"
+          : "navigation__tab_hidden"
         }`}
       >
-        <Link
-          to="/signup"
-          className="navigation__link navigation__link_reg"
-        >
+        <Link to="/signup" className="navigation__link navigation__link_reg">
           Регистрация
         </Link>
-        <Link
-          to="/signin"
-          className="navigation__link navigation__link_logIn"
-        >
+        <Link to="/signin" className="navigation__link navigation__link_logIn">
           Войти
         </Link>
       </div>
@@ -77,7 +70,9 @@ function Navigation(props) {
         type="button"
         onClick={handleButtonClick}
         className={`navigation__menu-button ${
-          loggedIn ? "navigation__menu-button_visible" : "navigation__menu-button_hidden"
+          loggedIn
+            ? "navigation__menu-button_visible"
+            : "navigation__menu-button_hidden"
         }`}
       ></button>
     </div>

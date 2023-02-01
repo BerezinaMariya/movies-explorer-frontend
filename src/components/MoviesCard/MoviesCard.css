@@ -85,6 +85,7 @@
     grid-area: movies-card__image;
     width: 364px;
     height: 203px;
+    object-fit: cover;
 }
 
 @media screen and (max-width: 1279px) {

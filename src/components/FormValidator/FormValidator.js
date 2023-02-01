@@ -11,11 +11,7 @@ export function FormValidator() {
     const id = target.name;
     const value = target.value;
     setValues({ ...values, [name]: value });
-    if (target.validationMessage) {
-      setErrors({ ...errors, [id]: "Что-то пошло не так..." });
-    } else {
-      setErrors({ ...errors, [id]: "" });
-    }
+    setErrors({ ...errors, [id]: target.validationMessage});
     setIsFormValid(target.closest("form").checkValidity());
   };
 

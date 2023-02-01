@@ -1,6 +1,6 @@
-class Api {
+class MainApi {
   constructor() {
-    // this.baseUrl = "api.movies-explorer.berez.nomoredomains.club";
+  //   this.baseUrl = "api.movies-explorer.berez.nomoredomains.club";
      this.baseUrl = "http://localhost:3001";
   }
 
@@ -9,9 +9,8 @@ class Api {
     if (res.ok) {
       return res.json();
     }
-
     // если ошибка, отклоняем промис
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return Promise.reject(res);
   }
 
   //Регистрация
@@ -27,40 +26,40 @@ class Api {
   }
 
   //Авторизация
-  authorize(email, password) {
+  logIn(email, password) {
     return fetch(`${this.baseUrl}/signin`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-    //   credentials: "include",
+      credentials: "include",
       body: JSON.stringify({ email, password }),
     }).then(this._checkResponse);
   }
 
-  //   //Проверка токена, получение email
-  //   getEmail() {
-  //     return fetch(`${this.baseUrl}/users/me`, {
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //       credentials: "include",
-  //     }).then(this._checkResponse);
-  //   }
+    //Проверка токена, получение email
+    getUserInfo() {
+      return fetch(`${this.baseUrl}/users/me`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }).then(this._checkResponse);
+    }
 
-  //   //Выход с сайта
-  //   exit() {
-  //     return fetch(`${this.baseUrl}/users/signout`, {
-  //       method: "POST",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //       credentials: "include",
-  //     }).then(this._checkResponse);
-  //   }
+    //Выход с сайта
+    logOut() {
+      return fetch(`${this.baseUrl}/users/signout`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }).then(this._checkResponse);
+    }
 
   // //Получение массива исходных карточек
   // getInitialCards() {
@@ -72,7 +71,7 @@ class Api {
   //   }).then(this._checkResponse);
   // }
 
-  // //Получение данных пользователя
+  //Получение данных пользователя
   // getUserInfo() {
   //   return fetch(`${this.baseUrl}/users/me`, {
   //     headers: {
@@ -159,4 +158,4 @@ class Api {
   // }
 }
 
-export const api = new Api();
+export const mainApi = new MainApi();

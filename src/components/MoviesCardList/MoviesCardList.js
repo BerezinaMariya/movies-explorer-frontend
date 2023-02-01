@@ -1,36 +1,45 @@
-import { useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-import { MoviesCardsContext } from "../../contexts/MoviesCardsContext";
-import { SavedMoviesCardsContext } from "../../contexts/SavedMoviesCardsContext";
 import MoviesCard from "../MoviesCard/MoviesCard";
+import MoviesCardsFilter from "../MoviesCardsFilter/MoviesCardsFilter";
 
-function MoviesCardList() {
-  const history = useHistory();
-  const pathName = history.location.pathname;
+function MoviesCardList(props) {
+  const { filterCheckboxState, isSearchFilmButtonClick } = props;
+  const pathName = window.location.pathname;
 
-  const moviesCardList = useContext(MoviesCardsContext);
-  const savedMoviesCardList = useContext(SavedMoviesCardsContext);
+  const [initialMoviesCardListStringify, setInitialMoviesCardListStringify] =
+    useState(localStorage.getItem("initialMoviesCardList"));
 
+  function setMoviesCardList() {
+    const initialMoviesCardList = JSON.parse(initialMoviesCardListStringify);
+    const movieNameValue = localStorage.getItem("movieNameValue");
+    let finalCardList = [];
 
-  function handleSetCardList() {
-    let cardList = "";
     if (pathName === "/movies") {
-      cardList = moviesCardList;
+      finalCardList = MoviesCardsFilter(
+        initialMoviesCardList,
+        movieNameValue,
+        filterCheckboxState
+      );
     } else if (pathName === "/saved-movies") {
-      cardList = savedMoviesCardList;
+      // filteredCardList = savedMoviesCardList;
     }
-    return cardList;
+    console.log(initialMoviesCardList);
+    console.log(finalCardList);
+    return finalCardList;
   }
+
+  useEffect(() => {
+    setInitialMoviesCardListStringify(localStorage.getItem("initialMoviesCardList"));
+    setMoviesCardList();
+  }, [isSearchFilmButtonClick]);
 
   return (
     <section className="movies-card-list">
-      {handleSetCardList().map((card) => (
-        <MoviesCard
-          key={card._id}
-          card={card}
-        />
-      ))}
+      {setMoviesCardList().length > 0 &&
+        setMoviesCardList().map((card) => (
+          <MoviesCard key={card.id} card={card} />
+        ))}
     </section>
   );
 }

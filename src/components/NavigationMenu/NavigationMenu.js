@@ -1,11 +1,11 @@
 import { useRef, useState, useEffect } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function NavigationMenu(props) {
   const { loggedIn, isOpen, onClose, onCloseByOverlay, onCloseByEsc } = props;
 
-  const history = useHistory();
-  const pathName = history.location.pathname;
+  const pathName = window.location.pathname;
+
   const popupRef = useRef();
 
   const [width, setWidth] = useState(window.innerWidth);

@@ -130,7 +130,7 @@
     }
 }
 
-.navigation__menu-button_visible {
+.navigation__menu-button {
     width: 44px;
     height: 44px;
     background-image: url(../../../src/images/navigation-menu-button.svg);
@@ -142,6 +142,10 @@
     object-fit: cover;
     padding: 0;
     cursor: pointer;
+}
+
+.navigation__menu-button_visible {
+    display: none;
     opacity: 1;
 }
 
@@ -153,10 +157,6 @@
 .navigation__menu-button_visible:focus {
     opacity: 1;
     outline: none;
-}
-
-.navigation__menu-button_visible {
-    display: none;
 }
 
 .navigation__menu-button_hidden {

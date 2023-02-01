@@ -1,11 +1,38 @@
+import { useState, useEffect } from "react";
 import FilterCheckbox from "../../vendor/FilterCheckbox/FilterCheckbox";
 import searchFormIcon from "../../images/search-form-icon.svg";
 
-function SearchForm() {
+function SearchForm(props) {
+  const {
+    getMoviesCards,
+    filterCheckboxState,
+    setFilterCheckboxState,
+  } = props;
+
+  const [movieNameValue, setMovieNameValue] = useState("");
+
+  function handleMovieNameChange(evt) {
+    const value = evt.target.value;
+    setMovieNameValue(value);
+  }
+
   function handleSubmit(evt) {
     evt.preventDefault();
-    alert("Ещё работаю над этим");
+    if (movieNameValue) {
+      localStorage.setItem('movieNameValue', movieNameValue);
+      localStorage.setItem('filterCheckboxState', filterCheckboxState);
+      getMoviesCards();
+    }
+    console.log(movieNameValue);
+    console.log(filterCheckboxState);
   }
+
+  useEffect(() => {
+    if (localStorage.getItem('movieNameValue')) {
+      setMovieNameValue(localStorage.getItem('movieNameValue'));
+    }
+    setFilterCheckboxState(JSON.parse(localStorage.getItem('filterCheckboxState')));
+  }, []);
 
   return (
     <div className="search-form">
@@ -19,26 +46,28 @@ function SearchForm() {
           <form
             name="search-form-form"
             className="search-form-form"
-            // ref={formRef}
             onSubmit={handleSubmit}
             noValidate
           >
             <input
               type="text"
               name="movieName"
+              value={movieNameValue}
+              onChange={handleMovieNameChange}
               className="search-form-form__input"
               placeholder="Фильм"
             />
             <button
               type="submit"
               className="search-form-form__submit-button"
-            >
-              {/* {preLoading()}  */}
-            </button>
+            ></button>
           </form>
 
           <div className="search-form__short-films-filter">
-            <FilterCheckbox />
+            <FilterCheckbox
+              filterCheckboxState={filterCheckboxState}
+              setFilterCheckboxState={setFilterCheckboxState}
+            />
             <p className="search-form__text">Короткометражки</p>
           </div>
         </div>
