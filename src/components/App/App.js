@@ -112,6 +112,10 @@ function logOut(setLoggedIn, history, setCurrentUser) {
       history.push("/signin");
       setCurrentUser({});
       localStorage.setItem("loggedIn", false);
+      localStorage.setItem('initialMoviesCardList', JSON.stringify([]));
+      localStorage.setItem('сardList', JSON.stringify([]));
+      localStorage.setItem('movieNameValue', "");
+      localStorage.setItem('filterCheckboxState', false);
     })
     .catch((err) => {
       alert(`${err} Что-то пошло не так! Выход с сайта не выполнен.`);
@@ -136,7 +140,6 @@ function getMoviesCards() {
     .getMoviesCards()
     .then((res) => {
       localStorage.setItem('initialMoviesCardList', JSON.stringify(res));
-      console.log(JSON.stringify(res));
     })
     .catch((err) => {
       alert(`${err} Что-то пошло не так! Карточки не загружены`);
@@ -158,7 +161,7 @@ function App() {
   const [isNavigationMenuOpen, setNavigationMenuOpen] = useState(false);
   const [successStatusMessage, setSuccessStatusMessage] = useState("");
   const [RegOrLogSucsessStatus, setRegOrLogSucsessStatus] = useState(false);
-  const [isSearchFilmButtonClick, setSearchFilmButtonClick] = useState(false);
+  const [SearchFilmButtonClick, setSearchFilmButtonClick] = useState(false);
 
   function closeAllPopups() {
     setInfoTooltipOpen(false);
@@ -196,7 +199,7 @@ function App() {
 
   function handleGetMoviesCards() {
     getMoviesCards();
-    setSearchFilmButtonClick(!isSearchFilmButtonClick);
+    setSearchFilmButtonClick(!SearchFilmButtonClick);
   }
 
   function handleLogout() {
@@ -258,7 +261,7 @@ function App() {
             <Route path="/movies">
               <Movies
                 getMoviesCards={handleGetMoviesCards}
-                isSearchFilmButtonClick={isSearchFilmButtonClick}
+                SearchFilmButtonClick={SearchFilmButtonClick}
               />
             </Route>
             <Route path="/saved-movies">
@@ -276,9 +279,9 @@ function App() {
             <Route path="/404">
               <Page404NotFound />
             </Route>
-            {/* <Route path="/">
-                {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
-              </Route> */}
+            <Route path="/">
+                {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/signin" />}
+            </Route>
           </Switch>
         </RegistrationInfoContext.Provider>
       </CurrentUserContext.Provider>

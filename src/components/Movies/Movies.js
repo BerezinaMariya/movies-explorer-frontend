@@ -5,9 +5,13 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import MoreFilms from "../MoreFilms/MoreFilms";
 
 function Movies(props) {
-  const { getMoviesCards, isSearchFilmButtonClick } = props;
+  const { getMoviesCards, SearchFilmButtonClick } = props;
 
-  const [filterCheckboxState, setFilterCheckboxState] = useState(false);
+  const [filterCheckboxState, setFilterCheckboxState] = useState(JSON.parse(localStorage.getItem('filterCheckboxState')));
+  const [cardListLength, setCardListLength] = useState();
+  const [filteredMoviesCardList, setFilteredMoviesCardList] = useState([]);
+  const [moreFilmsButtonClick, setMoreFilmsButtonClick] = useState(false);
+
   
   return (
     <section>
@@ -18,9 +22,19 @@ function Movies(props) {
       />
       <MoviesCardList
         filterCheckboxState={filterCheckboxState}
-        isSearchFilmButtonClick={isSearchFilmButtonClick}
+        SearchFilmButtonClick={SearchFilmButtonClick}
+        cardListLength={cardListLength}
+        setCardListLength={setCardListLength}
+        moreFilmsButtonClick={moreFilmsButtonClick}
+        filteredMoviesCardList={filteredMoviesCardList}
+        setFilteredMoviesCardList={setFilteredMoviesCardList}
       />
-      <MoreFilms />
+      <MoreFilms 
+      cardListLength={cardListLength}
+      moreFilmsButtonClick={moreFilmsButtonClick}
+      setMoreFilmsButtonClick={setMoreFilmsButtonClick}
+      filteredMoviesCardList={filteredMoviesCardList}
+      />
     </section>
   );
 }
