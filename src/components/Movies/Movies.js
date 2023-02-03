@@ -7,11 +7,11 @@ import MoreFilms from "../MoreFilms/MoreFilms";
 function Movies(props) {
   const { getMoviesCards, SearchFilmButtonClick } = props;
 
-  const [filterCheckboxState, setFilterCheckboxState] = useState(JSON.parse(localStorage.getItem('filterCheckboxState')));
+  const filterCheckboxStateStringify = localStorage.getItem('filterCheckboxState'); 
+  const [filterCheckboxState, setFilterCheckboxState] = useState(JSON.parse(filterCheckboxStateStringify));
   const [cardListLength, setCardListLength] = useState();
   const [filteredMoviesCardList, setFilteredMoviesCardList] = useState([]);
   const [moreFilmsButtonClick, setMoreFilmsButtonClick] = useState(false);
-
   
   return (
     <section>

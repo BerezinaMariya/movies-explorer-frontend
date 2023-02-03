@@ -22,7 +22,19 @@ function MoviesCardsFilter() {
     return filteredCards;
   }
 
-  function setMoviesCardListLength(
+  function setInitialCardListLengths(
+    width,
+    setCardListLength) {
+    if (width > 1279) {
+      setCardListLength(12);
+    } else if (width > 767 & width < 1280) {
+      setCardListLength(8);
+    } else if (width < 768) {
+      setCardListLength(5);
+    }
+  }
+
+  function addMoreMoviesCards(
     width,
     filteredMoviesCardList,
     cardListLength,
@@ -33,25 +45,22 @@ function MoviesCardsFilter() {
       i = 12; 
       if (filteredMoviesCardList.length > i) {
         setCardListLength(cardListLength + 3);
-        console.log(cardListLength);
       }
     } else if ((width > 480) & (width < 1280)) {
       i = 8;
       if (filteredMoviesCardList.length > i) {
         setCardListLength(cardListLength + 2);
-        console.log(cardListLength);
       }
     } else if (width < 481) {
       i = 5;
       if (filteredMoviesCardList.length > i) {
         setCardListLength(cardListLength + 2);
-        console.log(cardListLength);
       }
     }
     return;
   }
 
-  return { filterCards, setMoviesCardListLength };
+  return { filterCards, setInitialCardListLengths, addMoreMoviesCards };
 }
 
 export default MoviesCardsFilter;

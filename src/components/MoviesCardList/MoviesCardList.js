@@ -16,48 +16,27 @@ function MoviesCardList(props) {
 
   const pathName = window.location.pathname;
 
+  const { filterCards, setInitialCardListLengths, addMoreMoviesCards } =
+    MoviesCardsFilter();
+
   const [width, setWidth] = useState(window.innerWidth);
   const [initialMoviesCardListStringify, setInitialMoviesCardListStringify] =
     useState(localStorage.getItem("initialMoviesCardList"));
   const initialMoviesCardList = JSON.parse(initialMoviesCardListStringify);
-  const [cardListStringify, setCardListStringify] = useState([]);
-  const [cardList, setCardList] = useState(
-    JSON.parse(initialMoviesCardListStringify)
-  );
-
-  const { setMoviesCardListLength } = MoviesCardsFilter();
-
-  console.log(cardListStringify);
-
-  // localStorage.setItem("сardList", JSON.stringify(initialMoviesCardList))
-
-  function setInitialCardListLengths() {
-    if (width > 1279) {
-      setCardListLength(12);
-    } else if (width > 767 & width < 1280) {
-      setCardListLength(8);
-    } else if (width < 768) {
-      setCardListLength(5);
-    }
-  }
+  const [cardList, setCardList] = useState(initialMoviesCardList);
 
   function handleMoviesCardList() {
-    const movieNameValue = localStorage.getItem("movieNameValue");
-
-    const { filterCards } = MoviesCardsFilter();
-
-    setFilteredMoviesCardList(
-      filterCards(initialMoviesCardList, movieNameValue, filterCheckboxState)
-    );
-
     if (pathName === "/movies") {
+      const movieNameValue = localStorage.getItem("movieNameValue");
+      setFilteredMoviesCardList(
+        filterCards(initialMoviesCardList, movieNameValue, filterCheckboxState)
+      );
       setCardList(
         filterCards(initialMoviesCardList, movieNameValue, filterCheckboxState)
       );
     } else if (pathName === "/saved-movies") {
-      // finalCardList = savedMoviesCardList;
+      // setCardList(savedMoviesCardList);
     }
-    console.log(cardList);
   }
 
   useEffect(() => {
@@ -71,57 +50,36 @@ function MoviesCardList(props) {
   }, []);
 
   useEffect(() => {
-    setInitialCardListLengths();
-    console.log(localStorage.getItem("cardList"));
-    // setCardListStringify(localStorage.getItem("cardList"));
-    // if (JSON.parse(cardListStringify).length > 0) {
-    //   setCardList(JSON.parse(cardListStringify));
-    // }
+    setInitialCardListLengths(width, setCardListLength);
   }, []);
 
   useEffect(() => {
-    setInitialCardListLengths();
-    console.log(localStorage.getItem("cardList"));
-    // setCardListStringify(localStorage.getItem("cardList"));
-    // if (JSON.parse(cardListStringify).length > 0) {
-    //   setCardList(JSON.parse(cardListStringify));
-    // }
+    setInitialCardListLengths(width, setCardListLength);
   }, [width]);
 
-
-
   useEffect(() => {
-    console.log(cardList);
-
     setInitialMoviesCardListStringify(
       localStorage.getItem("initialMoviesCardList")
     );
     handleMoviesCardList();
-
     localStorage.setItem("сardList", JSON.stringify(cardList));
-
-    console.log(cardListLength);
   }, [SearchFilmButtonClick, filterCheckboxState]);
 
   useEffect(() => {
-    setMoviesCardListLength(
+    addMoreMoviesCards(
       width,
       filteredMoviesCardList,
       cardListLength,
       setCardListLength
     );
-    console.log(filteredMoviesCardList);
-    console.log("click");
   }, [moreFilmsButtonClick]);
 
   return (
     <section className="movies-card-list">
       {cardList.length > 0 &&
         cardList.map((card, i) => {
-          return i < cardListLength &&
-            <MoviesCard key={card.id} card={card} />
-          })
-        }
+          return i < cardListLength && <MoviesCard key={card.id} card={card} />;
+        })}
     </section>
   );
 }

@@ -31,8 +31,13 @@ function SearchForm(props) {
     if (localStorage.getItem('movieNameValue')) {
       setMovieNameValue(localStorage.getItem('movieNameValue'));
     }
-    setFilterCheckboxState(JSON.parse(localStorage.getItem('filterCheckboxState')));
+    const filterCheckboxStateStringify = localStorage.getItem('filterCheckboxState');
+    setFilterCheckboxState(JSON.parse(filterCheckboxStateStringify));
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('filterCheckboxState', filterCheckboxState);
+  }, [filterCheckboxState]);
 
   return (
     <div className="search-form">
