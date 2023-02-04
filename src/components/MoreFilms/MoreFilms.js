@@ -5,6 +5,7 @@ function MoreFilms(props) {
     setMoreFilmsButtonClick,
     filteredMoviesCardList,
     isPreloader,
+    isReceivedMoviesCards
   } = props;
 
   function handleClick() {
@@ -19,7 +20,7 @@ function MoreFilms(props) {
         className={`more-films__button ${
           cardListLength < 3 ||
           cardListLength >= filteredMoviesCardList.length ||
-          isPreloader
+          isPreloader || isReceivedMoviesCards
             ? "more-films__button_hidden"
             : ""
         }

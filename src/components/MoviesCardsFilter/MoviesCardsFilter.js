@@ -22,6 +22,20 @@ function MoviesCardsFilter() {
     return filteredCards;
   }
 
+    function filteredMoviesCards(filteredCardList, savedMoviesCardList) {
+   
+    const cardListWithSavedCards = filteredCardList.filter((movieCard) => {
+      savedMoviesCardList.some((savedMovieCard) => {
+        return movieCard.id === savedMovieCard.movieId
+          ? movieCard.saved = true
+          : movieCard.saved = false;
+      });
+      return movieCard;
+    });
+
+    return cardListWithSavedCards;
+  }
+
   function setCardListInitialLengths(width, setCardListLength) {
     if (width > 1279) {
       setCardListLength(12);
@@ -58,7 +72,7 @@ function MoviesCardsFilter() {
     return;
   }
 
-  return { filterCards, setCardListInitialLengths, addMoreMoviesCards };
+  return { filterCards, filteredMoviesCards, setCardListInitialLengths, addMoreMoviesCards };
 }
 
 export default MoviesCardsFilter;

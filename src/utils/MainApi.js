@@ -14,6 +14,7 @@ class MainApi {
     return Promise.reject(res);
   }
 
+
   //Регистрация
   register(name, email, password) {
     return fetch(`${this.baseUrl}/signup`, {
@@ -113,7 +114,7 @@ class MainApi {
 
     //Удаление карточки из сохраненных карточек и с сервера 
   deleteCard(card) {
-    console.log(card._id);
+    console.log(card);
     return fetch(`${this.baseUrl}/movies/${card._id}`, {
       method: "DELETE",
       headers: {

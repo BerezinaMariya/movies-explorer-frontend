@@ -10,14 +10,14 @@ function Movies(props) {
     SearchFilmButtonClick,
     onSaveMovieCard,
     onDeleteMovieCard,
-    isMovieCardSaved,
     filterCheckboxState,
     setFilterCheckboxState,
     cardListLength,
     setCardListLength,
     filteredMoviesCardList,
     setFilteredMoviesCardList,
-    isPreloader
+    isPreloader,
+    isReceivedMoviesCards,
   } = props;
 
   const [moreFilmsButtonClick, setMoreFilmsButtonClick] = useState(false);
@@ -40,8 +40,8 @@ function Movies(props) {
         setFilteredMoviesCardList={setFilteredMoviesCardList}
         onSaveMovieCard={onSaveMovieCard}
         onDeleteMovieCard={onDeleteMovieCard}
-        isMovieCardSaved={isMovieCardSaved}
         isPreloader={isPreloader}
+        isReceivedMoviesCards={isReceivedMoviesCards}
       />
       <MoreFilms
         cardListLength={cardListLength}
@@ -49,6 +49,7 @@ function Movies(props) {
         setMoreFilmsButtonClick={setMoreFilmsButtonClick}
         filteredMoviesCardList={filteredMoviesCardList}
         isPreloader={isPreloader}
+        isReceivedMoviesCards={isReceivedMoviesCards}
       />
     </section>
   );

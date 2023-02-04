@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Route,
-  Switch,
-  Redirect,
-  useHistory,
-  useLocation,
-} from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -41,13 +35,13 @@ function App() {
   document.documentElement.lang = "ru";
 
   const history = useHistory();
-  const location = useLocation();
-  const pathName = location.pathname;
 
   const [registrationInfo, setRegistrationInfo] = useState({});
   const [currentUser, setCurrentUser] = useState({});
-  const [savedMovieCardList, setSavedMovieCardList] = useState([]);
   const [movieCardList, setMovieCardList] = useState([]);
+  const [isReceivedMoviesCards, setReceivedMoviesCards] = useState(false);
+  const [savedMovieCardList, setSavedMovieCardList] = useState([]);
+
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("loggedIn"));
   const [isPreloader, setPreloader] = useState(false);
   const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
@@ -55,7 +49,6 @@ function App() {
   const [successStatusMessage, setSuccessStatusMessage] = useState("");
   const [RegOrLogSucsessStatus, setRegOrLogSucsessStatus] = useState(false);
   const [SearchFilmButtonClick, setSearchFilmButtonClick] = useState(false);
-  const [isMovieCardSaved, setMovieCardSaved] = useState(false);
   const [filterCheckboxState, setFilterCheckboxState] = useState(false);
   const [cardListLength, setCardListLength] = useState(0);
   const [filteredMoviesCardList, setFilteredMoviesCardList] = useState([]);
@@ -106,39 +99,45 @@ function App() {
       setCurrentUser,
       setMovieCardList,
       setSavedMovieCardList,
-      setFilterCheckboxState
+      setFilterCheckboxState,
+      setSuccessStatusMessage,
+      setRegOrLogSucsessStatus,
+      setInfoTooltipOpen
     );
   }
 
   function handleGetMoviesCards() {
-    getMoviesCards(setPreloader, setMovieCardList);
+    getMoviesCards(setPreloader, setMovieCardList, setReceivedMoviesCards);
+    getSavedMoviesCards(setSavedMovieCardList, setPreloader);
     setSearchFilmButtonClick(!SearchFilmButtonClick);
   }
 
   function handleGetSavedMoviesCards() {
-    getSavedMoviesCards(
+    getSavedMoviesCards(setSavedMovieCardList, setPreloader);
+  }
+
+  function handleSaveMovieCard(movieCard, evt) {
+    saveMovieCard(
+      movieCard,
+      evt,
+      setMovieCardList,
       setSavedMovieCardList,
-      setPreloader
+      setSuccessStatusMessage,
+      setRegOrLogSucsessStatus,
+      setInfoTooltipOpen
     );
   }
 
-  function handleSaveMovieCard(movieCard) {
-    saveMovieCard(movieCard, setMovieCardSaved, setPreloader);
-  }
-
-  async function handleDeleteMovieCard(movieCard) {
-    let card;
-    await getSavedMoviesCards(
+  function handleDeleteMovieCard(movieCard, evt) {
+    deleteCard(
+      movieCard,
+      evt,
+      savedMovieCardList,
       setSavedMovieCardList,
-      setPreloader
+      setSuccessStatusMessage,
+      setRegOrLogSucsessStatus,
+      setInfoTooltipOpen
     );
-    if (pathName === "/movies") {
-      card = savedMovieCardList.filter((c) => c.movieId === movieCard.id);
-    } else {
-      card = movieCard;
-    }
-
-    //  deleteCard(card, setMovieCardSaved, setPreloader);
   }
 
   function handleMenuButtonClick() {
@@ -213,7 +212,6 @@ function App() {
                   SearchFilmButtonClick={SearchFilmButtonClick}
                   onSaveMovieCard={handleSaveMovieCard}
                   onDeleteMovieCard={handleDeleteMovieCard}
-                  isMovieCardSaved={isMovieCardSaved}
                   filterCheckboxState={filterCheckboxState}
                   setFilterCheckboxState={setFilterCheckboxState}
                   cardListLength={cardListLength}
@@ -221,6 +219,7 @@ function App() {
                   filteredMoviesCardList={filteredMoviesCardList}
                   setFilteredMoviesCardList={setFilteredMoviesCardList}
                   isPreloader={isPreloader}
+                  isReceivedMoviesCards={isReceivedMoviesCards}
                   component={Movies}
                 />
                 <ProtectedRoute
@@ -251,13 +250,13 @@ function App() {
                 <Route path="/404">
                   <Page404NotFound />
                 </Route>
-                {/* <Route path="/movies">
-                {loggedIn ? (
-                  <Redirect to="/movies" />
-                ) : (
-                  <Redirect to="/signin" />
-                )}
-              </Route> */}
+                <Route path="/">
+                  {loggedIn ? (
+                    <Redirect to="/movies" />
+                  ) : (
+                    <Redirect to="/signin" />
+                  )}
+                </Route>
               </Switch>
               <InfoTooltip
                 isOpen={isInfoTooltipOpen}

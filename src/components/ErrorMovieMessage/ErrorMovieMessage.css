@@ -1,0 +1,15 @@
+.error-movie-message {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-movie-message__text {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.22;
+    text-align: center;
+    margin: 0;
+}

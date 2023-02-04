@@ -1,8 +1,25 @@
 import { mainApi } from "../../utils/MainApi";
 import { moviesApi } from "../../utils/MoviesApi";
-import ResponseConsts from "../../utils/ResponseConsts";
 
-const { GET_MOVIES_CARD_LIST_ERROR } = ResponseConsts();
+function setErrorMessage(
+  errorMessage,
+  err,
+  setSuccessStatusMessage,
+  setRegOrLogSucsessStatus,
+  setInfoTooltipOpen
+) {
+  if (err.body) {
+    err
+      .json()
+      .then((body) =>
+        setSuccessStatusMessage(body.message ? body.message : errorMessage)
+      );
+  } else {
+    setSuccessStatusMessage(errorMessage);
+  }
+  setRegOrLogSucsessStatus(false);
+  setInfoTooltipOpen(true);
+}
 
 function register(
   registrationInfo,
@@ -28,23 +45,13 @@ function register(
     })
     .then(() => history.push("/signin"))
     .catch((err) => {
-      if (err.body) {
-        err
-          .json()
-          .then((body) =>
-            setSuccessStatusMessage(
-              body.message
-                ? body.message
-                : "Регистрация не выполнена! Попробуйте ещё раз."
-            )
-          );
-      } else {
-        setSuccessStatusMessage(
-          "Регистрация не выполнена! Попробуйте ещё раз."
-        );
-      }
-      setRegOrLogSucsessStatus(false);
-      setInfoTooltipOpen(true);
+      setErrorMessage(
+        "Регистрация не выполнена! Попробуйте ещё раз.",
+        err,
+        setSuccessStatusMessage,
+        setRegOrLogSucsessStatus,
+        setInfoTooltipOpen
+      );
     });
 }
 
@@ -67,23 +74,13 @@ function logIn(
       localStorage.setItem("currentUser", res);
     })
     .catch((err) => {
-      if (err.body) {
-        err
-          .json()
-          .then((body) =>
-            setSuccessStatusMessage(
-              body.message
-                ? body.message
-                : "Вход на сайт не выполнен! Попробуйте ещё раз."
-            )
-          );
-      } else {
-        setSuccessStatusMessage(
-          "Вход на сайт не выполнен! Попробуйте ещё раз."
-        );
-      }
-      setRegOrLogSucsessStatus(false);
-      setInfoTooltipOpen(true);
+      setErrorMessage(
+        "Вход на сайт не выполнен! Попробуйте ещё раз.",
+        err,
+        setSuccessStatusMessage,
+        setRegOrLogSucsessStatus,
+        setInfoTooltipOpen
+      );
     });
 }
 
@@ -101,23 +98,13 @@ function getUserInfo(
       setCurrentUser(res);
     })
     .catch((err) => {
-      if (err.body) {
-        err
-          .json()
-          .then((body) =>
-            setSuccessStatusMessage(
-              body.message
-                ? body.message
-                : "Данные пользователя не загружены! Попробуйте ещё раз."
-            )
-          );
-      } else {
-        setSuccessStatusMessage(
-          "Данные пользователя не загружены! Попробуйте ещё раз."
-        );
-      }
-      setRegOrLogSucsessStatus(false);
-      setInfoTooltipOpen(true);
+      setErrorMessage(
+        "Данные пользователя не загружены! Попробуйте ещё раз.",
+        err,
+        setSuccessStatusMessage,
+        setRegOrLogSucsessStatus,
+        setInfoTooltipOpen
+      );
     });
 }
 
@@ -137,23 +124,13 @@ function setUserInfo(
       setCurrentUser(res);
     })
     .catch((err) => {
-      if (err.body) {
-        err
-          .json()
-          .then((body) =>
-            setSuccessStatusMessage(
-              body.message
-                ? body.message
-                : "Данные пользователя не обновились! Попробуйте ещё раз."
-            )
-          );
-      } else {
-        setSuccessStatusMessage(
-          "Данные пользователя не обновились! Попробуйте ещё раз."
-        );
-      }
-      setRegOrLogSucsessStatus(false);
-      setInfoTooltipOpen(true);
+      setErrorMessage(
+        "Данные пользователя не обновились! Попробуйте ещё раз.",
+        err,
+        setSuccessStatusMessage,
+        setRegOrLogSucsessStatus,
+        setInfoTooltipOpen
+      );
     })
     .finally(() => {
       setPreloader(false);
@@ -166,7 +143,10 @@ function logOut(
   setCurrentUser,
   setMovieCardList,
   setSavedMovieCardList,
-  setFilterCheckboxState
+  setFilterCheckboxState,
+  setSuccessStatusMessage,
+  setRegOrLogSucsessStatus,
+  setInfoTooltipOpen
 ) {
   mainApi
     .logOut()
@@ -184,14 +164,20 @@ function logOut(
       localStorage.setItem("filterCheckboxState", false);
     })
     .catch((err) => {
-      alert(`${err} Что-то пошло не так! Выход с сайта не выполнен.`);
+      setErrorMessage(
+        "Выход с сайта не выполнен!",
+        err,
+        setSuccessStatusMessage,
+        setRegOrLogSucsessStatus,
+        setInfoTooltipOpen
+      );
     });
 }
 
 function getMoviesCards(
   setPreloader,
   setMovieCardList,
-  GET_MOVIES_CARD_LIST_ERROR
+  setReceivedMoviesCards
 ) {
   setPreloader(true);
 
@@ -200,64 +186,95 @@ function getMoviesCards(
     .then((res) => {
       localStorage.setItem("initialMoviesCardList", JSON.stringify(res));
       setMovieCardList(res);
+      setReceivedMoviesCards(false);
     })
     .catch((err) => {
-      alert(`${err} ${GET_MOVIES_CARD_LIST_ERROR}`);
+      setReceivedMoviesCards(true);
     })
     .finally(() => {
       setPreloader(false);
     });
 }
 
-function getSavedMoviesCards(
-  setSavedMovieCardList,
-  setPreloader,
-  GET_MOVIES_CARD_LIST_ERROR
-) {
-  setPreloader(true);
-
+function getSavedMoviesCards(setSavedMovieCardList) {
   mainApi
     .getSavedMoviesCards()
     .then((res) => {
       setSavedMovieCardList(res);
     })
     .catch((err) => {
-      alert(`${err} ${GET_MOVIES_CARD_LIST_ERROR}`);
-    })
-    .finally(() => {
-      setPreloader(false);
+      alert(`${err}`);
     });
 }
 
-function saveMovieCard(movieCard, setMovieCardSaved, setPreloader) {
-  // setPreloader(true);
-
+function saveMovieCard(
+  movieCard,
+  evt,
+  setMovieCardList,
+  setSavedMovieCardList,
+  setSuccessStatusMessage,
+  setRegOrLogSucsessStatus,
+  setInfoTooltipOpen
+) {
   mainApi
     .saveMovieCard(movieCard)
+    .then((newCard) => {
+      console.log(newCard);
+      setMovieCardList((state) =>
+        state.map((c) => (c.movieId === movieCard.id ? newCard : c))
+      );
+      evt.target.classList.add("movies-card__button_save-button");
+      evt.target.classList.remove("movies-card__button_save-button_inactive");
+    })
     .then(() => {
-      setMovieCardSaved(true);
+      getSavedMoviesCards(setSavedMovieCardList);
     })
     .catch((err) => {
-      alert(`${err} Что-то пошло не так! Карточка не сохранена.`);
-    })
-    .finally(() => {
-      // setPreloader(false);
+      setErrorMessage(
+        "Фильм не сохранился!",
+        err,
+        setSuccessStatusMessage,
+        setRegOrLogSucsessStatus,
+        setInfoTooltipOpen
+      );
     });
 }
 
-function deleteCard(movieCard, setMovieCardSaved, setPreloader) {
-  // setPreloader(true);
-
+function deleteCard(
+  movieCard,
+  evt,
+  savedMovieCardList,
+  setSavedMovieCardList,
+  setSuccessStatusMessage,
+  setRegOrLogSucsessStatus,
+  setInfoTooltipOpen
+) {
+  let deletedCard = {};
+  if (movieCard._id) {
+    deletedCard = movieCard;
+  } else {
+    deletedCard = savedMovieCardList.find((savedMovieCard) => {
+      return movieCard.id === savedMovieCard.movieId;
+    });
+  }
+  console.log(deletedCard);
   mainApi
-    .deleteCard(movieCard)
+    .deleteCard(deletedCard)
     .then(() => {
-      setMovieCardSaved(false);
+      evt.target.classList.remove("movies-card__button_save-button");
+      evt.target.classList.add("movies-card__button_save-button_inactive");
+    })
+    .then(() => {
+      getSavedMoviesCards(setSavedMovieCardList);
     })
     .catch((err) => {
-      alert(`${err} Карточка не удалилась`);
-    })
-    .finally(() => {
-      // setPreloader(false);
+      setErrorMessage(
+        "Фильм не удалён!",
+        err,
+        setSuccessStatusMessage,
+        setRegOrLogSucsessStatus,
+        setInfoTooltipOpen
+      );
     });
 }
 
