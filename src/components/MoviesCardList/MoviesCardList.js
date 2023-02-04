@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
-
+import { useState, useEffect, useContext } from "react";
+import { useLocation } from "react-router-dom";
+import { SavedMoviesCardsContext } from "../../contexts/SavedMoviesCardsContext";
+import { MoviesCardsContext } from "../../contexts/MoviesCardsContext";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import MoviesCardsFilter from "../MoviesCardsFilter/MoviesCardsFilter";
+import Preloader from "../Preloader/Preloader";
 
 function MoviesCardList(props) {
   const {
@@ -12,31 +15,46 @@ function MoviesCardList(props) {
     moreFilmsButtonClick,
     filteredMoviesCardList,
     setFilteredMoviesCardList,
+    onSaveMovieCard,
+    onDeleteMovieCard,
+    isMovieCardSaved,
+    isPreloader
   } = props;
 
-  const pathName = window.location.pathname;
+  const MoviesCardList = useContext(MoviesCardsContext);
+  const savedMoviesCardList = useContext(SavedMoviesCardsContext);
 
-  const { filterCards, setInitialCardListLengths, addMoreMoviesCards } =
+  const location = useLocation();
+  const pathName = location.pathname;
+
+  const { filterCards, setCardListInitialLengths, addMoreMoviesCards } =
     MoviesCardsFilter();
-
-  const [width, setWidth] = useState(window.innerWidth);
   const [initialMoviesCardListStringify, setInitialMoviesCardListStringify] =
     useState(localStorage.getItem("initialMoviesCardList"));
   const initialMoviesCardList = JSON.parse(initialMoviesCardListStringify);
-  const [cardList, setCardList] = useState(initialMoviesCardList);
+  const [width, setWidth] = useState(window.innerWidth);
+  const [cardList, setCardList] = useState(MoviesCardList);
 
-  function handleMoviesCardList() {
+  function handleSetCardList() {
+    let initialCardList = [];
+    const movieNameValue = localStorage.getItem("movieNameValue");
+
     if (pathName === "/movies") {
-      const movieNameValue = localStorage.getItem("movieNameValue");
-      setFilteredMoviesCardList(
-        filterCards(initialMoviesCardList, movieNameValue, filterCheckboxState)
-      );
-      setCardList(
-        filterCards(initialMoviesCardList, movieNameValue, filterCheckboxState)
-      );
+      initialMoviesCardList.length > 0
+      ? initialCardList = initialMoviesCardList
+      : initialCardList = MoviesCardList;
     } else if (pathName === "/saved-movies") {
-      // setCardList(savedMoviesCardList);
+      initialCardList = savedMoviesCardList;
     }
+
+    const filteredCardList = filterCards(
+      initialCardList,
+      movieNameValue,
+      filterCheckboxState
+    );
+
+    setFilteredMoviesCardList(filteredCardList);
+    setCardList(filteredCardList);
   }
 
   useEffect(() => {
@@ -50,38 +68,67 @@ function MoviesCardList(props) {
   }, []);
 
   useEffect(() => {
-    setInitialCardListLengths(width, setCardListLength);
-  }, []);
+    if (pathName === "/movies") {
+      setInitialMoviesCardListStringify(
+        localStorage.getItem("initialMoviesCardList")
+      );
+      setCardListInitialLengths(width, setCardListLength);
+    }
+    if (isPreloader === false) {
+    handleSetCardList();
+    }
+  }, [
+    isPreloader,
+    SearchFilmButtonClick,
+    filterCheckboxState,
+  ]);
 
   useEffect(() => {
-    setInitialCardListLengths(width, setCardListLength);
+    if (pathName === "/movies") {
+      setCardListInitialLengths(width, setCardListLength);
+    }
   }, [width]);
 
   useEffect(() => {
-    setInitialMoviesCardListStringify(
-      localStorage.getItem("initialMoviesCardList")
-    );
-    handleMoviesCardList();
-    localStorage.setItem("сardList", JSON.stringify(cardList));
-  }, [SearchFilmButtonClick, filterCheckboxState]);
-
-  useEffect(() => {
-    addMoreMoviesCards(
-      width,
-      filteredMoviesCardList,
-      cardListLength,
-      setCardListLength
-    );
+    if (pathName === "/movies") {
+      addMoreMoviesCards(
+        width,
+        filteredMoviesCardList,
+        cardListLength,
+        setCardListLength
+      );
+    }
   }, [moreFilmsButtonClick]);
 
   return (
-    <section className="movies-card-list">
-      {cardList.length > 0 &&
-        cardList.map((card, i) => {
-          return i < cardListLength && <MoviesCard key={card.id} card={card} />;
-        })}
+    <section className={`movies-card-list ${
+      isPreloader
+        ? "movies-card-list_flex"
+        : ""
+    }`}>
+      {isPreloader 
+      ? <Preloader/>
+      : cardList.length > 0 &&
+      cardList.map((card, i) => {
+        return (
+          ((pathName === "/movies") & (i < cardListLength) ||
+            pathName === "/saved-movies") &&(
+            <MoviesCard
+              key={pathName === "/movies" ? card.id : card._id}
+              card={card}
+              onSaveMovieCard={onSaveMovieCard}
+              onDeleteMovieCard={onDeleteMovieCard}
+              isMovieCardSaved={isMovieCardSaved}
+            />
+          ) 
+        );
+      })
+      }
     </section>
   );
 }
 
 export default MoviesCardList;
+
+
+

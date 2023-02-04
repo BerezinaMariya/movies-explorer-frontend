@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import FilterCheckbox from "../../vendor/FilterCheckbox/FilterCheckbox";
 import searchFormIcon from "../../images/search-form-icon.svg";
 
 function SearchForm(props) {
-  const {
-    getMoviesCards,
-    filterCheckboxState,
-    setFilterCheckboxState,
-  } = props;
+  const { getMoviesCards, filterCheckboxState, setFilterCheckboxState } = props;
+
+  const location = useLocation();
+  const pathName = location.pathname;
 
   const [movieNameValue, setMovieNameValue] = useState("");
 
@@ -19,24 +19,28 @@ function SearchForm(props) {
   function handleSubmit(evt) {
     evt.preventDefault();
     if (movieNameValue) {
-      localStorage.setItem('movieNameValue', movieNameValue);
-      localStorage.setItem('filterCheckboxState', filterCheckboxState);
-      getMoviesCards();
+      localStorage.setItem("movieNameValue", movieNameValue);
+      localStorage.setItem("filterCheckboxState", filterCheckboxState);
+      if (pathName === "/movies") {
+        getMoviesCards();
+      }
     }
-    console.log(movieNameValue);
-    console.log(filterCheckboxState);
   }
 
   useEffect(() => {
-    if (localStorage.getItem('movieNameValue')) {
-      setMovieNameValue(localStorage.getItem('movieNameValue'));
+    const filterCheckboxStateStringify = localStorage.getItem(
+      "filterCheckboxState"
+    );
+    if (localStorage.getItem("movieNameValue")) {
+      setMovieNameValue(localStorage.getItem("movieNameValue"));
     }
-    const filterCheckboxStateStringify = localStorage.getItem('filterCheckboxState');
-    setFilterCheckboxState(JSON.parse(filterCheckboxStateStringify));
+    if (filterCheckboxStateStringify === "true") {
+      setFilterCheckboxState(JSON.parse(filterCheckboxStateStringify));
+    }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('filterCheckboxState', filterCheckboxState);
+    localStorage.setItem("filterCheckboxState", filterCheckboxState);
   }, [filterCheckboxState]);
 
   return (

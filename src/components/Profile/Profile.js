@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { FormValidator } from "../FormValidator/FormValidator";
 
 function Profile(props) {
-  const { onLogout } = props;
+  const { onLogout, updateUserInfo } = props;
 
   const currentUser = useContext(CurrentUserContext);
   const { values, handleChange, errors, isFormValid, resetForm } =
@@ -12,16 +12,10 @@ function Profile(props) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    if (isFormValid) {
-      onLogout();
-      currentUser.name = values.userName;
-      currentUser.email = values.userEmail;
-      resetForm();
-    } else {
-      alert("Что-то пошло не так");
-    }
+    updateUserInfo({ name: values.userName, email: values.userEmail });
+    resetForm();
   }
-
+  
   return (
     <section className="profile">
       <h3 className="profile__title">{`Привет, ${currentUser.name}!`}</h3>
@@ -59,6 +53,7 @@ function Profile(props) {
           }`}
           type="email"
           name="userEmail"
+          required
           placeholder="E-mail"
           value={`${values.userEmail ? values.userEmail : ""}`}
           onChange={handleChange}
@@ -73,13 +68,17 @@ function Profile(props) {
         </span>
         <button
           type="submit"
-          className="profile__text profile-form__submit-button"
+          disabled={isFormValid ? false : true}
+          className={`profile__text profile-form__submit-button ${
+            isFormValid ? "" : "profile-form__submit-button_inactive"
+          }`}
         >
           Редактировать
         </button>
       </form>
       <Link
-        to="./signin"
+        onClick={onLogout}
+        to="/"
         className="profile__text profile__signOut-link"
       >
         Выйти из аккаунта

@@ -1,5 +1,8 @@
+import { useLocation } from "react-router-dom";
+
 function Footer() {
-  const pathName = window.location.pathname;
+  const location = useLocation();
+  const pathName = location.pathname;
 
   return (
     <footer

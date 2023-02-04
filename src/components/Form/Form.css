@@ -102,3 +102,14 @@
         margin-top: 285px;
     }
 }
+
+.form__submit-button_inactive {
+    background: #E8E8E8;
+    color: #000000;
+    cursor: default;
+    opacity: 0.4;
+}
+
+.form__submit-button_inactive:hover {
+    opacity: 0.4;
+}

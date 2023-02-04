@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { Route, Switch, Redirect, useHistory } from "react-router-dom";
+import {
+  Route,
+  Switch,
+  Redirect,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -11,157 +17,48 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Page404NotFound from "../Page404NotFound/Page404NotFound";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+
+import {
+  register,
+  logIn,
+  getUserInfo,
+  setUserInfo,
+  logOut,
+  getMoviesCards,
+  getSavedMoviesCards,
+  saveMovieCard,
+  deleteCard,
+} from "./AppReqFunctions";
 
 import { RegistrationInfoContext } from "../../contexts/RegistrationInfoContext";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import { mainApi } from "../../utils/MainApi";
-import { moviesApi } from "../../utils/MoviesApi";
-
-function register(
-  registrationInfo,
-  setRegistrationInfo,
-  setSuccessStatusMessage,
-  setRegOrLogSucsessStatus,
-  setInfoTooltipOpen,
-  history
-) {
-  mainApi
-    .register(
-      registrationInfo.name,
-      registrationInfo.email,
-      registrationInfo.password
-    )
-    .then((res) => {
-      if (res) {
-        setSuccessStatusMessage("Вы успешно зарегистрировались!");
-        setRegOrLogSucsessStatus(true);
-        setInfoTooltipOpen(true);
-        setRegistrationInfo({});
-      }
-    })
-    .then(() => history.push("/signin"))
-    .catch((err) => {
-      if (err.body) {
-        err
-          .json()
-          .then((body) =>
-            setSuccessStatusMessage(
-              body.message
-                ? body.message
-                : "Что-то пошло не так! Попробуйте ещё раз."
-            )
-          );
-      } else {
-        setSuccessStatusMessage(
-          err || "Что-то пошло не так! Попробуйте ещё раз."
-        );
-        setRegOrLogSucsessStatus(false);
-        setInfoTooltipOpen(true);
-      }
-    });
-}
-
-function logIn(
-  registrationInfo,
-  setCurrentUser,
-  setSuccessStatusMessage,
-  setLoggedIn,
-  setRegOrLogSucsessStatus,
-  setInfoTooltipOpen,
-  history
-) {
-  if (!registrationInfo.email || !registrationInfo.password) {
-    return;
-  }
-  mainApi
-    .logIn(registrationInfo.email, registrationInfo.password)
-    .then((res) => {
-      console.log(res);
-      setLoggedIn(true);
-      history.push("/movies");
-      setCurrentUser(res);
-      localStorage.setItem("loggedIn", true);
-      localStorage.setItem("currentUser", res);
-    })
-    .catch((err) => {
-      if (err.body) {
-        err
-          .json()
-          .then((body) =>
-            setSuccessStatusMessage(
-              body.message
-                ? body.message
-                : "Что-то пошло не так! Попробуйте ещё раз."
-            )
-          );
-      } else {
-        setSuccessStatusMessage(
-          err || "Что-то пошло не так! Попробуйте ещё раз."
-        );
-        setRegOrLogSucsessStatus(false);
-        setInfoTooltipOpen(true);
-      }
-    });
-}
-
-function logOut(setLoggedIn, history, setCurrentUser) {
-  mainApi
-    .logOut()
-    .then(() => {
-      setLoggedIn(false);
-      history.push("/signin");
-      setCurrentUser({});
-      localStorage.setItem("loggedIn", false);
-      localStorage.setItem('initialMoviesCardList', JSON.stringify([]));
-      localStorage.setItem('сardList', JSON.stringify([]));
-      localStorage.setItem('movieNameValue', "");
-      localStorage.setItem('filterCheckboxState', false);
-    })
-    .catch((err) => {
-      alert(`${err} Что-то пошло не так! Выход с сайта не выполнен.`);
-    });
-}
-
-function getUserInfo(setLoggedIn, setCurrentUser, history) {
-  mainApi
-    .getUserInfo()
-    .then((res) => {
-      setLoggedIn(true);
-      setCurrentUser(res);
-      history.push("/movies");
-    })
-    .catch((err) => {
-      alert(`${err} Что-то пошло не так! Данные пользователя не загружены.`);
-    });
-}
-
-function getMoviesCards() {
-  moviesApi
-    .getMoviesCards()
-    .then((res) => {
-      localStorage.setItem('initialMoviesCardList', JSON.stringify(res));
-    })
-    .catch((err) => {
-      alert(`${err} Что-то пошло не так! Карточки не загружены`);
-    });
-}
+import { SavedMoviesCardsContext } from "../../contexts/SavedMoviesCardsContext";
+import { MoviesCardsContext } from "../../contexts/MoviesCardsContext";
 
 function App() {
   document.title = "MoviesExplorer";
   document.documentElement.lang = "ru";
 
   const history = useHistory();
-
-  const [loggedIn, setLoggedIn] = useState(false);
+  const location = useLocation();
+  const pathName = location.pathname;
 
   const [registrationInfo, setRegistrationInfo] = useState({});
   const [currentUser, setCurrentUser] = useState({});
-
+  const [savedMovieCardList, setSavedMovieCardList] = useState([]);
+  const [movieCardList, setMovieCardList] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(localStorage.getItem("loggedIn"));
+  const [isPreloader, setPreloader] = useState(false);
   const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
   const [isNavigationMenuOpen, setNavigationMenuOpen] = useState(false);
   const [successStatusMessage, setSuccessStatusMessage] = useState("");
   const [RegOrLogSucsessStatus, setRegOrLogSucsessStatus] = useState(false);
   const [SearchFilmButtonClick, setSearchFilmButtonClick] = useState(false);
+  const [isMovieCardSaved, setMovieCardSaved] = useState(false);
+  const [filterCheckboxState, setFilterCheckboxState] = useState(false);
+  const [cardListLength, setCardListLength] = useState(0);
+  const [filteredMoviesCardList, setFilteredMoviesCardList] = useState([]);
 
   function closeAllPopups() {
     setInfoTooltipOpen(false);
@@ -183,27 +80,65 @@ function App() {
     logIn(
       registrationInfo,
       setCurrentUser,
-      setSuccessStatusMessage,
       setLoggedIn,
+      setSuccessStatusMessage,
       setRegOrLogSucsessStatus,
       setInfoTooltipOpen,
       history
     );
   }
 
-  function handleTokenCheck() {
-    if (localStorage.getItem("loggedIn") === "true") {
-      getUserInfo(setLoggedIn, setCurrentUser, history);
-    }
-  }
-
-  function handleGetMoviesCards() {
-    getMoviesCards();
-    setSearchFilmButtonClick(!SearchFilmButtonClick);
+  function handleUpdateUserInfo(user) {
+    setUserInfo(
+      user,
+      setPreloader,
+      setCurrentUser,
+      setSuccessStatusMessage,
+      setRegOrLogSucsessStatus,
+      setInfoTooltipOpen
+    );
   }
 
   function handleLogout() {
-    logOut();
+    logOut(
+      setLoggedIn,
+      history,
+      setCurrentUser,
+      setMovieCardList,
+      setSavedMovieCardList,
+      setFilterCheckboxState
+    );
+  }
+
+  function handleGetMoviesCards() {
+    getMoviesCards(setPreloader, setMovieCardList);
+    setSearchFilmButtonClick(!SearchFilmButtonClick);
+  }
+
+  function handleGetSavedMoviesCards() {
+    getSavedMoviesCards(
+      setSavedMovieCardList,
+      setPreloader
+    );
+  }
+
+  function handleSaveMovieCard(movieCard) {
+    saveMovieCard(movieCard, setMovieCardSaved, setPreloader);
+  }
+
+  async function handleDeleteMovieCard(movieCard) {
+    let card;
+    await getSavedMoviesCards(
+      setSavedMovieCardList,
+      setPreloader
+    );
+    if (pathName === "/movies") {
+      card = savedMovieCardList.filter((c) => c.movieId === movieCard.id);
+    } else {
+      card = movieCard;
+    }
+
+    //  deleteCard(card, setMovieCardSaved, setPreloader);
   }
 
   function handleMenuButtonClick() {
@@ -228,72 +163,115 @@ function App() {
   }
 
   useEffect(() => {
-    if (loggedIn & localStorage.getItem('currentUser')) {
-      setCurrentUser(localStorage.getItem('currentUser'));
+    if (loggedIn) {
+      getUserInfo(
+        setCurrentUser,
+        setLoggedIn,
+        setSuccessStatusMessage,
+        setRegOrLogSucsessStatus,
+        setInfoTooltipOpen
+      );
+      handleGetSavedMoviesCards();
     }
   }, [loggedIn]);
 
   useEffect(() => {
-    if (
-      window.location.pathname === "/" ||
-      window.location.pathname === "/signin" ||
-      window.location.pathname === "/signup"
-    )
-      handleTokenCheck();
+    if (localStorage.getItem("loggedIn") === "true") {
+      getUserInfo(
+        setCurrentUser,
+        setLoggedIn,
+        setSuccessStatusMessage,
+        setRegOrLogSucsessStatus,
+        setInfoTooltipOpen
+      );
+    }
   }, []);
 
   return (
     <>
-      <Header
-        loggedIn={loggedIn}
-        isOpen={isNavigationMenuOpen}
-        onMenuButtonClick={handleMenuButtonClick}
-        onClose={closeAllPopups}
-        onCloseByOverlay={setCloseByOverlayListener}
-        onCloseByEsc={handleCloseByEsc}
-      />
       <CurrentUserContext.Provider value={currentUser}>
-        <RegistrationInfoContext.Provider value={registrationInfo}>
-          <Switch>
-            <Route exact path="/">
-              <Main />
-            </Route>
-            <Route path="/movies">
-              <Movies
-                getMoviesCards={handleGetMoviesCards}
-                SearchFilmButtonClick={SearchFilmButtonClick}
+        <MoviesCardsContext.Provider value={movieCardList}>
+          <SavedMoviesCardsContext.Provider value={savedMovieCardList}>
+            <RegistrationInfoContext.Provider value={registrationInfo}>
+              <Header
+                loggedIn={loggedIn}
+                isOpen={isNavigationMenuOpen}
+                onMenuButtonClick={handleMenuButtonClick}
+                onClose={closeAllPopups}
+                onCloseByOverlay={setCloseByOverlayListener}
+                onCloseByEsc={handleCloseByEsc}
+                onLogOut={handleLogout}
               />
-            </Route>
-            <Route path="/saved-movies">
-              <SavedMovies />
-            </Route>
-            <Route path="/profile">
-              <Profile onLogout={handleLogout} />
-            </Route>
-            <Route path="/signup">
-              <Register onRegister={handleRegister} />
-            </Route>
-            <Route path="/signin">
-              <Login onLogin={handleLogin} />
-            </Route>
-            <Route path="/404">
-              <Page404NotFound />
-            </Route>
-            <Route path="/">
-                {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/signin" />}
-            </Route>
-          </Switch>
-        </RegistrationInfoContext.Provider>
+              <Switch>
+                <Route exact path="/">
+                  <Main />
+                </Route>
+                <ProtectedRoute
+                  path="/movies"
+                  loggedIn={loggedIn}
+                  getMoviesCards={handleGetMoviesCards}
+                  SearchFilmButtonClick={SearchFilmButtonClick}
+                  onSaveMovieCard={handleSaveMovieCard}
+                  onDeleteMovieCard={handleDeleteMovieCard}
+                  isMovieCardSaved={isMovieCardSaved}
+                  filterCheckboxState={filterCheckboxState}
+                  setFilterCheckboxState={setFilterCheckboxState}
+                  cardListLength={cardListLength}
+                  setCardListLength={setCardListLength}
+                  filteredMoviesCardList={filteredMoviesCardList}
+                  setFilteredMoviesCardList={setFilteredMoviesCardList}
+                  isPreloader={isPreloader}
+                  component={Movies}
+                />
+                <ProtectedRoute
+                  path="/saved-movies"
+                  loggedIn={loggedIn}
+                  filterCheckboxState={filterCheckboxState}
+                  setFilterCheckboxState={setFilterCheckboxState}
+                  cardListLength={cardListLength}
+                  setCardListLength={setCardListLength}
+                  filteredMoviesCardList={filteredMoviesCardList}
+                  setFilteredMoviesCardList={setFilteredMoviesCardList}
+                  isPreloader={isPreloader}
+                  component={SavedMovies}
+                />
+                <ProtectedRoute
+                  path="/profile"
+                  loggedIn={loggedIn}
+                  updateUserInfo={handleUpdateUserInfo}
+                  onLogout={handleLogout}
+                  component={Profile}
+                />
+                <Route path="/signup">
+                  <Register onRegister={handleRegister} />
+                </Route>
+                <Route path="/signin">
+                  <Login onLogin={handleLogin} />
+                </Route>
+                <Route path="/404">
+                  <Page404NotFound />
+                </Route>
+                {/* <Route path="/movies">
+                {loggedIn ? (
+                  <Redirect to="/movies" />
+                ) : (
+                  <Redirect to="/signin" />
+                )}
+              </Route> */}
+              </Switch>
+              <InfoTooltip
+                isOpen={isInfoTooltipOpen}
+                successStatusMessage={successStatusMessage}
+                isRegOrLogSucsess={RegOrLogSucsessStatus}
+                onClose={closeAllPopups}
+                onCloseByOverlay={setCloseByOverlayListener}
+                onCloseByEsc={handleCloseByEsc}
+              />
+              <Footer />
+            </RegistrationInfoContext.Provider>
+          </SavedMoviesCardsContext.Provider>
+        </MoviesCardsContext.Provider>
       </CurrentUserContext.Provider>
-      <InfoTooltip
-        isOpen={isInfoTooltipOpen}
-        successStatusMessage={successStatusMessage}
-        isRegOrLogSucsess={RegOrLogSucsessStatus}
-        onClose={closeAllPopups}
-        onCloseByOverlay={setCloseByOverlayListener}
-        onCloseByEsc={handleCloseByEsc}
-      />
-      <Footer />
     </>
   );
 }

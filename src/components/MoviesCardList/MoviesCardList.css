@@ -12,6 +12,10 @@
     overflow: hidden;
 }
 
+.movies-card-list_flex {
+  display: flex;  
+}
+
 @media screen and (max-width: 1279px) {
     .movies-card-list {
       grid-template-columns: repeat(2, 1fr);

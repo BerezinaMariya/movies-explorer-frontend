@@ -12,14 +12,10 @@ function RegisterAndLogin(props) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    if (isFormValid) {
       registrationInfo.name = values.name;
       registrationInfo.email = values.email;
       registrationInfo.password = values.password;
       onSubmit();
-    } else {
-      alert("Что-то пошло не так...");
-    }
   }
 
   useEffect(() => {
@@ -68,6 +64,7 @@ function RegisterAndLogin(props) {
           }`}
           type="email"
           name="email"
+          required
           value={`${values.email ? values.email : ""}`}
           onChange={handleChange}
         />
@@ -100,8 +97,12 @@ function RegisterAndLogin(props) {
         </span>
         <button
           type="submit"
+          disabled={isFormValid ? false : true}
           className={`form__submit-button ${
             title === "Рады видеть!" ? "form__submit-button_logIn" : ""
+          }
+          ${
+            isFormValid ? "" : "form__submit-button_inactive"
           }`}
         >
           {submitButtonText}

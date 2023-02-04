@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import NavigationMenu from "../NavigationMenu/NavigationMenu";
 import navigationLogo from "../../images/navigation-logo.svg";
 
@@ -10,12 +10,20 @@ function Navigation(props) {
     onClose,
     onCloseByOverlay,
     onCloseByEsc,
+    onLogOut,
   } = props;
 
-  const pathName = window.location.pathname;
+  const location = useLocation();
+  const pathName = location.pathname;
 
-  function handleButtonClick() {
+  function handleMenuButtonClick() {
     onMenuButtonClick();
+  }
+
+  function handleLogOut() {
+    if (loggedIn) {
+      onLogOut();
+    }
   }
 
   return (
@@ -33,7 +41,7 @@ function Navigation(props) {
             : "navigation__logo-link-block_logIn"
         }`}
       >
-        <Link to="/" className="navigation__logo-link">
+        <Link to="/" onClick={handleLogOut} className="navigation__logo-link">
           <img
             className="navigation__logo"
             src={navigationLogo}
@@ -48,15 +56,16 @@ function Navigation(props) {
         onClose={onClose}
         onCloseByOverlay={onCloseByOverlay}
         onCloseByEsc={onCloseByEsc}
+        onLogOut={onLogOut}
       />
 
       <div
         className={`navigation__tab ${
-          !loggedIn 
-          ? pathName === "/signup" || pathName === "/signin"
-            ? "navigation__tab_hidden"
-            : "navigation__tab_visible"
-          : "navigation__tab_hidden"
+          !loggedIn
+            ? pathName === "/signup" || pathName === "/signin"
+              ? "navigation__tab_hidden"
+              : "navigation__tab_visible"
+            : "navigation__tab_hidden"
         }`}
       >
         <Link to="/signup" className="navigation__link navigation__link_reg">
@@ -68,7 +77,7 @@ function Navigation(props) {
       </div>
       <button
         type="button"
-        onClick={handleButtonClick}
+        onClick={handleMenuButtonClick}
         className={`navigation__menu-button ${
           loggedIn
             ? "navigation__menu-button_visible"

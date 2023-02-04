@@ -1,14 +1,29 @@
 import { useRef, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function NavigationMenu(props) {
-  const { loggedIn, isOpen, onClose, onCloseByOverlay, onCloseByEsc } = props;
+  const {
+    loggedIn,
+    isOpen,
+    onClose,
+    onCloseByOverlay,
+    onCloseByEsc,
+    onLogOut,
+  } = props;
 
-  const pathName = window.location.pathname;
+  const location = useLocation();
+  const pathName = location.pathname;
 
   const popupRef = useRef();
 
   const [width, setWidth] = useState(window.innerWidth);
+
+  function handleLogOut() {
+    onClose();
+    if (loggedIn) {
+      onLogOut();
+    }
+  }
 
   useEffect(() => {
     if (isOpen) {
@@ -53,7 +68,9 @@ function NavigationMenu(props) {
       <div
         className={`navigation-menu__container ${
           width >= 1024
-            ? "navigation-menu__container_big-screens"
+            ? pathName === "/signup" || pathName === "/signin"
+              ? "navigation-menu__container_hidden"
+              : "navigation-menu__container_big-screens"
             : "navigation-menu__container_small-screens"
         }`}
       >
@@ -69,7 +86,7 @@ function NavigationMenu(props) {
         >
           <Link
             to="/"
-            onClick={onClose}
+            onClick={handleLogOut}
             className={`navigation-menu__link navigation-menu__link_main-link ${
               pathName === "/" ? "navigation-menu__link_active" : ""
             }`}
@@ -99,9 +116,7 @@ function NavigationMenu(props) {
           to="/profile"
           onClick={onClose}
           className={`navigation-menu__profile-link ${
-            loggedIn
-              ? ""
-              : "navigation-menu__profile-link_hidden"
+            loggedIn ? "" : "navigation-menu__profile-link_hidden"
           }`}
         >
           Аккаунт

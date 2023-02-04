@@ -11,6 +11,10 @@
     align-items: center;
 }
 
+.navigation-menu__container_hidden {
+    display: none;
+}
+
 .navigation-menu__container_big-screens {
     width: 100%;
     justify-content: space-between;

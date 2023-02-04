@@ -1,3 +1,4 @@
+import { useLocation } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
 
 function Header(props) {
@@ -8,9 +9,11 @@ function Header(props) {
     onClose,
     onCloseByOverlay,
     onCloseByEsc,
+    onLogOut,
   } = props;
 
-  const pathName = window.location.pathname;
+  const location = useLocation();
+  const pathName = location.pathname;
 
   return (
     <header
@@ -32,6 +35,7 @@ function Header(props) {
         onClose={onClose}
         onCloseByOverlay={onCloseByOverlay}
         onCloseByEsc={onCloseByEsc}
+        onLogOut={onLogOut}
       />
     </header>
   );

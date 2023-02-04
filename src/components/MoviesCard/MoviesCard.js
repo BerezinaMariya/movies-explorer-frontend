@@ -1,12 +1,15 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 function MoviesCard(props) {
-  const { card } = props;
+  const { card, onSaveMovieCard, isMovieCardSaved, onDeleteMovieCard } = props;
+
+  const location = useLocation();
+  const pathName = location.pathname;
+
   const [isMovieSaved, setMovieSaved] = useState(false);
 
-  const pathName = window.location.pathname;
-
-  const movieCardClassName = `movies-card__button ${
+  const movieCardButtonClassName = `movies-card__button ${
     pathName === "/movies"
       ? isMovieSaved
         ? "movies-card__button_save-button"
@@ -14,17 +17,26 @@ function MoviesCard(props) {
       : "movies-card__button_delete-button"
   }`;
 
-  const movieCardUrl = `${`https://api.nomoreparties.co${card.image.url}`}`;
+  const movieCardUrl = `${
+    // pathName === "/movies"
+    //   ? `https://api.nomoreparties.co${card.image.url}`
+      card.image
+  }`;
 
-  const movieCardDuration = `${Math.trunc(`${card.duration / 60}`)}ч ${`${card.duration}` % 60}м`;
+  const movieCardDuration = `${Math.trunc(card.duration / 60)}ч ${
+    card.duration % 60}м`;
 
-  function handleCardSaveClick() {
-    setMovieSaved(!isMovieSaved);
+  function handleSaveCard() {
+
+   
+    isMovieSaved
+      ? onDeleteMovieCard(card)
+      : onSaveMovieCard(card);
+
+    setMovieSaved(isMovieCardSaved);
   }
 
-  function handleCardDeleteClick() {
-    
-  }
+  function handleDeleteCard() {}
 
   return (
     <article className="movies-card">
@@ -32,15 +44,13 @@ function MoviesCard(props) {
       <p className="movies-card__duration">{movieCardDuration}</p>
       <button
         type="button"
-        className={movieCardClassName}
+        className={movieCardButtonClassName}
         aria-label={`${pathName === "/movies" ? "Сохранить" : "Удалить"}`}
-        onClick={
-          pathName === "/movies" ? handleCardSaveClick : handleCardDeleteClick
-        }
+        onClick={pathName === "/movies" ? handleSaveCard : handleDeleteCard}
       ></button>
       <img
         className="movies-card__image"
-        src={movieCardUrl}
+        src={`${pathName === "/movies" ? `https://api.nomoreparties.co${card.image.url}` : `${card.image}`}`}
         alt={`Постер к фильму ${card.nameRU}`}
       />
     </article>
