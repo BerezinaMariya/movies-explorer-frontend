@@ -4,7 +4,13 @@ import FilterCheckbox from "../../vendor/FilterCheckbox/FilterCheckbox";
 import searchFormIcon from "../../images/search-form-icon.svg";
 
 function SearchForm(props) {
-  const { getMoviesCards, filterCheckboxState, setFilterCheckboxState } = props;
+  const {
+    getMoviesCards,
+    filterCheckboxState,
+    setFilterCheckboxState,
+    isMovieSearchButtonClick,
+    setMovieSearchButtonClick,
+  } = props;
 
   const location = useLocation();
   const pathName = location.pathname;
@@ -23,19 +29,27 @@ function SearchForm(props) {
       localStorage.setItem("filterCheckboxState", filterCheckboxState);
       if (pathName === "/movies") {
         getMoviesCards();
+      } else {
+        setMovieSearchButtonClick(isMovieSearchButtonClick);
       }
+      
     }
   }
 
   useEffect(() => {
-    const filterCheckboxStateStringify = localStorage.getItem(
-      "filterCheckboxState"
-    );
-    if (localStorage.getItem("movieNameValue")) {
-      setMovieNameValue(localStorage.getItem("movieNameValue"));
-    }
-    if (filterCheckboxStateStringify === "true") {
-      setFilterCheckboxState(JSON.parse(filterCheckboxStateStringify));
+    if (pathName === "/movies") {
+      const filterCheckboxStateStringify = localStorage.getItem(
+        "filterCheckboxState"
+      );
+      if (localStorage.getItem("movieNameValue")) {
+        setMovieNameValue(localStorage.getItem("movieNameValue"));
+      }
+      if (filterCheckboxStateStringify === "true") {
+        setFilterCheckboxState(JSON.parse(filterCheckboxStateStringify));
+      }
+    } else {
+      setMovieNameValue("");
+      setFilterCheckboxState(false);
     }
   }, []);
 

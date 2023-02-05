@@ -10,7 +10,8 @@ import ErrorMovieMessage from "../ErrorMovieMessage/ErrorMovieMessage";
 function MoviesCardList(props) {
   const {
     filterCheckboxState,
-    SearchFilmButtonClick,
+    isSearchFilmButtonClick,
+    isMovieSearchButtonClick,
     cardListLength,
     setCardListLength,
     moreFilmsButtonClick,
@@ -18,8 +19,10 @@ function MoviesCardList(props) {
     setFilteredMoviesCardList,
     onSaveMovieCard,
     onDeleteMovieCard,
+    isCardDeleteButtonClick,
     isPreloader,
     isReceivedMoviesCards,
+    isReceivedSavedMoviesCards
   } = props;
 
   const moviesCardList = useContext(MoviesCardsContext);
@@ -42,6 +45,7 @@ function MoviesCardList(props) {
 
   function handleSetCardList() {
     let initialCardList = [];
+    let filteredFinalMoviesCardList = [];
     const movieNameValue = localStorage.getItem("movieNameValue");
 
     console.log(moviesCardList);
@@ -51,7 +55,7 @@ function MoviesCardList(props) {
       initialMoviesCardList.length > 0
         ? (initialCardList = initialMoviesCardList)
         : (initialCardList = moviesCardList);
-    } else if (pathName === "/saved-movies") {
+    } else {
       initialCardList = savedMoviesCardList;
     }
 
@@ -61,10 +65,12 @@ function MoviesCardList(props) {
       filterCheckboxState
     );
 
-    const filteredFinalMoviesCardList = filteredMoviesCards(
-      filteredCardList,
-      savedMoviesCardList
-    );
+    if (pathName === "/movies") {
+      filteredFinalMoviesCardList = filteredMoviesCards(
+        filteredCardList,
+        savedMoviesCardList
+      );
+    }
 
     if (pathName === "/movies") {
       setFilteredMoviesCardList(filteredFinalMoviesCardList);
@@ -88,6 +94,16 @@ function MoviesCardList(props) {
   }, []);
 
   useEffect(() => {
+    handleSetCardList();
+    console.log("new")
+  }, [])
+
+  useEffect(() => {
+    handleSetCardList();
+    console.log("click")
+  }, [isMovieSearchButtonClick, isReceivedSavedMoviesCards, filterCheckboxState]);
+
+  useEffect(() => {
     if (pathName === "/movies") {
       setInitialMoviesCardListStringify(
         localStorage.getItem("initialMoviesCardList")
@@ -97,7 +113,7 @@ function MoviesCardList(props) {
     if (isPreloader === false) {
       handleSetCardList();
     }
-  }, [isPreloader, SearchFilmButtonClick, filterCheckboxState]);
+  }, [isPreloader, isSearchFilmButtonClick, filterCheckboxState, isCardDeleteButtonClick]);
 
   useEffect(() => {
     if (pathName === "/movies") {
@@ -119,12 +135,12 @@ function MoviesCardList(props) {
   return (
     <section
       className={`movies-card-list ${
-        isPreloader || isReceivedMoviesCards ? "movies-card-list_flex" : ""
+        isPreloader || isReceivedMoviesCards || isReceivedSavedMoviesCards ? "movies-card-list_flex" : ""
       }`}
     >
       {isPreloader ? (
         <Preloader />
-      ) : isReceivedMoviesCards ? (
+      ) : isReceivedMoviesCards || isReceivedSavedMoviesCards ? (
         <ErrorMovieMessage />
       ) : (
         cardList.length > 0 &&

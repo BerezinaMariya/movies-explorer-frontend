@@ -177,18 +177,27 @@ function logOut(
 function getMoviesCards(
   setPreloader,
   setMovieCardList,
-  setReceivedMoviesCards
+  setSavedMovieCardList,
+  setReceivedMoviesCards,
+  setSearchFilmButtonClick,
+  isSearchFilmButtonClick
 ) {
   setPreloader(true);
 
   moviesApi
     .getMoviesCards()
     .then((res) => {
+      getSavedMoviesCards(
+        setSavedMovieCardList,
+        setSearchFilmButtonClick,
+        isSearchFilmButtonClick
+      );
       localStorage.setItem("initialMoviesCardList", JSON.stringify(res));
       setMovieCardList(res);
+      setSearchFilmButtonClick(!isSearchFilmButtonClick);
       setReceivedMoviesCards(false);
     })
-    .catch((err) => {
+    .catch(() => {
       setReceivedMoviesCards(true);
     })
     .finally(() => {
@@ -196,14 +205,19 @@ function getMoviesCards(
     });
 }
 
-function getSavedMoviesCards(setSavedMovieCardList) {
+function getSavedMoviesCards(
+  setSavedMovieCardList,
+  setReceivedSavedMoviesCards
+) {
   mainApi
     .getSavedMoviesCards()
     .then((res) => {
+      localStorage.setItem("initialSavedMoviesCardList", JSON.stringify(res));
       setSavedMovieCardList(res);
+      setReceivedSavedMoviesCards(false);
     })
     .catch((err) => {
-      alert(`${err}`);
+      setReceivedSavedMoviesCards(true);
     });
 }
 
@@ -223,8 +237,8 @@ function saveMovieCard(
       setMovieCardList((state) =>
         state.map((c) => (c.movieId === movieCard.id ? newCard : c))
       );
-      evt.target.classList.add("movies-card__button_save-button");
-      evt.target.classList.remove("movies-card__button_save-button_inactive");
+      evt.target.classList.toggle("movies-card__button_save-button");
+      evt.target.classList.toggle("movies-card__button_save-button_inactive");
     })
     .then(() => {
       getSavedMoviesCards(setSavedMovieCardList);
@@ -245,6 +259,8 @@ function deleteCard(
   evt,
   savedMovieCardList,
   setSavedMovieCardList,
+  isCardDeleteButtonClick,
+  setCardDeleteButtonClick,
   setSuccessStatusMessage,
   setRegOrLogSucsessStatus,
   setInfoTooltipOpen
@@ -261,8 +277,12 @@ function deleteCard(
   mainApi
     .deleteCard(deletedCard)
     .then(() => {
-      evt.target.classList.remove("movies-card__button_save-button");
-      evt.target.classList.add("movies-card__button_save-button_inactive");
+      evt.target.classList.toggle("movies-card__button_save-button");
+      evt.target.classList.toggle("movies-card__button_save-button_inactive");
+      setSavedMovieCardList((state) =>
+        state.filter((c) => c._id !== deletedCard._id)
+      );
+      setCardDeleteButtonClick(!isCardDeleteButtonClick);
     })
     .then(() => {
       getSavedMoviesCards(setSavedMovieCardList);

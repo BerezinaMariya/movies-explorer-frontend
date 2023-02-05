@@ -39,19 +39,20 @@ function App() {
   const [registrationInfo, setRegistrationInfo] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [movieCardList, setMovieCardList] = useState([]);
-  const [isReceivedMoviesCards, setReceivedMoviesCards] = useState(false);
   const [savedMovieCardList, setSavedMovieCardList] = useState([]);
-
+  const [isReceivedMoviesCards, setReceivedMoviesCards] = useState(false);
+  const [isReceivedSavedMoviesCards, setReceivedSavedMoviesCards] = useState(false);
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("loggedIn"));
   const [isPreloader, setPreloader] = useState(false);
   const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
   const [isNavigationMenuOpen, setNavigationMenuOpen] = useState(false);
   const [successStatusMessage, setSuccessStatusMessage] = useState("");
   const [RegOrLogSucsessStatus, setRegOrLogSucsessStatus] = useState(false);
-  const [SearchFilmButtonClick, setSearchFilmButtonClick] = useState(false);
+  const [isSearchFilmButtonClick, setSearchFilmButtonClick] = useState(false);
   const [filterCheckboxState, setFilterCheckboxState] = useState(false);
   const [cardListLength, setCardListLength] = useState(0);
   const [filteredMoviesCardList, setFilteredMoviesCardList] = useState([]);
+  const [isCardDeleteButtonClick, setCardDeleteButtonClick] = useState(false);
 
   function closeAllPopups() {
     setInfoTooltipOpen(false);
@@ -107,13 +108,21 @@ function App() {
   }
 
   function handleGetMoviesCards() {
-    getMoviesCards(setPreloader, setMovieCardList, setReceivedMoviesCards);
-    getSavedMoviesCards(setSavedMovieCardList, setPreloader);
-    setSearchFilmButtonClick(!SearchFilmButtonClick);
+    getMoviesCards(
+      setPreloader,
+      setMovieCardList,
+      setSavedMovieCardList,
+      setReceivedMoviesCards,
+      setSearchFilmButtonClick,
+      isSearchFilmButtonClick
+    );
   }
 
   function handleGetSavedMoviesCards() {
-    getSavedMoviesCards(setSavedMovieCardList, setPreloader);
+    getSavedMoviesCards(
+      setSavedMovieCardList,
+      setReceivedSavedMoviesCards
+    );
   }
 
   function handleSaveMovieCard(movieCard, evt) {
@@ -134,6 +143,8 @@ function App() {
       evt,
       savedMovieCardList,
       setSavedMovieCardList,
+      isCardDeleteButtonClick,
+      setCardDeleteButtonClick,
       setSuccessStatusMessage,
       setRegOrLogSucsessStatus,
       setInfoTooltipOpen
@@ -183,6 +194,7 @@ function App() {
         setRegOrLogSucsessStatus,
         setInfoTooltipOpen
       );
+      handleGetSavedMoviesCards();
     }
   }, []);
 
@@ -209,7 +221,7 @@ function App() {
                   path="/movies"
                   loggedIn={loggedIn}
                   getMoviesCards={handleGetMoviesCards}
-                  SearchFilmButtonClick={SearchFilmButtonClick}
+                  isSearchFilmButtonClick={isSearchFilmButtonClick}
                   onSaveMovieCard={handleSaveMovieCard}
                   onDeleteMovieCard={handleDeleteMovieCard}
                   filterCheckboxState={filterCheckboxState}
@@ -225,6 +237,10 @@ function App() {
                 <ProtectedRoute
                   path="/saved-movies"
                   loggedIn={loggedIn}
+                  getSavedMoviesCards={handleGetSavedMoviesCards}
+                  isReceivedSavedMoviesCards={isReceivedSavedMoviesCards}
+                  onDeleteMovieCard={handleDeleteMovieCard}
+                  isCardDeleteButtonClick={isCardDeleteButtonClick}
                   filterCheckboxState={filterCheckboxState}
                   setFilterCheckboxState={setFilterCheckboxState}
                   cardListLength={cardListLength}

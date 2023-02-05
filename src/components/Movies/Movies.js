@@ -7,7 +7,7 @@ import MoreFilms from "../MoreFilms/MoreFilms";
 function Movies(props) {
   const {
     getMoviesCards,
-    SearchFilmButtonClick,
+    isSearchFilmButtonClick,
     onSaveMovieCard,
     onDeleteMovieCard,
     filterCheckboxState,
@@ -30,7 +30,7 @@ function Movies(props) {
         setFilterCheckboxState={setFilterCheckboxState}
       />
       <MoviesCardList
-        SearchFilmButtonClick={SearchFilmButtonClick}
+        isSearchFilmButtonClick={isSearchFilmButtonClick}
         filterCheckboxState={filterCheckboxState}
         setFilterCheckboxState={setFilterCheckboxState}
         cardListLength={cardListLength}

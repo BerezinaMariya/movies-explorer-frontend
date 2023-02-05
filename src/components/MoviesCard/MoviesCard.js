@@ -14,11 +14,11 @@ function MoviesCard(props) {
       : "movies-card__button_delete-button"
   }`;
 
-  // const movieCardUrl = `${
-  //   // pathName === "/movies"
-  //   //   ? `https://api.nomoreparties.co${card.image.url}`
-  //     card.image
-  // }`;
+  const movieCardUrl = `${
+    pathName === "/movies"
+      ? `https://api.nomoreparties.co${card.image.url}`
+      : card.image
+  }`;
 
   const movieCardDuration = `${Math.trunc(card.duration / 60) >0 ? (Math.trunc(card.duration / 60))+`ч` : ""} 
   ${card.duration % 60 > 0 ? (card.duration % 60)+`м` : ""}`;
@@ -29,8 +29,8 @@ function MoviesCard(props) {
       : onSaveMovieCard(card, evt);
   }
 
-  function handleDeleteCard() {
-
+  function handleDeleteCard(evt) {
+    onDeleteMovieCard(card, evt);
   }
 
   return (
@@ -45,7 +45,7 @@ function MoviesCard(props) {
       ></button>
       <img
         className="movies-card__image"
-        src={`https://api.nomoreparties.co${card.image.url}`}
+        src={movieCardUrl}
         alt={`Постер к фильму ${card.nameRU}`}
       />
     </article>
