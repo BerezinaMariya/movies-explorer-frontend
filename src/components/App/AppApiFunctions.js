@@ -98,6 +98,7 @@ function getUserInfo(
       setCurrentUser(res);
     })
     .catch((err) => {
+      setLoggedIn(false);
       setErrorMessage(
         "Необходима авторизация!",
         err,
@@ -227,15 +228,14 @@ function saveMovieCard(
   evt,
   setMovieCardList,
   setSavedMovieCardList,
+  setReceivedSavedMoviesCards,
   setSuccessStatusMessage,
   setRegOrLogSucsessStatus,
   setInfoTooltipOpen
 ) {
-  console.log(movieCard);
   mainApi
     .saveMovieCard(movieCard)
     .then((newCard) => {
-      console.log(newCard);
       setMovieCardList((state) =>
         state.map((c) => (c.movieId === movieCard.id ? newCard : c))
       );
@@ -243,7 +243,8 @@ function saveMovieCard(
       evt.target.classList.toggle("movies-card__button_save-button_inactive");
     })
     .then(() => {
-      getSavedMoviesCards(setSavedMovieCardList);
+      getSavedMoviesCards(  setSavedMovieCardList,
+        setReceivedSavedMoviesCards);
     })
     .catch((err) => {
       setErrorMessage(
@@ -261,14 +262,13 @@ function deleteCard(
   evt,
   savedMovieCardList,
   setSavedMovieCardList,
+  setReceivedSavedMoviesCards,
   isCardDeleteButtonClick,
   setCardDeleteButtonClick,
   setSuccessStatusMessage,
   setRegOrLogSucsessStatus,
   setInfoTooltipOpen
 ) {
-  console.log(movieCard);
-  console.log(savedMovieCardList);
   let deletedCard = {};
   if (movieCard._id) {
     deletedCard = movieCard;
@@ -277,7 +277,6 @@ function deleteCard(
       return movieCard.id === savedMovieCard.movieId;
     });
   }
-  console.log(deletedCard);
   mainApi
     .deleteCard(deletedCard)
     .then(() => {
@@ -286,11 +285,11 @@ function deleteCard(
       setSavedMovieCardList((state) =>
         state.filter((c) => c._id !== deletedCard._id)
       );
-      console.log("deleted");
       setCardDeleteButtonClick(!isCardDeleteButtonClick);
     })
     .then(() => {
-      getSavedMoviesCards(setSavedMovieCardList);
+      getSavedMoviesCards(  setSavedMovieCardList,
+        setReceivedSavedMoviesCards);
     })
     .catch((err) => {
       setErrorMessage(

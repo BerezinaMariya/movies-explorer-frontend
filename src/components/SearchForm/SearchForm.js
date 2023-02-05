@@ -26,7 +26,6 @@ function SearchForm(props) {
     evt.preventDefault();
     if (pathName === "/movies") {
       if (movieNameValue) {
-        console.log(pathName);
         localStorage.setItem("movieNameValue", movieNameValue);
         localStorage.setItem("filterCheckboxState", filterCheckboxState);
         getMoviesCards();

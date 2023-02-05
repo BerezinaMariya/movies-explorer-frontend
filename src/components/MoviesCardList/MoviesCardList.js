@@ -41,13 +41,16 @@ function MoviesCardList(props) {
   const [initialMoviesCardList, setInitialMoviesCardList] = useState(moviesCardList);
   const [cardList, setCardList] = useState(moviesCardList);
 
-
-
   function handleSetMoviesCardList() {
     setInitialCardListLength(windowWidth, setCardListLength);
 
+    let initialCardList;
+    initialMoviesCardList.length > 0
+    ? initialCardList = initialMoviesCardList 
+    : initialCardList = moviesCardList;
+
     const filteredCardList = filterCards(
-      initialMoviesCardList,
+      initialCardList,
       movieNameValue,
       filterCheckboxState
     );
@@ -72,12 +75,11 @@ function MoviesCardList(props) {
     if (pathName === "/movies") {
       setFilteredMoviesCardList(handleSetMoviesCardList());
       setCardList(handleSetMoviesCardList());
-      console.log(handleSetMoviesCardList())
     } else {
       setFilteredMoviesCardList(handleSetSavedMoviesCardList());
       setCardList(handleSetSavedMoviesCardList());
-      console.log(handleSetSavedMoviesCardList());
     }
+    console.log(handleSetSavedMoviesCardList());
   }
 
   useEffect(() => {
@@ -100,7 +102,7 @@ function MoviesCardList(props) {
     isSavedMoviesSearchButtonClick,
     filterCheckboxState,
     isCardDeleteButtonClick,
-    isReceivedSavedMoviesCards,
+    pathName,
     windowWidth
   ]);
 

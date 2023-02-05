@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { FormValidator } from "../FormValidator/FormValidator";
 
 function Profile(props) {
-  const { onLogout, updateUserInfo } = props;
+  const { onLogout, getUserInfo, updateUserInfo } = props;
 
   const currentUser = useContext(CurrentUserContext);
   const { values, handleChange, errors, isFormValid, resetForm } =
@@ -15,6 +15,10 @@ function Profile(props) {
     updateUserInfo({ name: values.userName, email: values.userEmail });
     resetForm();
   }
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
   
   return (
     <section className="profile">

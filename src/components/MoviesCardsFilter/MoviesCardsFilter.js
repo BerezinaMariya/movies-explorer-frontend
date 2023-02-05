@@ -18,7 +18,6 @@ function MoviesCardsFilter() {
         );
       }
     });
-    console.log("yahooo");
     return filteredCards;
   }
 

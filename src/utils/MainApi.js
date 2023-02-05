@@ -114,7 +114,6 @@ class MainApi {
 
     //Удаление карточки из сохраненных карточек и с сервера 
   deleteCard(card) {
-    console.log(card);
     return fetch(`${this.baseUrl}/movies/${card._id}`, {
       method: "DELETE",
       headers: {

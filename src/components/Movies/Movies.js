@@ -17,6 +17,7 @@ function Movies(props) {
     setFilteredMoviesCardList,
     isPreloader,
     isReceivedMoviesCards,
+    isReceivedSavedMoviesCards,
     windowWidth
   } = props;
 
@@ -44,6 +45,7 @@ function Movies(props) {
         setMovieNameValue={setMovieNameValue}
         isPreloader={isPreloader}
         isReceivedMoviesCards={isReceivedMoviesCards}
+        isReceivedSavedMoviesCards={isReceivedSavedMoviesCards}
         windowWidth={windowWidth}
       />
       <MoreFilms

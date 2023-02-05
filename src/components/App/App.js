@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Route, Switch, Redirect, useHistory } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory, useLocation } from "react-router-dom";
 
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -35,6 +35,8 @@ function App() {
   document.documentElement.lang = "ru";
 
   const history = useHistory();
+  const location = useLocation();
+  const pathName = location.pathname;
 
   const [registrationInfo, setRegistrationInfo] = useState({});
   const [currentUser, setCurrentUser] = useState({});
@@ -94,6 +96,16 @@ function App() {
     );
   }
 
+  function handleGetUserInfo() {
+    getUserInfo(
+      setCurrentUser,
+      setLoggedIn,
+      setSuccessStatusMessage,
+      setRegOrLogSucsessStatus,
+      setInfoTooltipOpen
+    );
+  }
+
   function handleUpdateUserInfo(user) {
     setUserInfo(
       user,
@@ -141,6 +153,7 @@ function App() {
       evt,
       setMovieCardList,
       setSavedMovieCardList,
+      setReceivedSavedMoviesCards,
       setSuccessStatusMessage,
       setRegOrLogSucsessStatus,
       setInfoTooltipOpen
@@ -153,6 +166,7 @@ function App() {
       evt,
       savedMovieCardList,
       setSavedMovieCardList,
+      setReceivedSavedMoviesCards,
       isCardDeleteButtonClick,
       setCardDeleteButtonClick,
       setSuccessStatusMessage,
@@ -196,26 +210,15 @@ function App() {
 
   useEffect(() => {
     if (loggedIn) {
-      getUserInfo(
-        setCurrentUser,
-        setLoggedIn,
-        setSuccessStatusMessage,
-        setRegOrLogSucsessStatus,
-        setInfoTooltipOpen
-      );
+      getSavedMoviesCards();
     }
   }, [loggedIn]);
 
   useEffect(() => {
-    const initialLoggedIn = JSON.parse(localStorage.getItem("loggedIn"));
-    if (initialLoggedIn) {
-      getUserInfo(
-        setCurrentUser,
-        setLoggedIn,
-        setSuccessStatusMessage,
-        setRegOrLogSucsessStatus,
-        setInfoTooltipOpen
-      );
+    if (pathName === "/") {
+      if (loggedIn) {
+        history.push("/movies");
+      }
     }
   }, []);
 
@@ -253,6 +256,7 @@ function App() {
                   setFilteredMoviesCardList={setFilteredMoviesCardList}
                   isPreloader={isPreloader}
                   isReceivedMoviesCards={isReceivedMoviesCards}
+                  isReceivedSavedMoviesCards={isReceivedSavedMoviesCards}
                   windowWidth={windowWidth}
                   component={Movies}
                 />
@@ -276,6 +280,7 @@ function App() {
                 <ProtectedRoute
                   path="/profile"
                   loggedIn={loggedIn}
+                  getUserInfo={handleGetUserInfo}
                   updateUserInfo={handleUpdateUserInfo}
                   onLogout={handleLogout}
                   component={Profile}
@@ -290,6 +295,9 @@ function App() {
                   <Page404NotFound />
                 </Route>
                 <Route path="/">
+                  <Redirect to="/404" />
+                </Route>
+                <Route exact path="/">
                   {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/" />}
                 </Route>
               </Switch>
