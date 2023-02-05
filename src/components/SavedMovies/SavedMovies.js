@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import EmptyComponent from "../EmptyComponent/EmptyComponent";
@@ -6,7 +7,6 @@ import EmptyComponent from "../EmptyComponent/EmptyComponent";
 function SavedMovies(props) {
   const {
     getSavedMoviesCards,
-    isReceivedSavedMoviesCards,
     onDeleteMovieCard,
     isCardDeleteButtonClick,
     filterCheckboxState,
@@ -15,37 +15,43 @@ function SavedMovies(props) {
     setCardListLength,
     filteredMoviesCardList,
     setFilteredMoviesCardList,
-    isPreloader
+    isPreloader,
+    isReceivedSavedMoviesCards,
+    windowWidth
   } = props;
 
-  const [isMovieSearchButtonClick, setMovieSearchButtonClick] = useState(false);
-
+  const [isSavedMoviesSearchButtonClick, setSavedMoviesSearchButtonClick] = useState(false);
+  const [movieNameValue, setMovieNameValue] = useState("");
+ 
   useEffect(() => {
-    if (isReceivedSavedMoviesCards) {
-      getSavedMoviesCards();
-    }
-  }, [isReceivedSavedMoviesCards]);
+    getSavedMoviesCards();
+  }, []);
 
   return (
     <section>
       <SearchForm
         filterCheckboxState={filterCheckboxState}
         setFilterCheckboxState={setFilterCheckboxState}
-        isMovieSearchButtonClick={isMovieSearchButtonClick}
-        setMovieSearchButtonClick={setMovieSearchButtonClick}
+        isSavedMoviesSearchButtonClick={isSavedMoviesSearchButtonClick}
+        setSavedMoviesSearchButtonClick={setSavedMoviesSearchButtonClick}
+        movieNameValue={movieNameValue}
+        setMovieNameValue={setMovieNameValue}
       />
       <MoviesCardList
-        isReceivedSavedMoviesCards={isReceivedSavedMoviesCards}
         onDeleteMovieCard={onDeleteMovieCard}
-        isMovieSearchButtonClick={isMovieSearchButtonClick}
         isCardDeleteButtonClick={isCardDeleteButtonClick}
+        isSavedMoviesSearchButtonClick={isSavedMoviesSearchButtonClick}
         filterCheckboxState={filterCheckboxState}
         setFilterCheckboxState={setFilterCheckboxState}
         cardListLength={cardListLength}
         setCardListLength={setCardListLength}
         filteredMoviesCardList={filteredMoviesCardList}
         setFilteredMoviesCardList={setFilteredMoviesCardList}
+        movieNameValue={movieNameValue}
+        setMovieNameValue={setMovieNameValue}
         isPreloader={isPreloader}
+        isReceivedSavedMoviesCards={isReceivedSavedMoviesCards}
+        windowWidth={windowWidth}
       />
       <EmptyComponent />
     </section>

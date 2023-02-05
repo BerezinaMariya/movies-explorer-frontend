@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import MoreFilms from "../MoreFilms/MoreFilms";
@@ -7,9 +6,9 @@ import MoreFilms from "../MoreFilms/MoreFilms";
 function Movies(props) {
   const {
     getMoviesCards,
-    isSearchFilmButtonClick,
     onSaveMovieCard,
     onDeleteMovieCard,
+    isMovieSearchButtonClick,
     filterCheckboxState,
     setFilterCheckboxState,
     cardListLength,
@@ -18,9 +17,10 @@ function Movies(props) {
     setFilteredMoviesCardList,
     isPreloader,
     isReceivedMoviesCards,
+    windowWidth
   } = props;
 
-  const [moreFilmsButtonClick, setMoreFilmsButtonClick] = useState(false);
+  const [movieNameValue, setMovieNameValue] = useState("");
 
   return (
     <section>
@@ -28,28 +28,31 @@ function Movies(props) {
         getMoviesCards={getMoviesCards}
         filterCheckboxState={filterCheckboxState}
         setFilterCheckboxState={setFilterCheckboxState}
+        movieNameValue={movieNameValue}
+        setMovieNameValue={setMovieNameValue}
       />
       <MoviesCardList
-        isSearchFilmButtonClick={isSearchFilmButtonClick}
+        onSaveMovieCard={onSaveMovieCard}
+        onDeleteMovieCard={onDeleteMovieCard}
+        isMovieSearchButtonClick={isMovieSearchButtonClick}
         filterCheckboxState={filterCheckboxState}
         setFilterCheckboxState={setFilterCheckboxState}
         cardListLength={cardListLength}
         setCardListLength={setCardListLength}
-        moreFilmsButtonClick={moreFilmsButtonClick}
-        filteredMoviesCardList={filteredMoviesCardList}
         setFilteredMoviesCardList={setFilteredMoviesCardList}
-        onSaveMovieCard={onSaveMovieCard}
-        onDeleteMovieCard={onDeleteMovieCard}
+        movieNameValue={movieNameValue}
+        setMovieNameValue={setMovieNameValue}
         isPreloader={isPreloader}
         isReceivedMoviesCards={isReceivedMoviesCards}
+        windowWidth={windowWidth}
       />
       <MoreFilms
         cardListLength={cardListLength}
-        moreFilmsButtonClick={moreFilmsButtonClick}
-        setMoreFilmsButtonClick={setMoreFilmsButtonClick}
+        setCardListLength={setCardListLength}
         filteredMoviesCardList={filteredMoviesCardList}
         isPreloader={isPreloader}
         isReceivedMoviesCards={isReceivedMoviesCards}
+        windowWidth={windowWidth}
       />
     </section>
   );

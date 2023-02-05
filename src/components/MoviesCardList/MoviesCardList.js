@@ -9,20 +9,21 @@ import ErrorMovieMessage from "../ErrorMovieMessage/ErrorMovieMessage";
 
 function MoviesCardList(props) {
   const {
-    filterCheckboxState,
-    isSearchFilmButtonClick,
-    isMovieSearchButtonClick,
-    cardListLength,
-    setCardListLength,
-    moreFilmsButtonClick,
-    filteredMoviesCardList,
-    setFilteredMoviesCardList,
     onSaveMovieCard,
     onDeleteMovieCard,
     isCardDeleteButtonClick,
+    isMovieSearchButtonClick,
+    isSavedMoviesSearchButtonClick,
+    filterCheckboxState,
+    cardListLength,
+    setCardListLength,
+    setFilteredMoviesCardList,
+    movieNameValue,
+    setMovieNameValue,
     isPreloader,
     isReceivedMoviesCards,
-    isReceivedSavedMoviesCards
+    isReceivedSavedMoviesCards,
+    windowWidth
   } = props;
 
   const moviesCardList = useContext(MoviesCardsContext);
@@ -34,108 +35,81 @@ function MoviesCardList(props) {
   const {
     filterCards,
     filteredMoviesCards,
-    setCardListInitialLengths,
-    addMoreMoviesCards,
-  } = MoviesCardsFilter();
-  const [initialMoviesCardListStringify, setInitialMoviesCardListStringify] =
-    useState(localStorage.getItem("initialMoviesCardList"));
-  const initialMoviesCardList = JSON.parse(initialMoviesCardListStringify);
-  const [width, setWidth] = useState(window.innerWidth);
+    setInitialCardListLength
+   } = MoviesCardsFilter();
+
+  const [initialMoviesCardList, setInitialMoviesCardList] = useState(moviesCardList);
   const [cardList, setCardList] = useState(moviesCardList);
 
-  function handleSetCardList() {
-    let initialCardList = [];
-    let filteredFinalMoviesCardList = [];
-    const movieNameValue = localStorage.getItem("movieNameValue");
 
-    console.log(moviesCardList);
-    console.log(savedMoviesCardList);
 
-    if (pathName === "/movies") {
-      initialMoviesCardList.length > 0
-        ? (initialCardList = initialMoviesCardList)
-        : (initialCardList = moviesCardList);
-    } else {
-      initialCardList = savedMoviesCardList;
-    }
+  function handleSetMoviesCardList() {
+    setInitialCardListLength(windowWidth, setCardListLength);
 
     const filteredCardList = filterCards(
-      initialCardList,
+      initialMoviesCardList,
       movieNameValue,
       filterCheckboxState
     );
 
-    if (pathName === "/movies") {
-      filteredFinalMoviesCardList = filteredMoviesCards(
-        filteredCardList,
-        savedMoviesCardList
-      );
-    }
+    const finalFilteredCardList = filteredMoviesCards(
+      filteredCardList,
+      savedMoviesCardList
+    );
 
+    return finalFilteredCardList;
+  }
+
+  function handleSetSavedMoviesCardList() {
+    return filterCards(
+      savedMoviesCardList,
+      movieNameValue,
+      filterCheckboxState
+    );
+  }
+
+  function handleSetCardList() {
     if (pathName === "/movies") {
-      setFilteredMoviesCardList(filteredFinalMoviesCardList);
-      setCardList(filteredFinalMoviesCardList);
+      setFilteredMoviesCardList(handleSetMoviesCardList());
+      setCardList(handleSetMoviesCardList());
+      console.log(handleSetMoviesCardList())
     } else {
-      setFilteredMoviesCardList(filteredCardList);
-      setCardList(filteredCardList);
+      setFilteredMoviesCardList(handleSetSavedMoviesCardList());
+      setCardList(handleSetSavedMoviesCardList());
+      console.log(handleSetSavedMoviesCardList());
     }
   }
 
   useEffect(() => {
-    const handleResize = (evt) => {
-      setTimeout(() => {
-        setWidth(evt.target.innerWidth);
-      }, 500);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    handleSetCardList();
-    console.log("new")
-  }, [])
-
-  useEffect(() => {
-    handleSetCardList();
-    console.log("click")
-  }, [isMovieSearchButtonClick, isReceivedSavedMoviesCards, filterCheckboxState]);
-
-  useEffect(() => {
     if (pathName === "/movies") {
-      setInitialMoviesCardListStringify(
-        localStorage.getItem("initialMoviesCardList")
-      );
-      setCardListInitialLengths(width, setCardListLength);
-    }
-    if (isPreloader === false) {
+      const localStorageMoviesCardListStringify = localStorage.getItem("initialMoviesCardList");
+      const localStorageMoviesCardList = JSON.parse(localStorageMoviesCardListStringify);
+
+      setInitialMoviesCardList(localStorageMoviesCardList);
+      setMovieNameValue(localStorage.getItem("movieNameValue"));
+
+      if(!isPreloader) {
+        handleSetCardList();
+      }
+    } else {
       handleSetCardList();
     }
-  }, [isPreloader, isSearchFilmButtonClick, filterCheckboxState, isCardDeleteButtonClick]);
-
-  useEffect(() => {
-    if (pathName === "/movies") {
-      setCardListInitialLengths(width, setCardListLength);
-    }
-  }, [width]);
-
-  useEffect(() => {
-    if (pathName === "/movies") {
-      addMoreMoviesCards(
-        width,
-        filteredMoviesCardList,
-        cardListLength,
-        setCardListLength
-      );
-    }
-  }, [moreFilmsButtonClick]);
+  }, [
+    isPreloader,
+    isMovieSearchButtonClick,
+    isSavedMoviesSearchButtonClick,
+    filterCheckboxState,
+    isCardDeleteButtonClick,
+    isReceivedSavedMoviesCards,
+    windowWidth
+  ]);
 
   return (
     <section
       className={`movies-card-list ${
-        isPreloader || isReceivedMoviesCards || isReceivedSavedMoviesCards ? "movies-card-list_flex" : ""
+        isPreloader || isReceivedMoviesCards || isReceivedSavedMoviesCards
+          ? "movies-card-list_flex"
+          : ""
       }`}
     >
       {isPreloader ? (
@@ -146,15 +120,14 @@ function MoviesCardList(props) {
         cardList.length > 0 &&
         cardList.map((card, i) => {
           return (
-            ((pathName === "/movies") & (i < cardListLength) ||
-              pathName === "/saved-movies") && (
+            (((pathName === "/movies") & (i < cardListLength)) ||
+              (pathName === "/saved-movies")) && 
               <MoviesCard
                 key={pathName === "/movies" ? card.id : card._id}
                 card={card}
                 onSaveMovieCard={onSaveMovieCard}
                 onDeleteMovieCard={onDeleteMovieCard}
               />
-            )
           );
         })
       )}

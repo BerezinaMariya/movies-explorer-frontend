@@ -15,7 +15,7 @@ class MainApi {
   }
 
 
-  //Регистрация
+  // Регистрация
   register(name, email, password) {
     return fetch(`${this.baseUrl}/signup`, {
       method: "POST",
@@ -124,69 +124,6 @@ class MainApi {
     }).then(this._checkResponse);
   }
 
-
-
-
-  // //Отправка отредактированных данных пользователя
-  // setUserInfo(user) {
-  //   return fetch(`${this.baseUrl}/users/me`, {
-  //     method: "PATCH",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       name: user.name,
-  //       about: user.about,
-  //     }),
-  //     credentials: "include",
-  //   }).then(this._checkResponse);
-  // }
-
-  // //Отправка отредактированного аватара
-  // setAvatar(avatar) {
-  //   return fetch(`${this.baseUrl}/users/me/avatar`, {
-  //     method: "PATCH",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       avatar: avatar,
-  //     }),
-  //     credentials: "include",
-  //   }).then(this._checkResponse);
-  // }
-
-  // //Удаление карточки с сервера
-  // deleteCard(cardId) {
-  //   return fetch(`${this.baseUrl}/cards/${cardId}`, {
-  //     method: "DELETE",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     credentials: "include",
-  //   }).then(this._checkResponse);
-  // }
-
-  // //Установка и снятие лайка
-  // changeLikeCardStatus(cardId, notLiked) {
-  //   if (notLiked) {
-  //     return fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
-  //       method: "PUT",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       credentials: "include",
-  //     }).then(this._checkResponse);
-  //   } else {
-  //     return fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
-  //       method: "DELETE",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       credentials: "include",
-  //     }).then(this._checkResponse);
-  //   }
-  // }
 }
 
 export const mainApi = new MainApi();

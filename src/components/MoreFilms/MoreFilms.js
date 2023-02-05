@@ -1,15 +1,24 @@
+import MoviesCardsFilter from "../MoviesCardsFilter/MoviesCardsFilter";
+
 function MoreFilms(props) {
   const {
     cardListLength,
-    moreFilmsButtonClick,
-    setMoreFilmsButtonClick,
+    setCardListLength,
     filteredMoviesCardList,
     isPreloader,
-    isReceivedMoviesCards
+    isReceivedMoviesCards,
+    windowWidth
   } = props;
 
+  const { addMoreMoviesCards } = MoviesCardsFilter();
+
   function handleClick() {
-    setMoreFilmsButtonClick(!moreFilmsButtonClick);
+    addMoreMoviesCards(
+      windowWidth,
+      filteredMoviesCardList,
+      cardListLength,
+      setCardListLength
+    )
   }
 
   return (

@@ -23,7 +23,7 @@ import {
   getSavedMoviesCards,
   saveMovieCard,
   deleteCard,
-} from "./AppReqFunctions";
+} from "./AppApiFunctions";
 
 import { RegistrationInfoContext } from "../../contexts/RegistrationInfoContext";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
@@ -38,21 +38,33 @@ function App() {
 
   const [registrationInfo, setRegistrationInfo] = useState({});
   const [currentUser, setCurrentUser] = useState({});
-  const [movieCardList, setMovieCardList] = useState([]);
-  const [savedMovieCardList, setSavedMovieCardList] = useState([]);
+
+  const initialMoviesCardListStringify = localStorage.getItem(
+    "initialMoviesCardList"
+  );
+  const movieCardListArr = JSON.parse(initialMoviesCardListStringify);
+  const [movieCardList, setMovieCardList] = useState(movieCardListArr);
+  const initialSavedMoviesCardListStringify = localStorage.getItem(
+    "initialSavedMoviesCardList"
+  );
+  const savedMovieCardListArr = JSON.parse(initialSavedMoviesCardListStringify);
+  const [savedMovieCardList, setSavedMovieCardList] = useState(savedMovieCardListArr);
   const [isReceivedMoviesCards, setReceivedMoviesCards] = useState(false);
-  const [isReceivedSavedMoviesCards, setReceivedSavedMoviesCards] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(localStorage.getItem("loggedIn"));
+  const [isReceivedSavedMoviesCards, setReceivedSavedMoviesCards] =
+    useState(false);
+  const loggedInBoolean = JSON.parse(localStorage.getItem("loggedIn"));
+  const [loggedIn, setLoggedIn] = useState(loggedInBoolean);
   const [isPreloader, setPreloader] = useState(false);
-  const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
-  const [isNavigationMenuOpen, setNavigationMenuOpen] = useState(false);
   const [successStatusMessage, setSuccessStatusMessage] = useState("");
   const [RegOrLogSucsessStatus, setRegOrLogSucsessStatus] = useState(false);
-  const [isSearchFilmButtonClick, setSearchFilmButtonClick] = useState(false);
+  const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
+  const [isNavigationMenuOpen, setNavigationMenuOpen] = useState(false);
+  const [isMovieSearchButtonClick, setMovieSearchButtonClick] = useState(false);
   const [filterCheckboxState, setFilterCheckboxState] = useState(false);
+  const [isCardDeleteButtonClick, setCardDeleteButtonClick] = useState(false);
   const [cardListLength, setCardListLength] = useState(0);
   const [filteredMoviesCardList, setFilteredMoviesCardList] = useState([]);
-  const [isCardDeleteButtonClick, setCardDeleteButtonClick] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   function closeAllPopups() {
     setInfoTooltipOpen(false);
@@ -113,16 +125,14 @@ function App() {
       setMovieCardList,
       setSavedMovieCardList,
       setReceivedMoviesCards,
-      setSearchFilmButtonClick,
-      isSearchFilmButtonClick
+      setReceivedSavedMoviesCards,
+      setMovieSearchButtonClick,
+      isMovieSearchButtonClick
     );
   }
 
   function handleGetSavedMoviesCards() {
-    getSavedMoviesCards(
-      setSavedMovieCardList,
-      setReceivedSavedMoviesCards
-    );
+    getSavedMoviesCards(setSavedMovieCardList, setReceivedSavedMoviesCards);
   }
 
   function handleSaveMovieCard(movieCard, evt) {
@@ -173,6 +183,18 @@ function App() {
   }
 
   useEffect(() => {
+    const handleResize = (evt) => {
+      setTimeout(() => {
+        setWindowWidth(evt.target.innerWidth);
+      }, 500);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
     if (loggedIn) {
       getUserInfo(
         setCurrentUser,
@@ -181,12 +203,12 @@ function App() {
         setRegOrLogSucsessStatus,
         setInfoTooltipOpen
       );
-      handleGetSavedMoviesCards();
     }
   }, [loggedIn]);
 
   useEffect(() => {
-    if (localStorage.getItem("loggedIn") === "true") {
+    const initialLoggedIn = JSON.parse(localStorage.getItem("loggedIn"));
+    if (initialLoggedIn) {
       getUserInfo(
         setCurrentUser,
         setLoggedIn,
@@ -194,7 +216,6 @@ function App() {
         setRegOrLogSucsessStatus,
         setInfoTooltipOpen
       );
-      handleGetSavedMoviesCards();
     }
   }, []);
 
@@ -221,9 +242,9 @@ function App() {
                   path="/movies"
                   loggedIn={loggedIn}
                   getMoviesCards={handleGetMoviesCards}
-                  isSearchFilmButtonClick={isSearchFilmButtonClick}
                   onSaveMovieCard={handleSaveMovieCard}
                   onDeleteMovieCard={handleDeleteMovieCard}
+                  isMovieSearchButtonClick={isMovieSearchButtonClick}
                   filterCheckboxState={filterCheckboxState}
                   setFilterCheckboxState={setFilterCheckboxState}
                   cardListLength={cardListLength}
@@ -232,13 +253,13 @@ function App() {
                   setFilteredMoviesCardList={setFilteredMoviesCardList}
                   isPreloader={isPreloader}
                   isReceivedMoviesCards={isReceivedMoviesCards}
+                  windowWidth={windowWidth}
                   component={Movies}
                 />
                 <ProtectedRoute
                   path="/saved-movies"
                   loggedIn={loggedIn}
                   getSavedMoviesCards={handleGetSavedMoviesCards}
-                  isReceivedSavedMoviesCards={isReceivedSavedMoviesCards}
                   onDeleteMovieCard={handleDeleteMovieCard}
                   isCardDeleteButtonClick={isCardDeleteButtonClick}
                   filterCheckboxState={filterCheckboxState}
@@ -248,6 +269,8 @@ function App() {
                   filteredMoviesCardList={filteredMoviesCardList}
                   setFilteredMoviesCardList={setFilteredMoviesCardList}
                   isPreloader={isPreloader}
+                  isReceivedSavedMoviesCards={isReceivedSavedMoviesCards}
+                  windowWidth={windowWidth}
                   component={SavedMovies}
                 />
                 <ProtectedRoute
@@ -267,11 +290,7 @@ function App() {
                   <Page404NotFound />
                 </Route>
                 <Route path="/">
-                  {loggedIn ? (
-                    <Redirect to="/movies" />
-                  ) : (
-                    <Redirect to="/signin" />
-                  )}
+                  {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/" />}
                 </Route>
               </Switch>
               <InfoTooltip

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import FilterCheckbox from "../../vendor/FilterCheckbox/FilterCheckbox";
 import searchFormIcon from "../../images/search-form-icon.svg";
@@ -8,14 +8,14 @@ function SearchForm(props) {
     getMoviesCards,
     filterCheckboxState,
     setFilterCheckboxState,
-    isMovieSearchButtonClick,
-    setMovieSearchButtonClick,
+    isSavedMoviesSearchButtonClick,
+    setSavedMoviesSearchButtonClick,
+    movieNameValue,
+    setMovieNameValue
   } = props;
 
   const location = useLocation();
   const pathName = location.pathname;
-
-  const [movieNameValue, setMovieNameValue] = useState("");
 
   function handleMovieNameChange(evt) {
     const value = evt.target.value;
@@ -24,15 +24,15 @@ function SearchForm(props) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    if (movieNameValue) {
-      localStorage.setItem("movieNameValue", movieNameValue);
-      localStorage.setItem("filterCheckboxState", filterCheckboxState);
-      if (pathName === "/movies") {
+    if (pathName === "/movies") {
+      if (movieNameValue) {
+        console.log(pathName);
+        localStorage.setItem("movieNameValue", movieNameValue);
+        localStorage.setItem("filterCheckboxState", filterCheckboxState);
         getMoviesCards();
-      } else {
-        setMovieSearchButtonClick(isMovieSearchButtonClick);
       }
-      
+    } else {
+      setSavedMoviesSearchButtonClick(!isSavedMoviesSearchButtonClick);
     }
   }
 

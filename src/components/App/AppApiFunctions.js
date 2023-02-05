@@ -99,7 +99,7 @@ function getUserInfo(
     })
     .catch((err) => {
       setErrorMessage(
-        "Данные пользователя не загружены! Попробуйте ещё раз.",
+        "Необходима авторизация!",
         err,
         setSuccessStatusMessage,
         setRegOrLogSucsessStatus,
@@ -159,6 +159,7 @@ function logOut(
       setFilterCheckboxState(false);
       localStorage.setItem("loggedIn", false);
       localStorage.setItem("initialMoviesCardList", JSON.stringify([]));
+      localStorage.setItem("initialSavedMoviesCardList", JSON.stringify([]));
       localStorage.setItem("сardList", JSON.stringify([]));
       localStorage.setItem("movieNameValue", "");
       localStorage.setItem("filterCheckboxState", false);
@@ -179,8 +180,9 @@ function getMoviesCards(
   setMovieCardList,
   setSavedMovieCardList,
   setReceivedMoviesCards,
-  setSearchFilmButtonClick,
-  isSearchFilmButtonClick
+  setReceivedSavedMoviesCards,
+  setMovieSearchButtonClick,
+  isMovieSearchButtonClick
 ) {
   setPreloader(true);
 
@@ -189,12 +191,11 @@ function getMoviesCards(
     .then((res) => {
       getSavedMoviesCards(
         setSavedMovieCardList,
-        setSearchFilmButtonClick,
-        isSearchFilmButtonClick
+        setReceivedSavedMoviesCards
       );
       localStorage.setItem("initialMoviesCardList", JSON.stringify(res));
       setMovieCardList(res);
-      setSearchFilmButtonClick(!isSearchFilmButtonClick);
+      setMovieSearchButtonClick(!isMovieSearchButtonClick);
       setReceivedMoviesCards(false);
     })
     .catch(() => {
@@ -216,7 +217,7 @@ function getSavedMoviesCards(
       setSavedMovieCardList(res);
       setReceivedSavedMoviesCards(false);
     })
-    .catch((err) => {
+    .catch(() => {
       setReceivedSavedMoviesCards(true);
     });
 }
@@ -230,6 +231,7 @@ function saveMovieCard(
   setRegOrLogSucsessStatus,
   setInfoTooltipOpen
 ) {
+  console.log(movieCard);
   mainApi
     .saveMovieCard(movieCard)
     .then((newCard) => {
@@ -265,6 +267,8 @@ function deleteCard(
   setRegOrLogSucsessStatus,
   setInfoTooltipOpen
 ) {
+  console.log(movieCard);
+  console.log(savedMovieCardList);
   let deletedCard = {};
   if (movieCard._id) {
     deletedCard = movieCard;
@@ -282,6 +286,7 @@ function deleteCard(
       setSavedMovieCardList((state) =>
         state.filter((c) => c._id !== deletedCard._id)
       );
+      console.log("deleted");
       setCardDeleteButtonClick(!isCardDeleteButtonClick);
     })
     .then(() => {

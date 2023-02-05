@@ -18,17 +18,16 @@ function MoviesCardsFilter() {
         );
       }
     });
-
+    console.log("yahooo");
     return filteredCards;
   }
 
-    function filteredMoviesCards(filteredCardList, savedMoviesCardList) {
-   
+  function filteredMoviesCards(filteredCardList, savedMoviesCardList) {
     const cardListWithSavedCards = filteredCardList.filter((movieCard) => {
       savedMoviesCardList.some((savedMovieCard) => {
         return movieCard.id === savedMovieCard.movieId
-          ? movieCard.saved = true
-          : movieCard.saved = false;
+          ? (movieCard.saved = true)
+          : (movieCard.saved = false);
       });
       return movieCard;
     });
@@ -36,34 +35,35 @@ function MoviesCardsFilter() {
     return cardListWithSavedCards;
   }
 
-  function setCardListInitialLengths(width, setCardListLength) {
-    if (width > 1279) {
+  function setInitialCardListLength(windowWidth, setCardListLength) {
+    if (windowWidth > 1279) {
       setCardListLength(12);
-    } else if ((width > 767) & (width < 1280)) {
+    } else if ((windowWidth < 1280) & (windowWidth > 767)) {
       setCardListLength(8);
-    } else if (width < 768) {
+    } else if (windowWidth < 768) {
       setCardListLength(5);
     }
+    return;
   }
 
   function addMoreMoviesCards(
-    width,
+    windowWidth,
     filteredMoviesCardList,
     cardListLength,
     setCardListLength
   ) {
     let i;
-    if (width > 1279) {
+    if (windowWidth > 1279) {
       i = 12;
       if (filteredMoviesCardList.length > i) {
         setCardListLength(cardListLength + 3);
       }
-    } else if ((width > 767) & (width < 1280)) {
+    } else if ((windowWidth > 767) & (windowWidth < 1280)) {
       i = 8;
       if (filteredMoviesCardList.length > i) {
         setCardListLength(cardListLength + 2);
       }
-    } else if (width < 768) {
+    } else if (windowWidth < 768) {
       i = 5;
       if (filteredMoviesCardList.length > i) {
         setCardListLength(cardListLength + 2);
@@ -72,7 +72,12 @@ function MoviesCardsFilter() {
     return;
   }
 
-  return { filterCards, filteredMoviesCards, setCardListInitialLengths, addMoreMoviesCards };
+  return {
+    filterCards,
+    filteredMoviesCards,
+    setInitialCardListLength,
+    addMoreMoviesCards,
+  };
 }
 
 export default MoviesCardsFilter;
