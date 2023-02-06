@@ -1,55 +1,36 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import MoreFilms from "../MoreFilms/MoreFilms";
-import MoviesCardsFilter from "../MoviesCardsFilter/MoviesCardsFilter";
 
 function Movies(props) {
   const {
-    onSearchMovie,
-    setMoviesCardList,
-    movieCardList,
-    savedMovieCardList,
-    getMoviesCards,
-    getSavedMoviesCards,
     onSaveMovieCard,
     onDeleteMovieCard,
-    isMoviesSearchButtonClick,
-    setMoviesSearchButtonClick,
-    filterCheckboxState,
-    filterCheckboxStateStringify,
-    setFilterCheckboxState,
+    onError,
+    cardList,
     cardListLength,
     setCardListLength,
-    filteredMoviesCardList,
-    setFilteredMoviesCardList,
+    isMovieName,
+    setIsMovieName,
     isPreloader,
     isMoviesCardsReceived,
     isSavedMoviesCardsReceived,
-    movieName,
+    isErrorMessage,
+    reqCounter,
+    onSearchMovie,
+    filterCheckboxState,
+    filterCheckboxStateStringify,
+    setFilterCheckboxState,
+    isMoviesSearchButtonClick,
+    setMoviesSearchButtonClick,
     setMovieName,
-    isMovieName,
-    setIsMovieName,
-    cardList,
-    setCardList,
-    pathName,
-    windowWidth
+    filteredMoviesCardList,
+    windowWidth,  
+    getSavedMoviesCards,
+    setMoviesCardList
   } = props;
 
-  function handleError() {
-    if (!isMovieName || 
-      !isMoviesCardsReceived || 
-      !isSavedMoviesCardsReceived ||
-      cardList.length === 0
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  const isErrorMessage = handleError();
-  
   useEffect(() => {
     getSavedMoviesCards();
     const movieNameInput = localStorage.getItem("movieNameValue");
@@ -69,26 +50,17 @@ function Movies(props) {
         setMovieName={setMovieName}
       />
       <MoviesCardList
-        cardList={cardList}
-        setCardList={setCardList}
-        movieCardList={movieCardList}
-        savedMovieCardList={savedMovieCardList}
         onSaveMovieCard={onSaveMovieCard}
         onDeleteMovieCard={onDeleteMovieCard}
-        isMoviesSearchButtonClick={isMoviesSearchButtonClick}
-        filterCheckboxState={filterCheckboxState}
-        setFilterCheckboxState={setFilterCheckboxState}
+        onError={onError}
+        cardList={cardList}
         cardListLength={cardListLength}
-        setCardListLength={setCardListLength}
-        setFilteredMoviesCardList={setFilteredMoviesCardList}
-        movieName={movieName}
-        setMovieName={setMovieName}
         isMovieName={isMovieName}
         isPreloader={isPreloader}
         isMoviesCardsReceived={isMoviesCardsReceived}
         isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
         isErrorMessage={isErrorMessage}
-        windowWidth={windowWidth}
+        reqCounter={reqCounter}
       />
       <MoreFilms
         cardListLength={cardListLength}

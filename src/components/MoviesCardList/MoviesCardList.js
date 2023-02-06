@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import Preloader from "../Preloader/Preloader";
@@ -6,46 +5,28 @@ import ErrorMovieMessage from "../ErrorMovieMessage/ErrorMovieMessage";
 
 function MoviesCardList(props) {
   const {
-    movieCardList,
-    savedMovieCardList,
-    cardList,
-    setCardList,
     onSaveMovieCard,
     onDeleteMovieCard,
-    isCardDeleteButtonClick,
-    isMoviesSearchButtonClick,
-    filterCheckboxState,
-    setFilteredMoviesCardList,
+    onError,
+    cardList,
     cardListLength,
-    setCardListLength,
-    movieName,
     isMovieName,
     isPreloader,
     isMoviesCardsReceived,
     isSavedMoviesCardsReceived,
     isErrorMessage,
+    reqCounter
   } = props;
 
   const location = useLocation();
   const pathName = location.pathname;
 
-
-
-
-
-  console.log("рисуем");
-  console.log(cardList);
-  console.log(cardList.length);
-  console.log(cardListLength);
-  console.log(isMovieName);
-  console.log(isMoviesCardsReceived);
-  console.log(isSavedMoviesCardsReceived);
-  console.log(isErrorMessage);
+  onError();
 
   return (
     <section
       className={`movies-card-list ${
-        isPreloader || !isMoviesCardsReceived || !isSavedMoviesCardsReceived || isErrorMessage
+        isPreloader || isErrorMessage
           ? "movies-card-list_flex"
           : ""
       }`}
@@ -58,6 +39,7 @@ function MoviesCardList(props) {
         isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
         isMovieName={isMovieName}
         cardList={cardList}
+        reqCounter={reqCounter}
       />
       ) : ( cardList.map((card, i) => {
           return (

@@ -142,6 +142,7 @@ function logOut(
   setMovieCardList,
   setSavedMovieCardList,
   setMovieName,
+  setReqCounter,
   setFilterCheckboxState,
   setSuccessStatusMessage,
   setRegOrLogSucsessStatus,
@@ -157,6 +158,7 @@ function logOut(
       setSavedMovieCardList([]);
       setMovieName("");
       setFilterCheckboxState(false);
+      setReqCounter(0);
       localStorage.setItem("loggedIn", false);
       localStorage.setItem("initialMoviesCardList", JSON.stringify([]));
       localStorage.setItem("initialSavedMoviesCardList", JSON.stringify([]));
@@ -178,7 +180,9 @@ function logOut(
 function getMoviesCards(
   setPreloader,
   setMovieCardList,
-  setMoviesCardsReceived
+  setMoviesCardsReceived,
+  reqCounter,
+  setReqCounter
 ) {
   setPreloader(true);
 
@@ -189,6 +193,7 @@ function getMoviesCards(
       localStorage.setItem("initialMoviesCardList", JSON.stringify(res));
       setMovieCardList(res);
       setMoviesCardsReceived(true);
+      setReqCounter(reqCounter + 1);
     })
     .catch(() => {
       setMoviesCardsReceived(false);
@@ -244,7 +249,6 @@ function saveMovieCard(
     });
 }
 
-
 function deleteCard(
   movieCard,
   evt,
@@ -262,10 +266,10 @@ function deleteCard(
 
   let deletedCard = {};
   movieCard._id
-    ? deletedCard = movieCard
-    : deletedCard = savedMovieCardList.find((savedMovieCard) => {
+    ? (deletedCard = movieCard)
+    : (deletedCard = savedMovieCardList.find((savedMovieCard) => {
         return movieCard.id === savedMovieCard.movieId;
-      });
+      }));
 
   console.log(deletedCard);
   mainApi

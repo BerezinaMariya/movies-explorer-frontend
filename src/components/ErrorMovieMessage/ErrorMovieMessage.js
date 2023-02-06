@@ -1,16 +1,21 @@
 function ErrorMovieMessage(props) {
-  const { isReceivedMoviesCards, isSavedMoviesCardsReceived, isMovieName, cardList } = props;
+  const { isReceivedMoviesCards, isSavedMoviesCardsReceived, isMovieName, cardList, reqCounter } = props;
 
   console.log(cardList.length === 0);
 
   function setMessage() {
-    if (cardList.length === 0) {
       if (isMovieName) {
-        return "Ничего не найдено";
+        if (cardList.length === 0) {
+          if (reqCounter > 0) {
+          return "Ничего не найдено";
+          } else {
+            return "";
+          }
+        }
       } else {
         return "Нужно ввести ключевое слово";
       }
-    } else if (!isReceivedMoviesCards || !isSavedMoviesCardsReceived) {
+    if (!isReceivedMoviesCards || !isSavedMoviesCardsReceived) {
       return "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз";
     }
   }

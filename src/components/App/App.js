@@ -81,10 +81,13 @@ function App() {
   const [cardListLength, setCardListLength] = useState(0);
   const [filteredMoviesCardList, setFilteredMoviesCardList] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [movieName, setMovieName] = useState("");
-  const [isMovieName, setIsMovieName] = useState(false);
+  const [movieName, setMovieName] = useState(
+    localStorage.getItem("movieNameValue")
+  );
+  const [isMovieName, setIsMovieName] = useState(true);
   const [cardList, setCardList] = useState([]);
   const [isErrorMessage, setErrorMessage] = useState(false);
+  const [reqCounter, setReqCounter] = useState(0);
 
   function closeAllPopups() {
     setInfoTooltipOpen(false);
@@ -143,6 +146,7 @@ function App() {
       setMovieCardList,
       setSavedMovieCardList,
       setMovieName,
+      setReqCounter,
       setFilterCheckboxState,
       setSuccessStatusMessage,
       setRegOrLogSucsessStatus,
@@ -151,7 +155,13 @@ function App() {
   }
 
   function handleGetMoviesCards() {
-    getMoviesCards(setPreloader, setMovieCardList, setMoviesCardsReceived);
+    getMoviesCards(
+      setPreloader,
+      setMovieCardList,
+      setMoviesCardsReceived,
+      reqCounter,
+      setReqCounter
+    );
   }
 
   function handleGetSavedMoviesCards() {
@@ -248,6 +258,19 @@ function App() {
     setMoviesSearchButtonClick(!isMoviesSearchButtonClick);
   }
 
+  function handleError() {
+    if (
+      !isMovieName ||
+      !isMoviesCardsReceived ||
+      !isSavedMoviesCardsReceived ||
+      cardList.length === 0
+    ) {
+      setErrorMessage(true);
+    } else {
+      setErrorMessage(false);
+    }
+  }
+
   //Закрытие popup по клику по overlay
   function setCloseByOverlayListener(popup) {
     popup.addEventListener("mousedown", (evt) => {
@@ -294,21 +317,13 @@ function App() {
     console.log("useOfMany");
     console.log(savedMovieCardList);
     console.log(movieCardList);
-  }, [
-    isPreloader,
-    isMoviesSearchButtonClick,
-    filterCheckboxState,
-  ]);
-
-
+  }, [isPreloader, isMoviesSearchButtonClick, filterCheckboxState]);
 
   useEffect(() => {
     if (pathName === "/saved-movies") {
       handleSetSavedMovieCardList(movieName, filterCheckboxState);
     }
-  }, [
-    isCardDeleteButtonClick,
-  ]);
+  }, [isCardDeleteButtonClick]);
 
   useEffect(() => {
     if (pathName === "/movies") {
@@ -358,68 +373,53 @@ function App() {
             <ProtectedRoute
               path="/movies"
               loggedIn={loggedIn}
-              onSearchMovie={handleSearchMovieButtonClick}
-              setMoviesCardList={handleSetMovieCardList}
-              movieCardList={movieCardList}
-              savedMovieCardList={savedMovieCardList}
-              getSavedMoviesCards={handleGetSavedMoviesCards}
-              getMoviesCards={handleGetMoviesCards}
               onSaveMovieCard={handleSaveMovieCard}
               onDeleteMovieCard={handleDeleteMovieCard}
-              isMoviesSearchButtonClick={isMoviesSearchButtonClick}
-              setMoviesSearchButtonClick={setMoviesSearchButtonClick}
-              filterCheckboxState={filterCheckboxState}
-              filterCheckboxStateStringify={filterCheckboxStateStringify}
-              setFilterCheckboxState={setFilterCheckboxState}
+              onError={handleError}
+              cardList={cardList}
               cardListLength={cardListLength}
               setCardListLength={setCardListLength}
-              filteredMoviesCardList={filteredMoviesCardList}
-              setFilteredMoviesCardList={setFilteredMoviesCardList}
+              isMovieName={isMovieName}
+              setIsMovieName={setIsMovieName}
               isPreloader={isPreloader}
               isMoviesCardsReceived={isMoviesCardsReceived}
               isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
-              movieName={movieName}
-              setMovieName={setMovieName}
-              isMovieName={isMovieName}
-              setIsMovieName={setIsMovieName}
-              cardList={cardList}
-              setCardList={setCardList}
-              pathName={pathName}
-              windowWidth={windowWidth}
               isErrorMessage={isErrorMessage}
-              setErrorMessage={setErrorMessage}
+              reqCounter={reqCounter}
+              onSearchMovie={handleSearchMovieButtonClick}
+              filterCheckboxState={filterCheckboxState}
+              filterCheckboxStateStringify={filterCheckboxStateStringify}
+              setFilterCheckboxState={setFilterCheckboxState}
+              isMoviesSearchButtonClick={isMoviesSearchButtonClick}
+              setMoviesSearchButtonClick={setMoviesSearchButtonClick}
+              setMovieName={setMovieName}
+              filteredMoviesCardList={filteredMoviesCardList}
+              windowWidth={windowWidth}
+              getSavedMoviesCards={handleGetSavedMoviesCards}
+              setMoviesCardList={handleSetMovieCardList}
               component={Movies}
             />
             <ProtectedRoute
               path="/saved-movies"
               loggedIn={loggedIn}
-              onSearchMovie={handleSearchMovieButtonClick}
-              setMoviesCardList={handleSetSavedMovieCardList}
               savedMovieCardList={savedMovieCardList}
-              getSavedMoviesCards={handleGetSavedMoviesCards}
               onDeleteMovieCard={handleDeleteMovieCard}
-              isCardDeleteButtonClick={isCardDeleteButtonClick}
-              isMoviesSearchButtonClick={isMoviesSearchButtonClick}
-              setMoviesSearchButtonClick={setMoviesSearchButtonClick}
-              filterCheckboxState={filterCheckboxState}
-              filterCheckboxStateStringify={filterCheckboxStateStringify}
-              setFilterCheckboxState={setFilterCheckboxState}
+              onError={handleError}
+              cardList={cardList}
               cardListLength={cardListLength}
-              setCardListLength={setCardListLength}
-              filteredMoviesCardList={filteredMoviesCardList}
-              setFilteredMoviesCardList={setFilteredMoviesCardList}
-              isPreloader={isPreloader}
-              isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
-              movieName={movieName}
-              setMovieName={setMovieName}
               isMovieName={isMovieName}
               setIsMovieName={setIsMovieName}
-              cardList={cardList}
-              setCardList={setCardList}
-              pathName={pathName}
-              windowWidth={windowWidth}
+              setMovieName={setMovieName}
+              isPreloader={isPreloader}
+              isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
               isErrorMessage={isErrorMessage}
-              setErrorMessage={setErrorMessage}
+              onSearchMovie={handleSearchMovieButtonClick}
+              filterCheckboxState={filterCheckboxState}
+              setFilterCheckboxState={setFilterCheckboxState}
+              isMoviesSearchButtonClick={isMoviesSearchButtonClick}
+              setMoviesSearchButtonClick={setMoviesSearchButtonClick}
+              getSavedMoviesCards={handleGetSavedMoviesCards}
+              setMoviesCardList={handleSetSavedMovieCardList}
               component={SavedMovies}
             />
             <ProtectedRoute

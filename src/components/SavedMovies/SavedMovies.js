@@ -5,33 +5,24 @@ import EmptyComponent from "../EmptyComponent/EmptyComponent";
 
 function SavedMovies(props) {
   const {
-    onSearchMovie,
-    setMoviesCardList,
     savedMovieCardList,
-    getSavedMoviesCards,
     onDeleteMovieCard,
-    isCardDeleteButtonClick,
-    isMoviesSearchButtonClick,
-    setMoviesSearchButtonClick,
-    filterCheckboxState,
-    filterCheckboxStateStringify,
-    setFilterCheckboxState,
+    onError,
+    cardList,
     cardListLength,
-    setCardListLength,
-    filteredMoviesCardList,
-    setFilteredMoviesCardList,
-    isPreloader,
-    isSavedMoviesCardsReceived,
-    movieName,
-    setMovieName,
     isMovieName,
     setIsMovieName,
-    cardList,
-    setCardList,
-    pathName,
+    setMovieName,
+    isPreloader,
+    isSavedMoviesCardsReceived,
     isErrorMessage,
-    setErrorMessage,
-    windowWidth
+    onSearchMovie,
+    filterCheckboxState,
+    setFilterCheckboxState,
+    isMoviesSearchButtonClick,
+    setMoviesSearchButtonClick,
+    getSavedMoviesCards,
+    setMoviesCardList
   } = props;
  
   useEffect(() => {
@@ -54,27 +45,15 @@ function SavedMovies(props) {
         setMovieName={setMovieName}
       />
       <MoviesCardList
-        cardList={cardList}
-        setCardList={setCardList}
         savedMovieCardList={savedMovieCardList}
         onDeleteMovieCard={onDeleteMovieCard}
-        isCardDeleteButtonClick={isCardDeleteButtonClick}
-        isSavedMoviesSearchButtonClick={isMoviesSearchButtonClick}
-        isMoviesSearchButtonClick={isMoviesSearchButtonClick}
-        filterCheckboxState={filterCheckboxState}
-        setFilterCheckboxState={setFilterCheckboxState}
+        onError={onError}
+        cardList={cardList}
         cardListLength={cardListLength}
-        setCardListLength={setCardListLength}
-        filteredMoviesCardList={filteredMoviesCardList}
-        setFilteredMoviesCardList={setFilteredMoviesCardList}
-        movieName={movieName}
-        setMovieName={setMovieName}
         isMovieName={isMovieName}
         isPreloader={isPreloader}
         isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
         isErrorMessage={isErrorMessage}
-        setErrorMessage={setErrorMessage}
-        windowWidth={windowWidth}
       />
       <EmptyComponent />
     </section>
