@@ -1,126 +1,65 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { SavedMoviesCardsContext } from "../../contexts/SavedMoviesCardsContext";
-import { MoviesCardsContext } from "../../contexts/MoviesCardsContext";
 import MoviesCard from "../MoviesCard/MoviesCard";
-import MoviesCardsFilter from "../MoviesCardsFilter/MoviesCardsFilter";
 import Preloader from "../Preloader/Preloader";
 import ErrorMovieMessage from "../ErrorMovieMessage/ErrorMovieMessage";
 
 function MoviesCardList(props) {
   const {
+    movieCardList,
+    savedMovieCardList,
+    cardList,
+    setCardList,
     onSaveMovieCard,
     onDeleteMovieCard,
     isCardDeleteButtonClick,
-    isMovieSearchButtonClick,
-    isSavedMoviesSearchButtonClick,
+    isMoviesSearchButtonClick,
     filterCheckboxState,
+    setFilteredMoviesCardList,
     cardListLength,
     setCardListLength,
-    setFilteredMoviesCardList,
-    movieNameValue,
-    setMovieNameValue,
+    movieName,
+    isMovieName,
     isPreloader,
-    isReceivedMoviesCards,
-    isReceivedSavedMoviesCards,
-    windowWidth
+    isMoviesCardsReceived,
+    isSavedMoviesCardsReceived,
+    isErrorMessage,
   } = props;
-
-  const moviesCardList = useContext(MoviesCardsContext);
-  const savedMoviesCardList = useContext(SavedMoviesCardsContext);
 
   const location = useLocation();
   const pathName = location.pathname;
 
-  const {
-    filterCards,
-    filteredMoviesCards,
-    setInitialCardListLength
-   } = MoviesCardsFilter();
 
-  const [initialMoviesCardList, setInitialMoviesCardList] = useState(moviesCardList);
-  const [cardList, setCardList] = useState(moviesCardList);
 
-  function handleSetMoviesCardList() {
-    setInitialCardListLength(windowWidth, setCardListLength);
 
-    let initialCardList;
-    initialMoviesCardList.length > 0
-    ? initialCardList = initialMoviesCardList 
-    : initialCardList = moviesCardList;
 
-    const filteredCardList = filterCards(
-      initialCardList,
-      movieNameValue,
-      filterCheckboxState
-    );
-
-    const finalFilteredCardList = filteredMoviesCards(
-      filteredCardList,
-      savedMoviesCardList
-    );
-
-    return finalFilteredCardList;
-  }
-
-  function handleSetSavedMoviesCardList() {
-    return filterCards(
-      savedMoviesCardList,
-      movieNameValue,
-      filterCheckboxState
-    );
-  }
-
-  function handleSetCardList() {
-    if (pathName === "/movies") {
-      setFilteredMoviesCardList(handleSetMoviesCardList());
-      setCardList(handleSetMoviesCardList());
-    } else {
-      setFilteredMoviesCardList(handleSetSavedMoviesCardList());
-      setCardList(handleSetSavedMoviesCardList());
-    }
-    console.log(handleSetSavedMoviesCardList());
-  }
-
-  useEffect(() => {
-    if (pathName === "/movies") {
-      const localStorageMoviesCardListStringify = localStorage.getItem("initialMoviesCardList");
-      const localStorageMoviesCardList = JSON.parse(localStorageMoviesCardListStringify);
-
-      setInitialMoviesCardList(localStorageMoviesCardList);
-      setMovieNameValue(localStorage.getItem("movieNameValue"));
-
-      if(!isPreloader) {
-        handleSetCardList();
-      }
-    } else {
-      handleSetCardList();
-    }
-  }, [
-    isPreloader,
-    isMovieSearchButtonClick,
-    isSavedMoviesSearchButtonClick,
-    filterCheckboxState,
-    isCardDeleteButtonClick,
-    pathName,
-    windowWidth
-  ]);
+  console.log("рисуем");
+  console.log(cardList);
+  console.log(cardList.length);
+  console.log(cardListLength);
+  console.log(isMovieName);
+  console.log(isMoviesCardsReceived);
+  console.log(isSavedMoviesCardsReceived);
+  console.log(isErrorMessage);
 
   return (
     <section
       className={`movies-card-list ${
-        isPreloader || isReceivedMoviesCards || isReceivedSavedMoviesCards
+        isPreloader || !isMoviesCardsReceived || !isSavedMoviesCardsReceived || isErrorMessage
           ? "movies-card-list_flex"
           : ""
       }`}
     >
       {isPreloader ? (
         <Preloader />
-      ) : isReceivedMoviesCards || isReceivedSavedMoviesCards ? (
-        <ErrorMovieMessage />
-      ) : (
-        cardList.length > 0 &&
-        cardList.map((card, i) => {
+      ) : isErrorMessage ? (
+      <ErrorMovieMessage
+        isMoviesCardsReceived={isMoviesCardsReceived}
+        isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
+        isMovieName={isMovieName}
+        cardList={cardList}
+      />
+      ) : ( cardList.map((card, i) => {
           return (
             (((pathName === "/movies") & (i < cardListLength)) ||
               (pathName === "/saved-movies")) && 

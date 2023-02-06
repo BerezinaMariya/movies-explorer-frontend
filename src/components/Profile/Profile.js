@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { FormValidator } from "../FormValidator/FormValidator";
@@ -10,16 +10,30 @@ function Profile(props) {
   const { values, handleChange, errors, isFormValid, resetForm } =
     FormValidator();
 
+  const [isButtonActive, setButtonActive] = useState(false);
+
   function handleSubmit(evt) {
     evt.preventDefault();
+
     updateUserInfo({ name: values.userName, email: values.userEmail });
     resetForm();
   }
 
   useEffect(() => {
+    if (
+      (values.userName === currentUser.name) &
+      (values.userEmail === currentUser.email)
+    ) {
+      setButtonActive(false);
+    } else {
+      setButtonActive(true);
+    }
+  }, [values.userName, values.userEmail]);
+
+  useEffect(() => {
     getUserInfo();
   }, []);
-  
+
   return (
     <section className="profile">
       <h3 className="profile__title">{`Привет, ${currentUser.name}!`}</h3>
@@ -72,10 +86,12 @@ function Profile(props) {
         </span>
         <button
           type="submit"
-          disabled={isFormValid ? false : true}
+          disabled={`${isFormValid ? false : true}
+            ${isFormValid ? false : true}`}
           className={`profile__text profile-form__submit-button ${
             isFormValid ? "" : "profile-form__submit-button_inactive"
-          }`}
+          }
+          ${isButtonActive ? "" : "profile-form__submit-button_inactive"}`}
         >
           Редактировать
         </button>

@@ -84,8 +84,28 @@
     background-image: url(../../../src/images/movies-card-delete-button.svg);
 }
 
-.movies-card__image {
+.movies-card__link {
     grid-area: movies-card__image;
+    width: 364px;
+    height: 203px;
+    object-fit: cover;
+}
+
+@media screen and (max-width: 1279px) {
+    .movies-card__link {
+      width: 339px;
+      height: 190px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .movies-card__link {
+      width: 300px;
+      height: 168px;
+    }
+}
+
+.movies-card__image {
     width: 364px;
     height: 203px;
     object-fit: cover;

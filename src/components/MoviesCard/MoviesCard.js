@@ -20,11 +20,15 @@ function MoviesCard(props) {
       : card.image
   }`;
 
-  const movieCardDuration = `${Math.trunc(card.duration / 60) >0 ? (Math.trunc(card.duration / 60))+`ч` : ""} 
-  ${card.duration % 60 > 0 ? (card.duration % 60)+`м` : ""}`;
+  const movieCardDuration = `${
+    Math.trunc(card.duration / 60) > 0
+      ? Math.trunc(card.duration / 60) + `ч`
+      : ""
+  } 
+  ${card.duration % 60 > 0 ? (card.duration % 60) + `м` : ""}`;
 
   function handleSaveCard(evt) {
-    evt.target.classList.contains('movies-card__button_save-button')
+    evt.target.classList.contains("movies-card__button_save-button")
       ? onDeleteMovieCard(card, evt)
       : onSaveMovieCard(card, evt);
   }
@@ -43,11 +47,18 @@ function MoviesCard(props) {
         aria-label={`${pathName === "/movies" ? "Сохранить" : "Удалить"}`}
         onClick={pathName === "/movies" ? handleSaveCard : handleDeleteCard}
       ></button>
-      <img
-        className="movies-card__image"
-        src={movieCardUrl}
-        alt={`Постер к фильму ${card.nameRU}`}
-      />
+      <a
+        className="movies-card__link"
+        target="_blank"
+        href={card.trailerLink}
+        rel="noreferrer"
+      >
+        <img
+          className="movies-card__image"
+          src={movieCardUrl}
+          alt={`Постер к фильму ${card.nameRU}`}
+        />
+      </a>
     </article>
   );
 }

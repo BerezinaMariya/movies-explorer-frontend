@@ -6,7 +6,8 @@ function MoreFilms(props) {
     setCardListLength,
     filteredMoviesCardList,
     isPreloader,
-    isReceivedMoviesCards,
+    isMoviesCardsReceived,
+    isErrorMessage,
     windowWidth
   } = props;
 
@@ -29,7 +30,7 @@ function MoreFilms(props) {
         className={`more-films__button ${
           cardListLength < 3 ||
           cardListLength >= filteredMoviesCardList.length ||
-          isPreloader || isReceivedMoviesCards
+          isPreloader || !isMoviesCardsReceived || isErrorMessage
             ? "more-films__button_hidden"
             : ""
         }

@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { Route, Switch, Redirect, useHistory, useLocation } from "react-router-dom";
+import {
+  Route,
+  Switch,
+  Redirect,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -12,6 +18,7 @@ import Login from "../Login/Login";
 import Page404NotFound from "../Page404NotFound/Page404NotFound";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import MoviesCardsFilter from "../MoviesCardsFilter/MoviesCardsFilter";
 
 import {
   register,
@@ -27,8 +34,6 @@ import {
 
 import { RegistrationInfoContext } from "../../contexts/RegistrationInfoContext";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import { SavedMoviesCardsContext } from "../../contexts/SavedMoviesCardsContext";
-import { MoviesCardsContext } from "../../contexts/MoviesCardsContext";
 
 function App() {
   document.title = "MoviesExplorer";
@@ -37,6 +42,9 @@ function App() {
   const history = useHistory();
   const location = useLocation();
   const pathName = location.pathname;
+
+  const { filterCards, filterMoviesCards, setInitialCardListLength } =
+    MoviesCardsFilter();
 
   const [registrationInfo, setRegistrationInfo] = useState({});
   const [currentUser, setCurrentUser] = useState({});
@@ -50,23 +58,33 @@ function App() {
     "initialSavedMoviesCardList"
   );
   const savedMovieCardListArr = JSON.parse(initialSavedMoviesCardListStringify);
-  const [savedMovieCardList, setSavedMovieCardList] = useState(savedMovieCardListArr);
-  const [isReceivedMoviesCards, setReceivedMoviesCards] = useState(false);
-  const [isReceivedSavedMoviesCards, setReceivedSavedMoviesCards] =
-    useState(false);
+  const [savedMovieCardList, setSavedMovieCardList] = useState(
+    savedMovieCardListArr
+  );
+  const [isMoviesCardsReceived, setMoviesCardsReceived] = useState(true);
+  const [isSavedMoviesCardsReceived, setSavedMoviesCardsReceived] =
+    useState(true);
   const loggedInBoolean = JSON.parse(localStorage.getItem("loggedIn"));
   const [loggedIn, setLoggedIn] = useState(loggedInBoolean);
   const [isPreloader, setPreloader] = useState(false);
+  const [isMoviesSearchButtonClick, setMoviesSearchButtonClick] =
+    useState(false);
   const [successStatusMessage, setSuccessStatusMessage] = useState("");
   const [RegOrLogSucsessStatus, setRegOrLogSucsessStatus] = useState(false);
   const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
   const [isNavigationMenuOpen, setNavigationMenuOpen] = useState(false);
-  const [isMovieSearchButtonClick, setMovieSearchButtonClick] = useState(false);
+  const filterCheckboxStateStringify = localStorage.getItem(
+    "filterCheckboxState"
+  );
   const [filterCheckboxState, setFilterCheckboxState] = useState(false);
   const [isCardDeleteButtonClick, setCardDeleteButtonClick] = useState(false);
   const [cardListLength, setCardListLength] = useState(0);
   const [filteredMoviesCardList, setFilteredMoviesCardList] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [movieName, setMovieName] = useState("");
+  const [isMovieName, setIsMovieName] = useState(false);
+  const [cardList, setCardList] = useState([]);
+  const [isErrorMessage, setErrorMessage] = useState(false);
 
   function closeAllPopups() {
     setInfoTooltipOpen(false);
@@ -80,7 +98,8 @@ function App() {
       setSuccessStatusMessage,
       setRegOrLogSucsessStatus,
       setInfoTooltipOpen,
-      history
+      history,
+      handleLogin
     );
   }
 
@@ -109,7 +128,6 @@ function App() {
   function handleUpdateUserInfo(user) {
     setUserInfo(
       user,
-      setPreloader,
       setCurrentUser,
       setSuccessStatusMessage,
       setRegOrLogSucsessStatus,
@@ -124,6 +142,7 @@ function App() {
       setCurrentUser,
       setMovieCardList,
       setSavedMovieCardList,
+      setMovieName,
       setFilterCheckboxState,
       setSuccessStatusMessage,
       setRegOrLogSucsessStatus,
@@ -132,41 +151,45 @@ function App() {
   }
 
   function handleGetMoviesCards() {
-    getMoviesCards(
-      setPreloader,
-      setMovieCardList,
-      setSavedMovieCardList,
-      setReceivedMoviesCards,
-      setReceivedSavedMoviesCards,
-      setMovieSearchButtonClick,
-      isMovieSearchButtonClick
-    );
+    getMoviesCards(setPreloader, setMovieCardList, setMoviesCardsReceived);
   }
 
   function handleGetSavedMoviesCards() {
-    getSavedMoviesCards(setSavedMovieCardList, setReceivedSavedMoviesCards);
+    getSavedMoviesCards(setSavedMovieCardList, setSavedMoviesCardsReceived);
   }
 
   function handleSaveMovieCard(movieCard, evt) {
     saveMovieCard(
       movieCard,
       evt,
-      setMovieCardList,
-      setSavedMovieCardList,
-      setReceivedSavedMoviesCards,
+      savedMovieCardList,
       setSuccessStatusMessage,
       setRegOrLogSucsessStatus,
       setInfoTooltipOpen
     );
   }
 
+  function handleDeleteCardFromCardList(deletedCard) {
+    if (deletedCard._id) {
+      setSavedMovieCardList((state) =>
+        state.filter((c) => c._id !== deletedCard._id)
+      );
+    } else if (deletedCard.id) {
+      const card = savedMovieCardList.find((savedMovieCard) => {
+        return deletedCard.id === savedMovieCard.movieId;
+      });
+      setSavedMovieCardList((state) =>
+        state.filter((c) => card._id !== deletedCard._id)
+      );
+    }
+  }
+
   function handleDeleteMovieCard(movieCard, evt) {
     deleteCard(
       movieCard,
       evt,
+      handleDeleteCardFromCardList,
       savedMovieCardList,
-      setSavedMovieCardList,
-      setReceivedSavedMoviesCards,
       isCardDeleteButtonClick,
       setCardDeleteButtonClick,
       setSuccessStatusMessage,
@@ -177,6 +200,52 @@ function App() {
 
   function handleMenuButtonClick() {
     setNavigationMenuOpen(true);
+  }
+
+  function handleSetMovieCardList(movieNameInput, filterCheckbox) {
+    setInitialCardListLength(windowWidth, setCardListLength);
+
+    const filteredCardList = filterCards(
+      movieCardList,
+      movieNameInput,
+      filterCheckbox
+    );
+
+    const filteredMoviesCardList = filterMoviesCards(
+      filteredCardList,
+      savedMovieCardList
+    );
+
+    setFilteredMoviesCardList(filteredMoviesCardList);
+    setCardList(filteredMoviesCardList);
+    console.log("MoviesFilter");
+  }
+
+  function handleSetSavedMovieCardList(movieNameInput, filterCheckbox) {
+    const filteredCardList = filterCards(
+      savedMovieCardList,
+      movieNameInput,
+      filterCheckbox
+    );
+
+    setFilteredMoviesCardList(filteredCardList);
+    setCardList(filteredCardList);
+
+    console.log("savedMoviesFilter");
+  }
+
+  function handleSearchMovieButtonClick() {
+    if (pathName === "/movies") {
+      if (movieCardListArr.length === 0) {
+        handleGetMoviesCards();
+      } else {
+        handleSetMovieCardList(movieName, filterCheckboxState);
+      }
+    } else {
+      handleSetSavedMovieCardList(movieName, filterCheckboxState);
+    }
+    console.log(cardList);
+    setMoviesSearchButtonClick(!isMoviesSearchButtonClick);
   }
 
   //Закрытие popup по клику по overlay
@@ -209,10 +278,57 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (loggedIn) {
-      getSavedMoviesCards();
+    if (pathName === "/movies") {
+      setInitialCardListLength(windowWidth, setCardListLength);
     }
-  }, [loggedIn]);
+  }, [windowWidth]);
+
+  useEffect(() => {
+    if (pathName === "/movies") {
+      if (!isPreloader) {
+        handleSetMovieCardList(movieName, filterCheckboxState);
+      }
+    } else {
+      handleSetSavedMovieCardList(movieName, filterCheckboxState);
+    }
+    console.log("useOfMany");
+    console.log(savedMovieCardList);
+    console.log(movieCardList);
+  }, [
+    isPreloader,
+    isMoviesSearchButtonClick,
+    filterCheckboxState,
+  ]);
+
+
+
+  useEffect(() => {
+    if (pathName === "/saved-movies") {
+      handleSetSavedMovieCardList(movieName, filterCheckboxState);
+    }
+  }, [
+    isCardDeleteButtonClick,
+  ]);
+
+  useEffect(() => {
+    if (pathName === "/movies") {
+      const movieNameInput = localStorage.getItem("movieNameValue");
+      const filterCheckbox = JSON.parse(filterCheckboxStateStringify);
+      handleSetMovieCardList(movieNameInput, filterCheckbox);
+    } else {
+      handleGetSavedMoviesCards();
+      const savedMovieNameInput = "";
+      const savedFilterCheckbox = false;
+      handleSetSavedMovieCardList(savedMovieNameInput, savedFilterCheckbox);
+    }
+  }, []);
+
+  useEffect(() => {
+    const isLoggedIn = JSON.parse(localStorage.getItem("loggedIn"));
+    if (isLoggedIn) {
+      handleGetUserInfo();
+    }
+  }, []);
 
   useEffect(() => {
     if (pathName === "/") {
@@ -225,94 +341,121 @@ function App() {
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
-        <MoviesCardsContext.Provider value={movieCardList}>
-          <SavedMoviesCardsContext.Provider value={savedMovieCardList}>
-            <RegistrationInfoContext.Provider value={registrationInfo}>
-              <Header
-                loggedIn={loggedIn}
-                isOpen={isNavigationMenuOpen}
-                onMenuButtonClick={handleMenuButtonClick}
-                onClose={closeAllPopups}
-                onCloseByOverlay={setCloseByOverlayListener}
-                onCloseByEsc={handleCloseByEsc}
-                onLogOut={handleLogout}
-              />
-              <Switch>
-                <Route exact path="/">
-                  <Main />
-                </Route>
-                <ProtectedRoute
-                  path="/movies"
-                  loggedIn={loggedIn}
-                  getMoviesCards={handleGetMoviesCards}
-                  onSaveMovieCard={handleSaveMovieCard}
-                  onDeleteMovieCard={handleDeleteMovieCard}
-                  isMovieSearchButtonClick={isMovieSearchButtonClick}
-                  filterCheckboxState={filterCheckboxState}
-                  setFilterCheckboxState={setFilterCheckboxState}
-                  cardListLength={cardListLength}
-                  setCardListLength={setCardListLength}
-                  filteredMoviesCardList={filteredMoviesCardList}
-                  setFilteredMoviesCardList={setFilteredMoviesCardList}
-                  isPreloader={isPreloader}
-                  isReceivedMoviesCards={isReceivedMoviesCards}
-                  isReceivedSavedMoviesCards={isReceivedSavedMoviesCards}
-                  windowWidth={windowWidth}
-                  component={Movies}
-                />
-                <ProtectedRoute
-                  path="/saved-movies"
-                  loggedIn={loggedIn}
-                  getSavedMoviesCards={handleGetSavedMoviesCards}
-                  onDeleteMovieCard={handleDeleteMovieCard}
-                  isCardDeleteButtonClick={isCardDeleteButtonClick}
-                  filterCheckboxState={filterCheckboxState}
-                  setFilterCheckboxState={setFilterCheckboxState}
-                  cardListLength={cardListLength}
-                  setCardListLength={setCardListLength}
-                  filteredMoviesCardList={filteredMoviesCardList}
-                  setFilteredMoviesCardList={setFilteredMoviesCardList}
-                  isPreloader={isPreloader}
-                  isReceivedSavedMoviesCards={isReceivedSavedMoviesCards}
-                  windowWidth={windowWidth}
-                  component={SavedMovies}
-                />
-                <ProtectedRoute
-                  path="/profile"
-                  loggedIn={loggedIn}
-                  getUserInfo={handleGetUserInfo}
-                  updateUserInfo={handleUpdateUserInfo}
-                  onLogout={handleLogout}
-                  component={Profile}
-                />
-                <Route path="/signup">
-                  <Register onRegister={handleRegister} />
-                </Route>
-                <Route path="/signin">
-                  <Login onLogin={handleLogin} />
-                </Route>
-                <Route path="/404">
-                  <Page404NotFound />
-                </Route>
-                <Route path="/">
-                  <Redirect to="/404" />
-                </Route>
-                <Route exact path="/">
-                  {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/" />}
-                </Route>
-              </Switch>
-              <InfoTooltip
-                isOpen={isInfoTooltipOpen}
-                successStatusMessage={successStatusMessage}
-                isRegOrLogSucsess={RegOrLogSucsessStatus}
-                onClose={closeAllPopups}
-                onCloseByOverlay={setCloseByOverlayListener}
-                onCloseByEsc={handleCloseByEsc}
-              />
-              <Footer />
-            </RegistrationInfoContext.Provider>
-          </SavedMoviesCardsContext.Provider>
-        </MoviesCardsContext.Provider>
+        <RegistrationInfoContext.Provider value={registrationInfo}>
+          <Header
+            loggedIn={loggedIn}
+            isOpen={isNavigationMenuOpen}
+            onMenuButtonClick={handleMenuButtonClick}
+            onClose={closeAllPopups}
+            onCloseByOverlay={setCloseByOverlayListener}
+            onCloseByEsc={handleCloseByEsc}
+            onLogOut={handleLogout}
+          />
+          <Switch>
+            <Route exact path="/">
+              <Main />
+            </Route>
+            <ProtectedRoute
+              path="/movies"
+              loggedIn={loggedIn}
+              onSearchMovie={handleSearchMovieButtonClick}
+              setMoviesCardList={handleSetMovieCardList}
+              movieCardList={movieCardList}
+              savedMovieCardList={savedMovieCardList}
+              getSavedMoviesCards={handleGetSavedMoviesCards}
+              getMoviesCards={handleGetMoviesCards}
+              onSaveMovieCard={handleSaveMovieCard}
+              onDeleteMovieCard={handleDeleteMovieCard}
+              isMoviesSearchButtonClick={isMoviesSearchButtonClick}
+              setMoviesSearchButtonClick={setMoviesSearchButtonClick}
+              filterCheckboxState={filterCheckboxState}
+              filterCheckboxStateStringify={filterCheckboxStateStringify}
+              setFilterCheckboxState={setFilterCheckboxState}
+              cardListLength={cardListLength}
+              setCardListLength={setCardListLength}
+              filteredMoviesCardList={filteredMoviesCardList}
+              setFilteredMoviesCardList={setFilteredMoviesCardList}
+              isPreloader={isPreloader}
+              isMoviesCardsReceived={isMoviesCardsReceived}
+              isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
+              movieName={movieName}
+              setMovieName={setMovieName}
+              isMovieName={isMovieName}
+              setIsMovieName={setIsMovieName}
+              cardList={cardList}
+              setCardList={setCardList}
+              pathName={pathName}
+              windowWidth={windowWidth}
+              isErrorMessage={isErrorMessage}
+              setErrorMessage={setErrorMessage}
+              component={Movies}
+            />
+            <ProtectedRoute
+              path="/saved-movies"
+              loggedIn={loggedIn}
+              onSearchMovie={handleSearchMovieButtonClick}
+              setMoviesCardList={handleSetSavedMovieCardList}
+              savedMovieCardList={savedMovieCardList}
+              getSavedMoviesCards={handleGetSavedMoviesCards}
+              onDeleteMovieCard={handleDeleteMovieCard}
+              isCardDeleteButtonClick={isCardDeleteButtonClick}
+              isMoviesSearchButtonClick={isMoviesSearchButtonClick}
+              setMoviesSearchButtonClick={setMoviesSearchButtonClick}
+              filterCheckboxState={filterCheckboxState}
+              filterCheckboxStateStringify={filterCheckboxStateStringify}
+              setFilterCheckboxState={setFilterCheckboxState}
+              cardListLength={cardListLength}
+              setCardListLength={setCardListLength}
+              filteredMoviesCardList={filteredMoviesCardList}
+              setFilteredMoviesCardList={setFilteredMoviesCardList}
+              isPreloader={isPreloader}
+              isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
+              movieName={movieName}
+              setMovieName={setMovieName}
+              isMovieName={isMovieName}
+              setIsMovieName={setIsMovieName}
+              cardList={cardList}
+              setCardList={setCardList}
+              pathName={pathName}
+              windowWidth={windowWidth}
+              isErrorMessage={isErrorMessage}
+              setErrorMessage={setErrorMessage}
+              component={SavedMovies}
+            />
+            <ProtectedRoute
+              path="/profile"
+              loggedIn={loggedIn}
+              getUserInfo={handleGetUserInfo}
+              updateUserInfo={handleUpdateUserInfo}
+              onLogout={handleLogout}
+              component={Profile}
+            />
+            <Route path="/signup">
+              <Register onRegister={handleRegister} />
+            </Route>
+            <Route path="/signin">
+              <Login onLogin={handleLogin} />
+            </Route>
+            <Route path="/404">
+              <Page404NotFound />
+            </Route>
+            <Route path="/">
+              <Redirect to="/404" />
+            </Route>
+            <Route exact path="/">
+              {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/" />}
+            </Route>
+          </Switch>
+          <InfoTooltip
+            isOpen={isInfoTooltipOpen}
+            successStatusMessage={successStatusMessage}
+            isRegOrLogSucsess={RegOrLogSucsessStatus}
+            onClose={closeAllPopups}
+            onCloseByOverlay={setCloseByOverlayListener}
+            onCloseByEsc={handleCloseByEsc}
+          />
+          <Footer />
+        </RegistrationInfoContext.Provider>
       </CurrentUserContext.Provider>
     </>
   );

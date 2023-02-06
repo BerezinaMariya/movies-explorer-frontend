@@ -1,21 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import FilterCheckbox from "../../vendor/FilterCheckbox/FilterCheckbox";
+
 import searchFormIcon from "../../images/search-form-icon.svg";
 
 function SearchForm(props) {
   const {
-    getMoviesCards,
+    onSearchMovie,
     filterCheckboxState,
     setFilterCheckboxState,
-    isSavedMoviesSearchButtonClick,
-    setSavedMoviesSearchButtonClick,
-    movieNameValue,
-    setMovieNameValue
+    isMoviesSearchButtonClick,
+    setMoviesSearchButtonClick,
+    setIsMovieName,
+    setMovieName
   } = props;
 
   const location = useLocation();
   const pathName = location.pathname;
+
+  const [movieNameValue, setMovieNameValue] = useState("");
 
   function handleMovieNameChange(evt) {
     const value = evt.target.value;
@@ -24,37 +27,27 @@ function SearchForm(props) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    if (pathName === "/movies") {
-      if (movieNameValue) {
+    onSearchMovie();
+    if (movieNameValue) {
+      setMovieName(movieNameValue);
+      setIsMovieName(true);
+      if (pathName === "/movies") {
         localStorage.setItem("movieNameValue", movieNameValue);
         localStorage.setItem("filterCheckboxState", filterCheckboxState);
-        getMoviesCards();
       }
     } else {
-      setSavedMoviesSearchButtonClick(!isSavedMoviesSearchButtonClick);
+      setIsMovieName(false);
     }
+    setMoviesSearchButtonClick(!isMoviesSearchButtonClick);
   }
 
   useEffect(() => {
     if (pathName === "/movies") {
-      const filterCheckboxStateStringify = localStorage.getItem(
-        "filterCheckboxState"
-      );
-      if (localStorage.getItem("movieNameValue")) {
-        setMovieNameValue(localStorage.getItem("movieNameValue"));
-      }
-      if (filterCheckboxStateStringify === "true") {
-        setFilterCheckboxState(JSON.parse(filterCheckboxStateStringify));
-      }
+      setMovieNameValue(localStorage.getItem("movieNameValue"));
     } else {
       setMovieNameValue("");
-      setFilterCheckboxState(false);
     }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("filterCheckboxState", filterCheckboxState);
-  }, [filterCheckboxState]);
+  }, [pathName]);
 
   return (
     <div className="search-form">

@@ -21,7 +21,7 @@ function MoviesCardsFilter() {
     return filteredCards;
   }
 
-  function filteredMoviesCards(filteredCardList, savedMoviesCardList) {
+  function filterMoviesCards(filteredCardList, savedMoviesCardList) {
     const cardListWithSavedCards = filteredCardList.filter((movieCard) => {
       savedMoviesCardList.some((savedMovieCard) => {
         return movieCard.id === savedMovieCard.movieId
@@ -73,7 +73,7 @@ function MoviesCardsFilter() {
 
   return {
     filterCards,
-    filteredMoviesCards,
+    filterMoviesCards,
     setInitialCardListLength,
     addMoreMoviesCards,
   };

@@ -27,7 +27,8 @@ function register(
   setSuccessStatusMessage,
   setRegOrLogSucsessStatus,
   setInfoTooltipOpen,
-  history
+  history,
+  handleLogin
 ) {
   mainApi
     .register(
@@ -35,15 +36,14 @@ function register(
       registrationInfo.email,
       registrationInfo.password
     )
-    .then((res) => {
-      if (res) {
-        setSuccessStatusMessage("Вы успешно зарегистрировались!");
-        setRegOrLogSucsessStatus(true);
-        setInfoTooltipOpen(true);
-        setRegistrationInfo({});
-      }
+    .then(() => {
+      setSuccessStatusMessage("Вы успешно зарегистрировались!");
+      setRegOrLogSucsessStatus(true);
+      setInfoTooltipOpen(true);
+      setRegistrationInfo({});
+      handleLogin();
     })
-    .then(() => history.push("/signin"))
+    .then(() => history.push("/movies"))
     .catch((err) => {
       setErrorMessage(
         "Регистрация не выполнена! Попробуйте ещё раз.",
@@ -111,30 +111,27 @@ function getUserInfo(
 
 function setUserInfo(
   user,
-  setPreloader,
   setCurrentUser,
   setSuccessStatusMessage,
   setRegOrLogSucsessStatus,
   setInfoTooltipOpen
 ) {
-  setPreloader(true);
-
   mainApi
     .setUserInfo(user)
     .then((res) => {
       setCurrentUser(res);
+      setSuccessStatusMessage("Данные успешно обновились!");
+      setRegOrLogSucsessStatus(true);
+      setInfoTooltipOpen(true);
     })
     .catch((err) => {
       setErrorMessage(
-        "Данные пользователя не обновились! Попробуйте ещё раз.",
+        "Данные не обновились! Попробуйте ещё раз.",
         err,
         setSuccessStatusMessage,
         setRegOrLogSucsessStatus,
         setInfoTooltipOpen
       );
-    })
-    .finally(() => {
-      setPreloader(false);
     });
 }
 
@@ -144,6 +141,7 @@ function logOut(
   setCurrentUser,
   setMovieCardList,
   setSavedMovieCardList,
+  setMovieName,
   setFilterCheckboxState,
   setSuccessStatusMessage,
   setRegOrLogSucsessStatus,
@@ -157,6 +155,7 @@ function logOut(
       setCurrentUser({});
       setMovieCardList([]);
       setSavedMovieCardList([]);
+      setMovieName("");
       setFilterCheckboxState(false);
       localStorage.setItem("loggedIn", false);
       localStorage.setItem("initialMoviesCardList", JSON.stringify([]));
@@ -179,28 +178,20 @@ function logOut(
 function getMoviesCards(
   setPreloader,
   setMovieCardList,
-  setSavedMovieCardList,
-  setReceivedMoviesCards,
-  setReceivedSavedMoviesCards,
-  setMovieSearchButtonClick,
-  isMovieSearchButtonClick
+  setMoviesCardsReceived
 ) {
   setPreloader(true);
 
   moviesApi
     .getMoviesCards()
     .then((res) => {
-      getSavedMoviesCards(
-        setSavedMovieCardList,
-        setReceivedSavedMoviesCards
-      );
+      console.log("moviesAPI");
       localStorage.setItem("initialMoviesCardList", JSON.stringify(res));
       setMovieCardList(res);
-      setMovieSearchButtonClick(!isMovieSearchButtonClick);
-      setReceivedMoviesCards(false);
+      setMoviesCardsReceived(true);
     })
     .catch(() => {
-      setReceivedMoviesCards(true);
+      setMoviesCardsReceived(false);
     })
     .finally(() => {
       setPreloader(false);
@@ -209,26 +200,24 @@ function getMoviesCards(
 
 function getSavedMoviesCards(
   setSavedMovieCardList,
-  setReceivedSavedMoviesCards
+  setSavedMoviesCardsReceived
 ) {
   mainApi
     .getSavedMoviesCards()
     .then((res) => {
       localStorage.setItem("initialSavedMoviesCardList", JSON.stringify(res));
       setSavedMovieCardList(res);
-      setReceivedSavedMoviesCards(false);
+      setSavedMoviesCardsReceived(true);
     })
     .catch(() => {
-      setReceivedSavedMoviesCards(true);
+      setSavedMoviesCardsReceived(false);
     });
 }
 
 function saveMovieCard(
   movieCard,
   evt,
-  setMovieCardList,
-  setSavedMovieCardList,
-  setReceivedSavedMoviesCards,
+  savedMovieCardList,
   setSuccessStatusMessage,
   setRegOrLogSucsessStatus,
   setInfoTooltipOpen
@@ -236,15 +225,13 @@ function saveMovieCard(
   mainApi
     .saveMovieCard(movieCard)
     .then((newCard) => {
-      setMovieCardList((state) =>
-        state.map((c) => (c.movieId === movieCard.id ? newCard : c))
-      );
+      console.log(newCard);
+      savedMovieCardList.push(newCard);
       evt.target.classList.toggle("movies-card__button_save-button");
       evt.target.classList.toggle("movies-card__button_save-button_inactive");
     })
     .then(() => {
-      getSavedMoviesCards(  setSavedMovieCardList,
-        setReceivedSavedMoviesCards);
+      console.log(savedMovieCardList);
     })
     .catch((err) => {
       setErrorMessage(
@@ -257,39 +244,40 @@ function saveMovieCard(
     });
 }
 
+
 function deleteCard(
   movieCard,
   evt,
+  handleDeleteCardFromCardList,
   savedMovieCardList,
-  setSavedMovieCardList,
-  setReceivedSavedMoviesCards,
   isCardDeleteButtonClick,
   setCardDeleteButtonClick,
   setSuccessStatusMessage,
   setRegOrLogSucsessStatus,
   setInfoTooltipOpen
 ) {
+  console.log("delete");
+  console.log(movieCard);
+  console.log(savedMovieCardList);
+
   let deletedCard = {};
-  if (movieCard._id) {
-    deletedCard = movieCard;
-  } else {
-    deletedCard = savedMovieCardList.find((savedMovieCard) => {
-      return movieCard.id === savedMovieCard.movieId;
-    });
-  }
+  movieCard._id
+    ? deletedCard = movieCard
+    : deletedCard = savedMovieCardList.find((savedMovieCard) => {
+        return movieCard.id === savedMovieCard.movieId;
+      });
+
+  console.log(deletedCard);
   mainApi
     .deleteCard(deletedCard)
     .then(() => {
+      handleDeleteCardFromCardList(deletedCard);
       evt.target.classList.toggle("movies-card__button_save-button");
       evt.target.classList.toggle("movies-card__button_save-button_inactive");
-      setSavedMovieCardList((state) =>
-        state.filter((c) => c._id !== deletedCard._id)
-      );
       setCardDeleteButtonClick(!isCardDeleteButtonClick);
     })
     .then(() => {
-      getSavedMoviesCards(  setSavedMovieCardList,
-        setReceivedSavedMoviesCards);
+      console.log(savedMovieCardList);
     })
     .catch((err) => {
       setErrorMessage(
