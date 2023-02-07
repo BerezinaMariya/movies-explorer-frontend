@@ -10,13 +10,13 @@ function MoviesCardsFilter() {
         if (filterCheckboxState) {
           return (
             (card.duration <= 40) &
-            (card.nameRU.includes(movieNameValue) ||
-              card.nameEN.includes(movieNameValue))
+            (card.nameRU.toLowerCase().includes(movieNameValue.toLowerCase()) ||
+              card.nameEN.toLowerCase().includes(movieNameValue.toLowerCase()))
           );
         } else {
           return (
-            card.nameRU.includes(movieNameValue) ||
-            card.nameEN.includes(movieNameValue)
+            card.nameRU.toLowerCase().includes(movieNameValue.toLowerCase()) ||
+            card.nameEN.toLowerCase().includes(movieNameValue.toLowerCase())
           );
         }
       });
