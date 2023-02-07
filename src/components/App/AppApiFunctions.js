@@ -158,7 +158,6 @@ function logOut(
       setSavedMovieCardList([]);
       setMovieName("");
       setFilterCheckboxState(false);
-      setReqCounter(0);
       localStorage.setItem("loggedIn", false);
       localStorage.setItem("initialMoviesCardList", JSON.stringify([]));
       localStorage.setItem("initialSavedMoviesCardList", JSON.stringify([]));
@@ -181,19 +180,15 @@ function getMoviesCards(
   setPreloader,
   setMovieCardList,
   setMoviesCardsReceived,
-  reqCounter,
-  setReqCounter
 ) {
   setPreloader(true);
 
   moviesApi
     .getMoviesCards()
     .then((res) => {
-      console.log("moviesAPI");
       localStorage.setItem("initialMoviesCardList", JSON.stringify(res));
       setMovieCardList(res);
       setMoviesCardsReceived(true);
-      setReqCounter(reqCounter + 1);
     })
     .catch(() => {
       setMoviesCardsReceived(false);
@@ -204,9 +199,11 @@ function getMoviesCards(
 }
 
 function getSavedMoviesCards(
+  setLoading,
   setSavedMovieCardList,
   setSavedMoviesCardsReceived
 ) {
+  setLoading(true);
   mainApi
     .getSavedMoviesCards()
     .then((res) => {
@@ -216,6 +213,9 @@ function getSavedMoviesCards(
     })
     .catch(() => {
       setSavedMoviesCardsReceived(false);
+    })
+    .finally(() => {
+      setLoading(false);
     });
 }
 
@@ -230,14 +230,11 @@ function saveMovieCard(
   mainApi
     .saveMovieCard(movieCard)
     .then((newCard) => {
-      console.log(newCard);
       savedMovieCardList.push(newCard);
       evt.target.classList.toggle("movies-card__button_save-button");
       evt.target.classList.toggle("movies-card__button_save-button_inactive");
     })
-    .then(() => {
-      console.log(savedMovieCardList);
-    })
+    .then(() => {})
     .catch((err) => {
       setErrorMessage(
         "Фильм не сохранился!",
@@ -252,7 +249,7 @@ function saveMovieCard(
 function deleteCard(
   movieCard,
   evt,
-  handleDeleteCardFromCardList,
+  setSavedMovieCardList,
   savedMovieCardList,
   isCardDeleteButtonClick,
   setCardDeleteButtonClick,
@@ -260,29 +257,32 @@ function deleteCard(
   setRegOrLogSucsessStatus,
   setInfoTooltipOpen
 ) {
-  console.log("delete");
-  console.log(movieCard);
-  console.log(savedMovieCardList);
-
   let deletedCard = {};
   movieCard._id
     ? (deletedCard = movieCard)
     : (deletedCard = savedMovieCardList.find((savedMovieCard) => {
         return movieCard.id === savedMovieCard.movieId;
       }));
-
-  console.log(deletedCard);
   mainApi
     .deleteCard(deletedCard)
     .then(() => {
-      handleDeleteCardFromCardList(deletedCard);
+      if (deletedCard._id) {
+        setSavedMovieCardList((state) =>
+          state.filter((c) => c._id !== deletedCard._id)
+        );
+      } else if (deletedCard.id) {
+        const card = savedMovieCardList.find((savedMovieCard) => {
+          return deletedCard.id === savedMovieCard.movieId;
+        });
+        setSavedMovieCardList((state) =>
+          state.filter(() => card._id !== deletedCard._id)
+        );
+      }
       evt.target.classList.toggle("movies-card__button_save-button");
       evt.target.classList.toggle("movies-card__button_save-button_inactive");
       setCardDeleteButtonClick(!isCardDeleteButtonClick);
     })
-    .then(() => {
-      console.log(savedMovieCardList);
-    })
+    .then(() => {})
     .catch((err) => {
       setErrorMessage(
         "Фильм не удалён!",

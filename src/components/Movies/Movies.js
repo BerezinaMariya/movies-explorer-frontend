@@ -17,7 +17,6 @@ function Movies(props) {
     isMoviesCardsReceived,
     isSavedMoviesCardsReceived,
     isErrorMessage,
-    reqCounter,
     onSearchMovie,
     filterCheckboxState,
     filterCheckboxStateStringify,
@@ -60,7 +59,6 @@ function Movies(props) {
         isMoviesCardsReceived={isMoviesCardsReceived}
         isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
         isErrorMessage={isErrorMessage}
-        reqCounter={reqCounter}
       />
       <MoreFilms
         cardListLength={cardListLength}

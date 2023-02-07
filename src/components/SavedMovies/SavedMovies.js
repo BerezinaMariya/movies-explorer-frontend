@@ -22,15 +22,14 @@ function SavedMovies(props) {
     isMoviesSearchButtonClick,
     setMoviesSearchButtonClick,
     getSavedMoviesCards,
-    setMoviesCardList
+    setSavedMoviesCardList
   } = props;
  
   useEffect(() => {
     getSavedMoviesCards();
     const movieNameInput = "";
     const filterCheckbox = false;
-    setMoviesCardList(movieNameInput, filterCheckbox);
-    console.log("getSavedMoviesCards");
+    setSavedMoviesCardList(movieNameInput, filterCheckbox);
   }, []);
 
   return (

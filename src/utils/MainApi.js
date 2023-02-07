@@ -1,7 +1,7 @@
 class MainApi {
   constructor() {
-    //   this.baseUrl = "api.movies-explorer.berez.nomoredomains.club";
-    this.baseUrl = "http://localhost:3001";
+    this.baseUrl = "https://api.movies-explorer.berez.nomoredomains.club";
+    // this.baseUrl = "http://localhost:3001";
     this.cardsImagesBaseUrl = "https://api.nomoreparties.co";
   }
 

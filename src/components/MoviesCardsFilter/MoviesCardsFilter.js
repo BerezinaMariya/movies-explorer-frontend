@@ -4,34 +4,39 @@ function MoviesCardsFilter() {
     movieNameValue,
     filterCheckboxState
   ) {
-    const filteredCards = initialMoviesCardList.filter((card) => {
-      if (filterCheckboxState) {
-        return (
-          (card.duration <= 40) &
-          (card.nameRU.includes(movieNameValue) ||
-            card.nameEN.includes(movieNameValue))
-        );
-      } else {
-        return (
-          card.nameRU.includes(movieNameValue) ||
-          card.nameEN.includes(movieNameValue)
-        );
-      }
-    });
+    let filteredCards;
+    if (initialMoviesCardList) {
+      filteredCards = initialMoviesCardList.filter((card) => {
+        if (filterCheckboxState) {
+          return (
+            (card.duration <= 40) &
+            (card.nameRU.includes(movieNameValue) ||
+              card.nameEN.includes(movieNameValue))
+          );
+        } else {
+          return (
+            card.nameRU.includes(movieNameValue) ||
+            card.nameEN.includes(movieNameValue)
+          );
+        }
+      });
+    }
     return filteredCards;
   }
 
   function filterMoviesCards(filteredCardList, savedMoviesCardList) {
-    const cardListWithSavedCards = filteredCardList.filter((movieCard) => {
-      savedMoviesCardList.some((savedMovieCard) => {
-        return movieCard.id === savedMovieCard.movieId
-          ? (movieCard.saved = true)
-          : (movieCard.saved = false);
+    if (filteredCardList) {
+      const cardListWithSavedCards = filteredCardList.filter((movieCard) => {
+        savedMoviesCardList.some((savedMovieCard) => {
+          return movieCard.id === savedMovieCard.movieId
+            ? (movieCard.saved = true)
+            : (movieCard.saved = false);
+        });
+        return movieCard;
       });
-      return movieCard;
-    });
 
-    return cardListWithSavedCards;
+      return cardListWithSavedCards;
+    }
   }
 
   function setInitialCardListLength(windowWidth, setCardListLength) {

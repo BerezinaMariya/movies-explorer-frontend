@@ -29,10 +29,15 @@ function MoreFilms(props) {
         onClick={handleClick}
         className={`more-films__button ${
           cardListLength < 3 ||
-          cardListLength >= filteredMoviesCardList.length ||
           isPreloader || !isMoviesCardsReceived || isErrorMessage
             ? "more-films__button_hidden"
             : ""
+        }
+        ${
+          filteredMoviesCardList &&
+            cardListLength >= filteredMoviesCardList.length
+              ? "more-films__button_hidden"
+              : ""
         }
         `}
       >

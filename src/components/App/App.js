@@ -67,6 +67,7 @@ function App() {
   const loggedInBoolean = JSON.parse(localStorage.getItem("loggedIn"));
   const [loggedIn, setLoggedIn] = useState(loggedInBoolean);
   const [isPreloader, setPreloader] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [isMoviesSearchButtonClick, setMoviesSearchButtonClick] =
     useState(false);
   const [successStatusMessage, setSuccessStatusMessage] = useState("");
@@ -87,7 +88,6 @@ function App() {
   const [isMovieName, setIsMovieName] = useState(true);
   const [cardList, setCardList] = useState([]);
   const [isErrorMessage, setErrorMessage] = useState(false);
-  const [reqCounter, setReqCounter] = useState(0);
 
   function closeAllPopups() {
     setInfoTooltipOpen(false);
@@ -146,7 +146,6 @@ function App() {
       setMovieCardList,
       setSavedMovieCardList,
       setMovieName,
-      setReqCounter,
       setFilterCheckboxState,
       setSuccessStatusMessage,
       setRegOrLogSucsessStatus,
@@ -155,17 +154,15 @@ function App() {
   }
 
   function handleGetMoviesCards() {
-    getMoviesCards(
-      setPreloader,
-      setMovieCardList,
-      setMoviesCardsReceived,
-      reqCounter,
-      setReqCounter
-    );
+    getMoviesCards(setPreloader, setMovieCardList, setMoviesCardsReceived);
   }
 
   function handleGetSavedMoviesCards() {
-    getSavedMoviesCards(setSavedMovieCardList, setSavedMoviesCardsReceived);
+    getSavedMoviesCards(
+      setLoading,
+      setSavedMovieCardList,
+      setSavedMoviesCardsReceived
+    );
   }
 
   function handleSaveMovieCard(movieCard, evt) {
@@ -179,26 +176,11 @@ function App() {
     );
   }
 
-  function handleDeleteCardFromCardList(deletedCard) {
-    if (deletedCard._id) {
-      setSavedMovieCardList((state) =>
-        state.filter((c) => c._id !== deletedCard._id)
-      );
-    } else if (deletedCard.id) {
-      const card = savedMovieCardList.find((savedMovieCard) => {
-        return deletedCard.id === savedMovieCard.movieId;
-      });
-      setSavedMovieCardList((state) =>
-        state.filter((c) => card._id !== deletedCard._id)
-      );
-    }
-  }
-
   function handleDeleteMovieCard(movieCard, evt) {
     deleteCard(
       movieCard,
       evt,
-      handleDeleteCardFromCardList,
+      setSavedMovieCardList,
       savedMovieCardList,
       isCardDeleteButtonClick,
       setCardDeleteButtonClick,
@@ -228,7 +210,6 @@ function App() {
 
     setFilteredMoviesCardList(filteredMoviesCardList);
     setCardList(filteredMoviesCardList);
-    console.log("MoviesFilter");
   }
 
   function handleSetSavedMovieCardList(movieNameInput, filterCheckbox) {
@@ -240,35 +221,48 @@ function App() {
 
     setFilteredMoviesCardList(filteredCardList);
     setCardList(filteredCardList);
-
-    console.log("savedMoviesFilter");
   }
 
   function handleSearchMovieButtonClick() {
     if (pathName === "/movies") {
-      if (movieCardListArr.length === 0) {
-        handleGetMoviesCards();
-      } else {
-        handleSetMovieCardList(movieName, filterCheckboxState);
-      }
+      console.log(movieCardListArr);
+      if (movieCardListArr) {
+        if (movieCardListArr.length > 0) {
+          handleSetMovieCardList(movieName, filterCheckboxState);
+        } else {
+          handleGetMoviesCards();
+          console.log("GETmovie");
+        }
+      } 
     } else {
       handleSetSavedMovieCardList(movieName, filterCheckboxState);
     }
-    console.log(cardList);
     setMoviesSearchButtonClick(!isMoviesSearchButtonClick);
   }
 
+  let isCardList;
+  if (!cardList) {
+    isCardList = false;
+  } else {
+    isCardList = true;
+  }
+
   function handleError() {
-    if (
-      !isMovieName ||
-      !isMoviesCardsReceived ||
-      !isSavedMoviesCardsReceived ||
-      cardList.length === 0
-    ) {
-      setErrorMessage(true);
-    } else {
-      setErrorMessage(false);
-    }
+      if (
+        !isMovieName ||
+        !isMoviesCardsReceived ||
+        !isSavedMoviesCardsReceived 
+      ) {
+        setErrorMessage(true);
+      } else if (isCardList) {
+        if (cardList.length === 0) {
+          setErrorMessage(true);
+        } else {
+          setErrorMessage(false);
+        }
+      } else {
+        setErrorMessage(false);
+      }
   }
 
   //Закрытие popup по клику по overlay
@@ -308,15 +302,16 @@ function App() {
 
   useEffect(() => {
     if (pathName === "/movies") {
-      if (!isPreloader) {
+      if (!isPreloader || !isLoading) {
         handleSetMovieCardList(movieName, filterCheckboxState);
       }
-    } else {
+    }
+  }, [isPreloader, isLoading, isMoviesSearchButtonClick, filterCheckboxState]);
+
+  useEffect(() => {
+    if (pathName === "/saved-movies") {
       handleSetSavedMovieCardList(movieName, filterCheckboxState);
     }
-    console.log("useOfMany");
-    console.log(savedMovieCardList);
-    console.log(movieCardList);
   }, [isPreloader, isMoviesSearchButtonClick, filterCheckboxState]);
 
   useEffect(() => {
@@ -385,7 +380,6 @@ function App() {
               isMoviesCardsReceived={isMoviesCardsReceived}
               isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
               isErrorMessage={isErrorMessage}
-              reqCounter={reqCounter}
               onSearchMovie={handleSearchMovieButtonClick}
               filterCheckboxState={filterCheckboxState}
               filterCheckboxStateStringify={filterCheckboxStateStringify}
@@ -419,7 +413,7 @@ function App() {
               isMoviesSearchButtonClick={isMoviesSearchButtonClick}
               setMoviesSearchButtonClick={setMoviesSearchButtonClick}
               getSavedMoviesCards={handleGetSavedMoviesCards}
-              setMoviesCardList={handleSetSavedMovieCardList}
+              setSavedMoviesCardList={handleSetSavedMovieCardList}
               component={SavedMovies}
             />
             <ProtectedRoute

@@ -15,13 +15,21 @@ function MoviesCardList(props) {
     isMoviesCardsReceived,
     isSavedMoviesCardsReceived,
     isErrorMessage,
-    reqCounter
   } = props;
 
   const location = useLocation();
   const pathName = location.pathname;
 
+  console.log(cardList);
+
   onError();
+
+  let isCardList;
+  if (!cardList) {
+    isCardList = false;
+  } else {
+    isCardList = true;
+  }
 
   return (
     <section
@@ -38,10 +46,11 @@ function MoviesCardList(props) {
         isMoviesCardsReceived={isMoviesCardsReceived}
         isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
         isMovieName={isMovieName}
+        isCardList={isCardList}
         cardList={cardList}
-        reqCounter={reqCounter}
       />
-      ) : ( cardList.map((card, i) => {
+      ) : ( isCardList &&
+         cardList.map((card, i) => {
           return (
             (((pathName === "/movies") & (i < cardListLength)) ||
               (pathName === "/saved-movies")) && 
@@ -53,6 +62,7 @@ function MoviesCardList(props) {
               />
           );
         })
+
       )}
     </section>
   );
