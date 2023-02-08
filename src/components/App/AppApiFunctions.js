@@ -137,12 +137,12 @@ function setUserInfo(
 
 function logOut(
   setLoggedIn,
+  setFirstRequest,
   history,
   setCurrentUser,
   setMovieCardList,
   setSavedMovieCardList,
   setMovieName,
-  setReqCounter,
   setFilterCheckboxState,
   setSuccessStatusMessage,
   setRegOrLogSucsessStatus,
@@ -152,6 +152,7 @@ function logOut(
     .logOut()
     .then(() => {
       setLoggedIn(false);
+      setFirstRequest(false);
       history.push("/");
       setCurrentUser({});
       setMovieCardList([]);
@@ -159,6 +160,7 @@ function logOut(
       setMovieName("");
       setFilterCheckboxState(false);
       localStorage.setItem("loggedIn", false);
+      localStorage.setItem("isFirstRequest", false);
       localStorage.setItem("initialMoviesCardList", JSON.stringify([]));
       localStorage.setItem("initialSavedMoviesCardList", JSON.stringify([]));
       localStorage.setItem("сardList", JSON.stringify([]));
@@ -177,6 +179,7 @@ function logOut(
 }
 
 function getMoviesCards(
+  setFirstRequest,
   setPreloader,
   setMovieCardList,
   setMoviesCardsReceived,
@@ -189,6 +192,8 @@ function getMoviesCards(
       localStorage.setItem("initialMoviesCardList", JSON.stringify(res));
       setMovieCardList(res);
       setMoviesCardsReceived(true);
+      setFirstRequest(true);
+      localStorage.setItem("isFirstRequest", true);
     })
     .catch(() => {
       setMoviesCardsReceived(false);

@@ -88,6 +88,8 @@ function App() {
   const [isMovieName, setIsMovieName] = useState(true);
   const [cardList, setCardList] = useState([]);
   const [isErrorMessage, setErrorMessage] = useState(false);
+  const isFirstRequestStringify = localStorage.getItem("isFirstRequest");
+  const [isFirstRequest, setFirstRequest] = useState(JSON.parse(isFirstRequestStringify));
 
   function closeAllPopups() {
     setInfoTooltipOpen(false);
@@ -141,6 +143,7 @@ function App() {
   function handleLogout() {
     logOut(
       setLoggedIn,
+      setFirstRequest,
       history,
       setCurrentUser,
       setMovieCardList,
@@ -154,7 +157,12 @@ function App() {
   }
 
   function handleGetMoviesCards() {
-    getMoviesCards(setPreloader, setMovieCardList, setMoviesCardsReceived);
+    getMoviesCards(
+      setFirstRequest,
+      setPreloader,
+      setMovieCardList,
+      setMoviesCardsReceived
+    );
   }
 
   function handleGetSavedMoviesCards() {
@@ -225,44 +233,34 @@ function App() {
 
   function handleSearchMovieButtonClick() {
     if (pathName === "/movies") {
-      console.log(movieCardListArr);
-      if (movieCardListArr) {
+      if (isFirstRequest) {
         if (movieCardListArr.length > 0) {
           handleSetMovieCardList(movieName, filterCheckboxState);
-        } else {
-          handleGetMoviesCards();
-          console.log("GETmovie");
         }
-      } 
+      } else {
+        handleGetMoviesCards();
+      }
     } else {
       handleSetSavedMovieCardList(movieName, filterCheckboxState);
     }
     setMoviesSearchButtonClick(!isMoviesSearchButtonClick);
   }
 
-  let isCardList;
-  if (!cardList) {
-    isCardList = false;
-  } else {
-    isCardList = true;
-  }
-
   function handleError() {
+    if (isFirstRequest) {
       if (
         !isMovieName ||
         !isMoviesCardsReceived ||
-        !isSavedMoviesCardsReceived 
+        !isSavedMoviesCardsReceived ||
+        cardList.length === 0
       ) {
         setErrorMessage(true);
-      } else if (isCardList) {
-        if (cardList.length === 0) {
-          setErrorMessage(true);
-        } else {
-          setErrorMessage(false);
-        }
       } else {
         setErrorMessage(false);
       }
+    } else {
+      setErrorMessage(false);
+    }
   }
 
   //Закрытие popup по клику по overlay

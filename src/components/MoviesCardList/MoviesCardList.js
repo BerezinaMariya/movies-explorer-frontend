@@ -20,8 +20,6 @@ function MoviesCardList(props) {
   const location = useLocation();
   const pathName = location.pathname;
 
-  console.log(cardList);
-
   onError();
 
   let isCardList;
