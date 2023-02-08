@@ -29,3 +29,4 @@
 Ссылка на проект 4 этапа на GitHub: https://github.com/BerezinaMariya/movies-explorer-frontend/tree/level-3
 Ссылка на пул реквест, открытый из ветки level-3 в main: https://github.com/BerezinaMariya/movies-explorer-frontend/pull/2
 Ссылка на макет, сгенерированный в Figma: https://disk.yandex.ru/d/BJOeNHYMH102dw
+Ссылка на пул реквест, открытый из ветки level-3 в main: https://github.com/BerezinaMariya/movies-explorer-frontend/pull/2
