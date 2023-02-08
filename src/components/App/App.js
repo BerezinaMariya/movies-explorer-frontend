@@ -358,7 +358,6 @@ function App() {
             onClose={closeAllPopups}
             onCloseByOverlay={setCloseByOverlayListener}
             onCloseByEsc={handleCloseByEsc}
-            onLogOut={handleLogout}
           />
           <Switch>
             <Route exact path="/">

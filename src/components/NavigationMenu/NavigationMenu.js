@@ -8,7 +8,6 @@ function NavigationMenu(props) {
     onClose,
     onCloseByOverlay,
     onCloseByEsc,
-    onLogOut,
   } = props;
 
   const location = useLocation();
@@ -17,13 +16,6 @@ function NavigationMenu(props) {
   const popupRef = useRef();
 
   const [width, setWidth] = useState(window.innerWidth);
-
-  function handleLogOut() {
-    onClose();
-    if (loggedIn) {
-      onLogOut();
-    }
-  }
 
   useEffect(() => {
     if (isOpen) {
@@ -86,7 +78,6 @@ function NavigationMenu(props) {
         >
           <Link
             to="/"
-            onClick={handleLogOut}
             className={`navigation-menu__link navigation-menu__link_main-link ${
               pathName === "/" ? "navigation-menu__link_active" : ""
             }`}

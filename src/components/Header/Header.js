@@ -9,7 +9,6 @@ function Header(props) {
     onClose,
     onCloseByOverlay,
     onCloseByEsc,
-    onLogOut,
   } = props;
 
   const location = useLocation();
@@ -35,7 +34,6 @@ function Header(props) {
         onClose={onClose}
         onCloseByOverlay={onCloseByOverlay}
         onCloseByEsc={onCloseByEsc}
-        onLogOut={onLogOut}
       />
     </header>
   );

@@ -9,8 +9,7 @@ function Navigation(props) {
     onMenuButtonClick,
     onClose,
     onCloseByOverlay,
-    onCloseByEsc,
-    onLogOut,
+    onCloseByEsc
   } = props;
 
   const location = useLocation();
@@ -18,12 +17,6 @@ function Navigation(props) {
 
   function handleMenuButtonClick() {
     onMenuButtonClick();
-  }
-
-  function handleLogOut() {
-    if (loggedIn) {
-      onLogOut();
-    }
   }
 
   return (
@@ -41,7 +34,7 @@ function Navigation(props) {
             : "navigation__logo-link-block_logIn"
         }`}
       >
-        <Link to="/" onClick={handleLogOut} className="navigation__logo-link">
+        <Link to="/" className="navigation__logo-link">
           <img
             className="navigation__logo"
             src={navigationLogo}
@@ -56,7 +49,6 @@ function Navigation(props) {
         onClose={onClose}
         onCloseByOverlay={onCloseByOverlay}
         onCloseByEsc={onCloseByEsc}
-        onLogOut={onLogOut}
       />
 
       <div
