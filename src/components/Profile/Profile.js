@@ -10,29 +10,35 @@ function Profile(props) {
   const { values, handleChange, errors, isFormValid, resetForm } =
     FormValidator();
 
-  const [isButtonActive, setButtonActive] = useState(false);
+  const [isEqualValues, setEqualValues] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   function handleSubmit(evt) {
     evt.preventDefault();
 
-    updateUserInfo({ name: values.userName, email: values.userEmail });
+    updateUserInfo({
+      name: name,
+      about: email,
+    });
     resetForm();
   }
 
   useEffect(() => {
-    if (
-      (values.userName === currentUser.name) &
-      (values.userEmail === currentUser.email)
-    ) {
-      setButtonActive(false);
-    } else {
-      setButtonActive(true);
-    }
+    setEqualValues(
+      values.userName !== currentUser.name ||
+        values.userEmail !== currentUser.email
+    );
   }, [values.userName, values.userEmail]);
 
   useEffect(() => {
     getUserInfo();
   }, []);
+
+  useEffect(() => {
+    setName(currentUser.name);
+    setEmail(currentUser.email);
+  }, [currentUser, props.isOpen]);
 
   return (
     <section className="profile">
@@ -47,8 +53,7 @@ function Profile(props) {
           }`}
           type="text"
           name="userName"
-          placeholder="Имя"
-          value={`${values.userName ? values.userName : ""}`}
+          value={`${values.userName ? values.userName : name}`}
           required
           minLength="2"
           maxLength="30"
@@ -72,8 +77,7 @@ function Profile(props) {
           type="email"
           name="userEmail"
           required
-          placeholder="E-mail"
-          value={`${values.userEmail ? values.userEmail : ""}`}
+          value={`${values.userEmail ? values.userEmail : email}`}
           onChange={handleChange}
         />
         <span
@@ -87,11 +91,11 @@ function Profile(props) {
         <button
           type="submit"
           disabled={`${isFormValid ? false : true}
-            ${isFormValid ? false : true}`}
+            ${isEqualValues ? false : true}`}
           className={`profile__text profile-form__submit-button ${
             isFormValid ? "" : "profile-form__submit-button_inactive"
           }
-          ${isButtonActive ? "" : "profile-form__submit-button_inactive"}`}
+          ${isEqualValues ? "" : "profile-form__submit-button_inactive"}`}
         >
           Редактировать
         </button>
