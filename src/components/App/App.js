@@ -122,6 +122,7 @@ function App() {
 
   function handleGetUserInfo() {
     getUserInfo(
+      setLoading,
       setCurrentUser,
       setLoggedIn,
       setSuccessStatusMessage,
@@ -417,6 +418,7 @@ function App() {
             <ProtectedRoute
               path="/profile"
               loggedIn={loggedIn}
+              isLoading={isLoading}
               getUserInfo={handleGetUserInfo}
               updateUserInfo={handleUpdateUserInfo}
               onLogout={handleLogout}

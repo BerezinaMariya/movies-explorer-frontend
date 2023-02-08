@@ -85,12 +85,14 @@ function logIn(
 }
 
 function getUserInfo(
+  setLoading,
   setCurrentUser,
   setLoggedIn,
   setSuccessStatusMessage,
   setRegOrLogSucsessStatus,
   setInfoTooltipOpen
 ) {
+  setLoading(true);
   mainApi
     .getUserInfo()
     .then((res) => {
@@ -106,6 +108,9 @@ function getUserInfo(
         setRegOrLogSucsessStatus,
         setInfoTooltipOpen
       );
+    })
+    .finally(() => {
+      setLoading(false);
     });
 }
 

@@ -4,41 +4,59 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { FormValidator } from "../FormValidator/FormValidator";
 
 function Profile(props) {
-  const { onLogout, getUserInfo, updateUserInfo } = props;
+  const { onLogout, isLoading, getUserInfo, updateUserInfo } = props;
 
   const currentUser = useContext(CurrentUserContext);
   const { values, handleChange, errors, isFormValid, resetForm } =
     FormValidator();
 
-  const [isEqualValues, setEqualValues] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState(currentUser.name);
+  const [email, setEmail] = useState(currentUser.email);
+  const [isEqualValues, seEqualValues] = useState(true);
 
-  function handleSubmit(evt) {
+ function handleSubmit(evt) {
     evt.preventDefault();
-
-    updateUserInfo({
-      name: name,
-      about: email,
-    });
-    resetForm();
+    console.log();
+    if (!isEqualValues) {
+      updateUserInfo({
+        name: values.userName,
+        email: values.userEmail,
+      });
+      resetForm();
+    }
   }
-
-  useEffect(() => {
-    setEqualValues(
-      values.userName !== currentUser.name ||
-        values.userEmail !== currentUser.email
-    );
-  }, [values.userName, values.userEmail]);
 
   useEffect(() => {
     getUserInfo();
   }, []);
 
   useEffect(() => {
-    setName(currentUser.name);
-    setEmail(currentUser.email);
-  }, [currentUser, props.isOpen]);
+    let name = true;
+    let email = true;
+    if (values.userName) {
+      name = (values.userName === currentUser.name);
+    }
+    if (values.userEmail) {
+      email = (values.userEmail === currentUser.email);
+    }
+    seEqualValues(name && email);
+  }, [values.userName, values.userEmail]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      setName(currentUser.name);
+      setEmail(currentUser.email);
+    }
+  }, [currentUser, isLoading]);
+
+  useEffect(() => {
+    if (values.userName) {
+      setName(values.userName);
+    }
+    if (values.userEmail) {
+      setEmail(values.userEmail);
+    }
+  }, [values.userName, values.userEmail]);
 
   return (
     <section className="profile">
@@ -91,11 +109,11 @@ function Profile(props) {
         <button
           type="submit"
           disabled={`${isFormValid ? false : true}
-            ${isEqualValues ? false : true}`}
+            ${isEqualValues ? true : false}`}
           className={`profile__text profile-form__submit-button ${
             isFormValid ? "" : "profile-form__submit-button_inactive"
           }
-          ${isEqualValues ? "" : "profile-form__submit-button_inactive"}`}
+          ${isEqualValues ? "profile-form__submit-button_inactive" : ""}`}
         >
           Редактировать
         </button>
