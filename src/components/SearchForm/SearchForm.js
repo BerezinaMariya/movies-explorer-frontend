@@ -49,6 +49,12 @@ function SearchForm(props) {
     }
   }, [pathName]);
 
+  useEffect(() => {
+    if (pathName === "/movies") {
+      localStorage.setItem("filterCheckboxState", filterCheckboxState);
+    }
+  }, [filterCheckboxState]);
+
   return (
     <div className="search-form">
       <div className="search-form__frame">

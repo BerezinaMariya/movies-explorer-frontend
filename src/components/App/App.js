@@ -337,7 +337,7 @@ function App() {
     if (isLoggedIn) {
       handleGetUserInfo();
     }
-  }, []);
+  }, [loggedIn]);
 
   useEffect(() => {
     if (pathName === "/signin" || pathName === "/signout") {
