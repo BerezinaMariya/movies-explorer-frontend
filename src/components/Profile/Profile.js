@@ -12,15 +12,26 @@ function Profile(props) {
 
   const [name, setName] = useState(currentUser.name);
   const [email, setEmail] = useState(currentUser.email);
-  const [isEqualValues, seEqualValues] = useState(true);
+  const [isEqualValues, setEqualValues] = useState(true);
 
- function handleSubmit(evt) {
+  function handleSubmit(evt) {
     evt.preventDefault();
-    console.log();
+
+    let newUserName = "";
+    let newUserEmail = "";
+
+    values.userName
+      ? newUserName = values.userName
+      : newUserName = currentUser.name;
+
+    values.userEmail
+      ? newUserEmail = values.userEmail
+      : newUserEmail = currentUser.email;
+
     if (!isEqualValues) {
       updateUserInfo({
-        name: values.userName,
-        email: values.userEmail,
+        name: newUserName,
+        email: newUserEmail,
       });
       resetForm();
     }
@@ -34,12 +45,13 @@ function Profile(props) {
     let name = true;
     let email = true;
     if (values.userName) {
-      name = (values.userName === currentUser.name);
+      name = values.userName === currentUser.name;
     }
     if (values.userEmail) {
-      email = (values.userEmail === currentUser.email);
+      email = values.userEmail === currentUser.email;
     }
-    seEqualValues(name && email);
+    setEqualValues(name && email);
+    console.log(isFormValid);
   }, [values.userName, values.userEmail]);
 
   useEffect(() => {
@@ -108,8 +120,7 @@ function Profile(props) {
         </span>
         <button
           type="submit"
-          disabled={`${isFormValid ? false : true}
-            ${isEqualValues ? true : false}`}
+          disabled={!isFormValid || isEqualValues ? true : false}
           className={`profile__text profile-form__submit-button ${
             isFormValid ? "" : "profile-form__submit-button_inactive"
           }
