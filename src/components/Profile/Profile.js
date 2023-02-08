@@ -107,6 +107,7 @@ function Profile(props) {
           type="email"
           name="userEmail"
           required
+          pattern="^\w+@\w+\.(com|net|ru)$"
           value={`${values.userEmail ? values.userEmail : email}`}
           onChange={handleChange}
         />

@@ -65,6 +65,7 @@ function RegisterAndLogin(props) {
           type="email"
           name="email"
           required
+          pattern="^\w+@\w+\.(com|net|ru)$"
           value={`${values.email ? values.email : ""}`}
           onChange={handleChange}
         />
