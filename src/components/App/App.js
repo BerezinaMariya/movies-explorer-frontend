@@ -341,9 +341,9 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (pathName === "/") {
+    if (pathName === "/signin" || pathName === "/signout") {
       if (loggedIn) {
-        history.push("/movies");
+        history.push("/");
       }
     }
   }, []);
