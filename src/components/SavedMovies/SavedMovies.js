@@ -27,6 +27,7 @@ function SavedMovies(props) {
  
   useEffect(() => {
     getSavedMoviesCards();
+    setIsMovieName(true);
     setSavedMoviesCardList("", false);
   }, []);
 

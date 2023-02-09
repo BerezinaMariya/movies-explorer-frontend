@@ -79,7 +79,7 @@ function App() {
   const filterCheckboxStateStringify = localStorage.getItem(
     "filterCheckboxState"
   );
-  const [filterCheckboxState, setFilterCheckboxState] = useState(false);
+  const [filterCheckboxState, setFilterCheckboxState] = useState(filterCheckboxStateStringify);
   const [savedMoviesFilterCheckboxState, setSavedMoviesFilterCheckboxState] =
     useState(false);
   const [isCardDeleteButtonClick, setCardDeleteButtonClick] = useState(false);

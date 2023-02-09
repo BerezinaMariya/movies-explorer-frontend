@@ -30,7 +30,7 @@ function Profile(props) {
 
     if (!isEqualValues) {
       updateUserInfo({
-        nam: newUserName,
+        name: newUserName,
         email: newUserEmail,
       });
       resetForm();
@@ -51,7 +51,6 @@ function Profile(props) {
       email = values.userEmail === currentUser.email;
     }
     setEqualValues(name && email);
-    console.log(isFormValid);
   }, [values.userName, values.userEmail]);
 
   useEffect(() => {

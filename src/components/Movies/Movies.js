@@ -33,6 +33,7 @@ function Movies(props) {
 
   useEffect(() => {
     getSavedMoviesCards();
+    setIsMovieName(true);
     setMoviesCardList(movieName, filterCheckboxState);
   }, []);
 
