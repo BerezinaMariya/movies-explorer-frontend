@@ -78,6 +78,7 @@ function NavigationMenu(props) {
         >
           <Link
             to="/"
+            onClick={onClose}
             className={`navigation-menu__link navigation-menu__link_main-link ${
               pathName === "/" ? "navigation-menu__link_active" : ""
             }`}

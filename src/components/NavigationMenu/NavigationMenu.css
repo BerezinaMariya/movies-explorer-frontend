@@ -179,13 +179,15 @@
 
 @media screen and (max-width: 1023px) {
     .navigation-menu__profile-link {
-        margin-top: 621px;
+        margin-top: 100px;
     }
 }
 
+/* 621 443 */
+
 @media screen and (max-width: 520px) {
     .navigation-menu__profile-link {
-        margin-top: 443px;
+        margin-top: 100px;
     }
 }
 
