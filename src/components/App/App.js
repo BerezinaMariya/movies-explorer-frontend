@@ -397,6 +397,7 @@ function App() {
               windowWidth={windowWidth}
               getSavedMoviesCards={handleGetSavedMoviesCards}
               setMoviesCardList={handleSetMovieCardList}
+              isFirstRequest={isFirstRequest}
               component={Movies}
             />
             <ProtectedRoute

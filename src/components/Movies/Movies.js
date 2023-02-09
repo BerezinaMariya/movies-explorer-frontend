@@ -27,7 +27,8 @@ function Movies(props) {
     filteredMoviesCardList,
     windowWidth,  
     getSavedMoviesCards,
-    setMoviesCardList
+    setMoviesCardList,
+    isFirstRequest
   } = props;
 
   useEffect(() => {
@@ -64,9 +65,9 @@ function Movies(props) {
         setCardListLength={setCardListLength}
         filteredMoviesCardList={filteredMoviesCardList}
         isPreloader={isPreloader}
-        isMoviesCardsReceived={isMoviesCardsReceived}
         isErrorMessage={isErrorMessage}
         windowWidth={windowWidth}
+        isFirstRequest={isFirstRequest}
       />
     </section>
   );
