@@ -1,10 +1,12 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import EmptyComponent from "../EmptyComponent/EmptyComponent";
 
 function SavedMovies(props) {
   const {
+    isLoading,
     savedMovieCardList,
     onDeleteMovieCard,
     onError,
@@ -12,6 +14,7 @@ function SavedMovies(props) {
     cardListLength,
     isMovieName,
     setIsMovieName,
+    savedMovieName,
     setSavedMovieName,
     isPreloader,
     isSavedMoviesCardsReceived,
@@ -22,14 +25,29 @@ function SavedMovies(props) {
     isMoviesSearchButtonClick,
     setMoviesSearchButtonClick,
     getSavedMoviesCards,
-    setSavedMoviesCardList
+    setSavedMoviesCardList,
+    isCardDeleteButtonClick,
   } = props;
- 
+
+  const location = useLocation();
+  const pathName = location.pathname;
+
   useEffect(() => {
     getSavedMoviesCards();
     setIsMovieName(true);
-    setSavedMoviesCardList("", false);
   }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      setSavedMoviesCardList("", false);
+    }
+  }, [isLoading, isCardDeleteButtonClick]);
+
+  useEffect(() => {
+    if (pathName === "/saved-movies") {
+      setSavedMoviesCardList(savedMovieName, savedMoviesFilterCheckboxState);
+    }
+  }, [isMoviesSearchButtonClick, savedMoviesFilterCheckboxState]);
 
   return (
     <section>

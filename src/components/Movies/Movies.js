@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import MoreFilms from "../MoreFilms/MoreFilms";
@@ -11,11 +12,13 @@ function Movies(props) {
     cardList,
     cardListLength,
     setCardListLength,
+    setInitialCardListLength,
     isMovieName,
     setIsMovieName,
     movieName,
     setMovieName,
     isPreloader,
+    isLoading,
     isMoviesCardsReceived,
     isSavedMoviesCardsReceived,
     isErrorMessage,
@@ -25,17 +28,52 @@ function Movies(props) {
     isMoviesSearchButtonClick,
     setMoviesSearchButtonClick,
     filteredMoviesCardList,
-    windowWidth,  
+    windowWidth,
+    setWindowWidth,
     getSavedMoviesCards,
     setMoviesCardList,
-    isFirstRequest
+    isFirstRequest,
   } = props;
+
+  const location = useLocation();
+  const pathName = location.pathname;
 
   useEffect(() => {
     getSavedMoviesCards();
     setIsMovieName(true);
-    setMoviesCardList(movieName, filterCheckboxState);
   }, []);
+
+  useEffect(() => {
+    const handleResize = (evt) => {
+      setTimeout(() => {
+        setWindowWidth(evt.target.innerWidth);
+      }, 500);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (pathName === "/movies") {
+      setInitialCardListLength(windowWidth, setCardListLength);
+    }
+  }, [windowWidth]);
+
+  useEffect(() => {
+    if (pathName === "/movies") {
+      if (!isPreloader && !isLoading) {
+        setMoviesCardList(movieName, filterCheckboxState);
+      }
+    }
+  }, [isPreloader, isLoading]);
+
+  useEffect(() => {
+    if (pathName === "/movies") {
+      setMoviesCardList(movieName, filterCheckboxState);
+    }
+  }, [isMoviesSearchButtonClick, filterCheckboxState]);
 
   return (
     <section>

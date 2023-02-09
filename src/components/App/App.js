@@ -79,7 +79,9 @@ function App() {
   const filterCheckboxStateStringify = localStorage.getItem(
     "filterCheckboxState"
   );
-  const [filterCheckboxState, setFilterCheckboxState] = useState(filterCheckboxStateStringify);
+  const [filterCheckboxState, setFilterCheckboxState] = useState(
+    JSON.parse(filterCheckboxStateStringify)
+  );
   const [savedMoviesFilterCheckboxState, setSavedMoviesFilterCheckboxState] =
     useState(false);
   const [isCardDeleteButtonClick, setCardDeleteButtonClick] = useState(false);
@@ -295,51 +297,6 @@ function App() {
   }
 
   useEffect(() => {
-    const handleResize = (evt) => {
-      setTimeout(() => {
-        setWindowWidth(evt.target.innerWidth);
-      }, 500);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (pathName === "/movies") {
-      setInitialCardListLength(windowWidth, setCardListLength);
-    }
-  }, [windowWidth]);
-
-  useEffect(() => {
-    if (pathName === "/movies") {
-      if (!isPreloader && !isLoading) {
-        handleSetMovieCardList(movieName, filterCheckboxState);
-      }
-    } else {
-      if (!isLoading) {
-        handleSetSavedMovieCardList("", false);
-      }
-    }
-  }, [isPreloader, isLoading, isCardDeleteButtonClick]);
-
-  useEffect(() => {
-    if (pathName === "/movies") {
-      handleSetMovieCardList(movieName, filterCheckboxState);
-    }
-  }, [isMoviesSearchButtonClick, filterCheckboxState]);
-
-  useEffect(() => {
-    if (pathName === "/saved-movies") {
-      handleSetSavedMovieCardList(
-        savedMovieName,
-        savedMoviesFilterCheckboxState
-      );
-    }
-  }, [isMoviesSearchButtonClick, savedMoviesFilterCheckboxState]);
-
-  useEffect(() => {
     const isLoggedIn = JSON.parse(localStorage.getItem("loggedIn"));
     if (isLoggedIn) {
       handleGetUserInfo();
@@ -379,9 +336,11 @@ function App() {
               cardList={cardList}
               cardListLength={cardListLength}
               setCardListLength={setCardListLength}
+              setInitialCardListLength={setInitialCardListLength}
               isMovieName={isMovieName}
               setIsMovieName={setIsMovieName}
               isPreloader={isPreloader}
+              isLoading={isLoading}
               isMoviesCardsReceived={isMoviesCardsReceived}
               isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
               isErrorMessage={isErrorMessage}
@@ -395,6 +354,7 @@ function App() {
               setMovieName={setMovieName}
               filteredMoviesCardList={filteredMoviesCardList}
               windowWidth={windowWidth}
+              setWindowWidth={setWindowWidth}
               getSavedMoviesCards={handleGetSavedMoviesCards}
               setMoviesCardList={handleSetMovieCardList}
               isFirstRequest={isFirstRequest}
@@ -403,13 +363,16 @@ function App() {
             <ProtectedRoute
               path="/saved-movies"
               loggedIn={loggedIn}
+              isLoading={isLoading}
               savedMovieCardList={savedMovieCardList}
+              setSavedMoviesCardList={handleSetSavedMovieCardList}
               onDeleteMovieCard={handleDeleteMovieCard}
               onError={handleError}
               cardList={cardList}
               cardListLength={cardListLength}
               isMovieName={isMovieName}
               setIsMovieName={setIsMovieName}
+              savedMovieName={savedMovieName}
               setSavedMovieName={setSavedMovieName}
               isPreloader={isPreloader}
               isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
@@ -422,7 +385,7 @@ function App() {
               isMoviesSearchButtonClick={isMoviesSearchButtonClick}
               setMoviesSearchButtonClick={setMoviesSearchButtonClick}
               getSavedMoviesCards={handleGetSavedMoviesCards}
-              setSavedMoviesCardList={handleSetSavedMovieCardList}
+              isCardDeleteButtonClick={isCardDeleteButtonClick}
               component={SavedMovies}
             />
             <ProtectedRoute
@@ -436,10 +399,16 @@ function App() {
               component={Profile}
             />
             <Route path="/signup">
-              <Register onRegister={handleRegister} isRegOrAuthLoading={isRegOrAuthLoading} />
+              <Register
+                onRegister={handleRegister}
+                isRegOrAuthLoading={isRegOrAuthLoading}
+              />
             </Route>
             <Route path="/signin">
-              <Login onLogin={handleLogin} isRegOrAuthLoading={isRegOrAuthLoading} />
+              <Login
+                onLogin={handleLogin}
+                isRegOrAuthLoading={isRegOrAuthLoading}
+              />
             </Route>
             <Route path="/404">
               <Page404NotFound />
