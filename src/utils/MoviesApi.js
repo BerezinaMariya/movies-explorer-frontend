@@ -1,6 +1,10 @@
+import {
+  MOVIES_BASE_URL
+} from "../config/Config";
+
 class MoviesApi {
   constructor() {
-    this.baseUrl = "https://api.nomoreparties.co/beatfilm-movies";
+    this.baseUrl = MOVIES_BASE_URL;
   }
 
   //Проверка ответа от сервера

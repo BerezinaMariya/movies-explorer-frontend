@@ -1,3 +1,9 @@
+import {
+  NOTHING_FOUND,
+  KEY_WORD_REQUIRED,
+  SERVER_ERROR
+} from "../../config/Config";
+
 function ErrorMovieMessage(props) {
   const {
     isReceivedMoviesCards,
@@ -11,15 +17,15 @@ function ErrorMovieMessage(props) {
     if (isMovieName) {
       if (isCardList) {
         if (cardList.length === 0) {
-          return "Ничего не найдено";
+          return NOTHING_FOUND;
         }
       }
     } else {
-      return "Нужно ввести ключевое слово";
+      return KEY_WORD_REQUIRED;
     } 
     
     if (!isReceivedMoviesCards || !isSavedMoviesCardsReceived) {
-      return "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз";
+      return SERVER_ERROR;
     }
   }
 

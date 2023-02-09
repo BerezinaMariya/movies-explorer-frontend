@@ -1,3 +1,12 @@
+import {
+  SHORT_FILMS_DURATION,
+  CARDS_QUANTITY_WW_1280,
+  CARDS_QUANTITY_WW_768_1279,
+  CARDS_QUANTITY_WW_320_767,
+  CARDS_ADD_QUANTITY_WW_1280,
+  CARDS_ADD_QUANTITY_WW_320_1279
+} from "../../config/Config";
+
 function MoviesCardsFilter() {
   function filterCards(
     initialMoviesCardList,
@@ -9,7 +18,7 @@ function MoviesCardsFilter() {
       filteredCards = initialMoviesCardList.filter((card) => {
         if (filterCheckboxState) {
           return (
-            (card.duration <= 40) &
+            (card.duration <= SHORT_FILMS_DURATION) &
             (card.nameRU.toLowerCase().includes(movieNameValue.toLowerCase()) ||
               card.nameEN.toLowerCase().includes(movieNameValue.toLowerCase()))
           );
@@ -58,19 +67,19 @@ function MoviesCardsFilter() {
   ) {
     let i;
     if (windowWidth > 1279) {
-      i = 12;
+      i = CARDS_QUANTITY_WW_1280;
       if (filteredMoviesCardList.length > i) {
-        setCardListLength(cardListLength + 3);
+        setCardListLength(cardListLength + CARDS_ADD_QUANTITY_WW_1280);
       }
     } else if ((windowWidth > 767) & (windowWidth < 1280)) {
-      i = 8;
+      i = CARDS_QUANTITY_WW_768_1279;
       if (filteredMoviesCardList.length > i) {
-        setCardListLength(cardListLength + 2);
+        setCardListLength(cardListLength + CARDS_ADD_QUANTITY_WW_320_1279);
       }
     } else if (windowWidth < 768) {
-      i = 5;
+      i = CARDS_QUANTITY_WW_320_767;
       if (filteredMoviesCardList.length > i) {
-        setCardListLength(cardListLength + 2);
+        setCardListLength(cardListLength + CARDS_ADD_QUANTITY_WW_320_1279);
       }
     }
     return;

@@ -314,14 +314,10 @@ function App() {
       }
     } else {
       if (!isLoading) {
-        handleSetSavedMovieCardList(
-          savedMovieName,
-          savedMoviesFilterCheckboxState
-        );
+        handleSetSavedMovieCardList("", false);
       }
     }
-    console.log("oops");
-  }, [isPreloader, isLoading]);
+  }, [isPreloader, isLoading, isCardDeleteButtonClick]);
 
   useEffect(() => {
     if (pathName === "/movies") {
@@ -336,13 +332,7 @@ function App() {
         savedMoviesFilterCheckboxState
       );
     }
-    console.log(savedMoviesFilterCheckboxState);
-    console.log(savedMovieName);
-  }, [
-    isMoviesSearchButtonClick,
-    savedMoviesFilterCheckboxState,
-    isCardDeleteButtonClick,
-  ]);
+  }, [isMoviesSearchButtonClick, savedMoviesFilterCheckboxState]);
 
   useEffect(() => {
     const isLoggedIn = JSON.parse(localStorage.getItem("loggedIn"));

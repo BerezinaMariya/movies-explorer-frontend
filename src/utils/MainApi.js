@@ -1,8 +1,13 @@
+import {
+  MAIN_BASE_URL,
+  CARDS_IMAGE_BASE_URL
+} from "../config/Config";
+
 class MainApi {
   constructor() {
-    this.baseUrl = "https://api.movies-explorer.berez.nomoredomains.club";
+    this.baseUrl = MAIN_BASE_URL;
     // this.baseUrl = "http://localhost:3001";
-    this.cardsImagesBaseUrl = "https://api.nomoreparties.co";
+    this.cardsImagesBaseUrl = CARDS_IMAGE_BASE_URL;
   }
 
   //Проверка ответа от сервера

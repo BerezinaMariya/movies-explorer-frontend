@@ -1,4 +1,7 @@
 import { useLocation } from "react-router-dom";
+import {
+  CARDS_IMAGE_BASE_URL
+} from "../../config/Config";
 
 function MoviesCard(props) {
   const { card, onSaveMovieCard, onDeleteMovieCard } = props;
@@ -16,7 +19,7 @@ function MoviesCard(props) {
 
   const movieCardUrl = `${
     pathName === "/movies"
-      ? `https://api.nomoreparties.co${card.image.url}`
+      ? `${CARDS_IMAGE_BASE_URL}${card.image.url}`
       : card.image
   }`;
 

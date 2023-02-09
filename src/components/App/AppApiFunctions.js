@@ -1,6 +1,18 @@
 import { mainApi } from "../../utils/MainApi";
 import { moviesApi } from "../../utils/MoviesApi";
 
+import {
+  REG_SUCCESS_MESSAGE,
+  REG_UNSUCCESS_MESSAGE,
+  LOGIN_UNSUCCESS_MESSAGE,
+  LOGOUT_UNSUCCESS_MESSAGE,
+  AUTH_UNSUCCESS_MESSAGE,
+  USER_INFO_UPDATE_SUCCESS_MESSAGE,
+  USER_INFO_UPDATE_UNSUCCESS_MESSAGE,
+  MOVIE_SAVE_UNSUCCESS_MESSAGE,
+  MOVIE_DELETE_UNSUCCESS_MESSAGE
+} from "../../config/Config";
+
 function setErrorMessage(
   errorMessage,
   err,
@@ -37,7 +49,7 @@ function register(
       registrationInfo.password
     )
     .then(() => {
-      setSuccessStatusMessage("Вы успешно зарегистрировались!");
+      setSuccessStatusMessage(REG_SUCCESS_MESSAGE);
       setRegOrLogSucsessStatus(true);
       setInfoTooltipOpen(true);
       setRegistrationInfo({});
@@ -46,7 +58,7 @@ function register(
     .then(() => history.push("/movies"))
     .catch((err) => {
       setErrorMessage(
-        "Регистрация не выполнена! Попробуйте ещё раз.",
+        REG_UNSUCCESS_MESSAGE,
         err,
         setSuccessStatusMessage,
         setRegOrLogSucsessStatus,
@@ -75,7 +87,7 @@ function logIn(
     })
     .catch((err) => {
       setErrorMessage(
-        "Вход на сайт не выполнен! Попробуйте ещё раз.",
+        LOGIN_UNSUCCESS_MESSAGE,
         err,
         setSuccessStatusMessage,
         setRegOrLogSucsessStatus,
@@ -102,7 +114,7 @@ function getUserInfo(
     .catch((err) => {
       setLoggedIn(false);
       setErrorMessage(
-        "Необходима авторизация!",
+        AUTH_UNSUCCESS_MESSAGE,
         err,
         setSuccessStatusMessage,
         setRegOrLogSucsessStatus,
@@ -125,13 +137,13 @@ function setUserInfo(
     .setUserInfo(user)
     .then((res) => {
       setCurrentUser(res);
-      setSuccessStatusMessage("Данные успешно обновились!");
+      setSuccessStatusMessage(USER_INFO_UPDATE_SUCCESS_MESSAGE);
       setRegOrLogSucsessStatus(true);
       setInfoTooltipOpen(true);
     })
     .catch((err) => {
       setErrorMessage(
-        "Данные не обновились! Попробуйте ещё раз.",
+        USER_INFO_UPDATE_UNSUCCESS_MESSAGE,
         err,
         setSuccessStatusMessage,
         setRegOrLogSucsessStatus,
@@ -174,7 +186,7 @@ function logOut(
     })
     .catch((err) => {
       setErrorMessage(
-        "Выход с сайта не выполнен!",
+        LOGOUT_UNSUCCESS_MESSAGE,
         err,
         setSuccessStatusMessage,
         setRegOrLogSucsessStatus,
@@ -247,7 +259,7 @@ function saveMovieCard(
     .then(() => {})
     .catch((err) => {
       setErrorMessage(
-        "Фильм не сохранился!",
+        MOVIE_SAVE_UNSUCCESS_MESSAGE,
         err,
         setSuccessStatusMessage,
         setRegOrLogSucsessStatus,
@@ -295,7 +307,7 @@ function deleteCard(
     .then(() => {})
     .catch((err) => {
       setErrorMessage(
-        "Фильм не удалён!",
+        MOVIE_DELETE_UNSUCCESS_MESSAGE,
         err,
         setSuccessStatusMessage,
         setRegOrLogSucsessStatus,
