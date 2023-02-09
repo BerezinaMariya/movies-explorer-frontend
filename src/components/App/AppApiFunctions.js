@@ -10,7 +10,7 @@ import {
   USER_INFO_UPDATE_SUCCESS_MESSAGE,
   USER_INFO_UPDATE_UNSUCCESS_MESSAGE,
   MOVIE_SAVE_UNSUCCESS_MESSAGE,
-  MOVIE_DELETE_UNSUCCESS_MESSAGE
+  MOVIE_DELETE_UNSUCCESS_MESSAGE,
 } from "../../config/Config";
 
 function setErrorMessage(
@@ -21,13 +21,15 @@ function setErrorMessage(
   setInfoTooltipOpen
 ) {
   if (err.body) {
-    err
-      .json()
-      .then((body) =>
-        setSuccessStatusMessage(body.message ? body.message : errorMessage)
-      );
-  } else {
-    setSuccessStatusMessage(errorMessage);
+    if (typeof err.body === "string") {
+      setSuccessStatusMessage(err.body);
+    } else {
+      err
+        .json()
+        .then((body) =>
+          setSuccessStatusMessage(body.message ? body.message : errorMessage)
+        );
+    }
   }
   setRegOrLogSucsessStatus(false);
   setInfoTooltipOpen(true);
@@ -214,7 +216,7 @@ function getMoviesCards(
   setFirstRequest,
   setPreloader,
   setMovieCardList,
-  setMoviesCardsReceived,
+  setMoviesCardsReceived
 ) {
   setPreloader(true);
 

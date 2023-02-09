@@ -30,7 +30,7 @@ function Profile(props) {
 
     if (!isEqualValues) {
       updateUserInfo({
-        name: newUserName,
+        nam: newUserName,
         email: newUserEmail,
       });
       resetForm();
