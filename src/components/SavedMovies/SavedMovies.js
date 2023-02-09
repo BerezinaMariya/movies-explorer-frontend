@@ -12,13 +12,13 @@ function SavedMovies(props) {
     cardListLength,
     isMovieName,
     setIsMovieName,
-    setMovieName,
+    setSavedMovieName,
     isPreloader,
     isSavedMoviesCardsReceived,
     isErrorMessage,
     onSearchMovie,
-    filterCheckboxState,
-    setFilterCheckboxState,
+    savedMoviesFilterCheckboxState,
+    setSavedMoviesFilterCheckboxState,
     isMoviesSearchButtonClick,
     setMoviesSearchButtonClick,
     getSavedMoviesCards,
@@ -27,21 +27,19 @@ function SavedMovies(props) {
  
   useEffect(() => {
     getSavedMoviesCards();
-    const movieNameInput = "";
-    const filterCheckbox = false;
-    setSavedMoviesCardList(movieNameInput, filterCheckbox);
+    setSavedMoviesCardList("", false);
   }, []);
 
   return (
     <section>
       <SearchForm
         onSearchMovie={onSearchMovie}
-        filterCheckboxState={filterCheckboxState}
-        setFilterCheckboxState={setFilterCheckboxState}
+        savedMoviesFilterCheckboxState={savedMoviesFilterCheckboxState}
+        setSavedMoviesFilterCheckboxState={setSavedMoviesFilterCheckboxState}
         isMoviesSearchButtonClick={isMoviesSearchButtonClick}
         setMoviesSearchButtonClick={setMoviesSearchButtonClick}
         setIsMovieName={setIsMovieName}
-        setMovieName={setMovieName}
+        setSavedMovieName={setSavedMovieName}
       />
       <MoviesCardList
         savedMovieCardList={savedMovieCardList}

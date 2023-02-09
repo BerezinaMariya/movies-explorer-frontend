@@ -78,6 +78,8 @@ function App() {
     "filterCheckboxState"
   );
   const [filterCheckboxState, setFilterCheckboxState] = useState(false);
+  const [savedMoviesFilterCheckboxState, setSavedMoviesFilterCheckboxState] =
+    useState(false);
   const [isCardDeleteButtonClick, setCardDeleteButtonClick] = useState(false);
   const [cardListLength, setCardListLength] = useState(0);
   const [filteredMoviesCardList, setFilteredMoviesCardList] = useState([]);
@@ -85,11 +87,14 @@ function App() {
   const [movieName, setMovieName] = useState(
     localStorage.getItem("movieNameValue")
   );
+  const [savedMovieName, setSavedMovieName] = useState("");
   const [isMovieName, setIsMovieName] = useState(true);
   const [cardList, setCardList] = useState([]);
   const [isErrorMessage, setErrorMessage] = useState(false);
   const isFirstRequestStringify = localStorage.getItem("isFirstRequest");
-  const [isFirstRequest, setFirstRequest] = useState(JSON.parse(isFirstRequestStringify));
+  const [isFirstRequest, setFirstRequest] = useState(
+    JSON.parse(isFirstRequestStringify)
+  );
 
   function closeAllPopups() {
     setInfoTooltipOpen(false);
@@ -242,7 +247,10 @@ function App() {
         handleGetMoviesCards();
       }
     } else {
-      handleSetSavedMovieCardList(movieName, filterCheckboxState);
+      handleSetSavedMovieCardList(
+        savedMovieName,
+        savedMoviesFilterCheckboxState
+      );
     }
     setMoviesSearchButtonClick(!isMoviesSearchButtonClick);
   }
@@ -301,36 +309,40 @@ function App() {
 
   useEffect(() => {
     if (pathName === "/movies") {
-      if (!isPreloader || !isLoading) {
+      if (!isPreloader && !isLoading) {
         handleSetMovieCardList(movieName, filterCheckboxState);
       }
+    } else {
+      if (!isLoading) {
+        handleSetSavedMovieCardList(
+          savedMovieName,
+          savedMoviesFilterCheckboxState
+        );
+      }
     }
-  }, [isPreloader, isLoading, isMoviesSearchButtonClick, filterCheckboxState]);
-
-  useEffect(() => {
-    if (pathName === "/saved-movies") {
-      handleSetSavedMovieCardList(movieName, filterCheckboxState);
-    }
-  }, [isPreloader, isMoviesSearchButtonClick, filterCheckboxState]);
-
-  useEffect(() => {
-    if (pathName === "/saved-movies") {
-      handleSetSavedMovieCardList(movieName, filterCheckboxState);
-    }
-  }, [isCardDeleteButtonClick]);
+    console.log("oops");
+  }, [isPreloader, isLoading]);
 
   useEffect(() => {
     if (pathName === "/movies") {
-      const movieNameInput = localStorage.getItem("movieNameValue");
-      const filterCheckbox = JSON.parse(filterCheckboxStateStringify);
-      handleSetMovieCardList(movieNameInput, filterCheckbox);
-    } else {
-      handleGetSavedMoviesCards();
-      const savedMovieNameInput = "";
-      const savedFilterCheckbox = false;
-      handleSetSavedMovieCardList(savedMovieNameInput, savedFilterCheckbox);
+      handleSetMovieCardList(movieName, filterCheckboxState);
     }
-  }, []);
+  }, [isMoviesSearchButtonClick, filterCheckboxState]);
+
+  useEffect(() => {
+    if (pathName === "/saved-movies") {
+      handleSetSavedMovieCardList(
+        savedMovieName,
+        savedMoviesFilterCheckboxState
+      );
+    }
+    console.log(savedMoviesFilterCheckboxState);
+    console.log(savedMovieName);
+  }, [
+    isMoviesSearchButtonClick,
+    savedMoviesFilterCheckboxState,
+    isCardDeleteButtonClick,
+  ]);
 
   useEffect(() => {
     const isLoggedIn = JSON.parse(localStorage.getItem("loggedIn"));
@@ -384,6 +396,7 @@ function App() {
               setFilterCheckboxState={setFilterCheckboxState}
               isMoviesSearchButtonClick={isMoviesSearchButtonClick}
               setMoviesSearchButtonClick={setMoviesSearchButtonClick}
+              movieName={movieName}
               setMovieName={setMovieName}
               filteredMoviesCardList={filteredMoviesCardList}
               windowWidth={windowWidth}
@@ -401,13 +414,15 @@ function App() {
               cardListLength={cardListLength}
               isMovieName={isMovieName}
               setIsMovieName={setIsMovieName}
-              setMovieName={setMovieName}
+              setSavedMovieName={setSavedMovieName}
               isPreloader={isPreloader}
               isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
               isErrorMessage={isErrorMessage}
               onSearchMovie={handleSearchMovieButtonClick}
-              filterCheckboxState={filterCheckboxState}
-              setFilterCheckboxState={setFilterCheckboxState}
+              savedMoviesFilterCheckboxState={savedMoviesFilterCheckboxState}
+              setSavedMoviesFilterCheckboxState={
+                setSavedMoviesFilterCheckboxState
+              }
               isMoviesSearchButtonClick={isMoviesSearchButtonClick}
               setMoviesSearchButtonClick={setMoviesSearchButtonClick}
               getSavedMoviesCards={handleGetSavedMoviesCards}

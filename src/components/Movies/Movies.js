@@ -13,17 +13,17 @@ function Movies(props) {
     setCardListLength,
     isMovieName,
     setIsMovieName,
+    movieName,
+    setMovieName,
     isPreloader,
     isMoviesCardsReceived,
     isSavedMoviesCardsReceived,
     isErrorMessage,
     onSearchMovie,
     filterCheckboxState,
-    filterCheckboxStateStringify,
     setFilterCheckboxState,
     isMoviesSearchButtonClick,
     setMoviesSearchButtonClick,
-    setMovieName,
     filteredMoviesCardList,
     windowWidth,  
     getSavedMoviesCards,
@@ -32,9 +32,7 @@ function Movies(props) {
 
   useEffect(() => {
     getSavedMoviesCards();
-    const movieNameInput = localStorage.getItem("movieNameValue");
-    const filterCheckbox = JSON.parse(filterCheckboxStateStringify);
-    setMoviesCardList(movieNameInput, filterCheckbox);
+    setMoviesCardList(movieName, filterCheckboxState);
   }, []);
 
   return (

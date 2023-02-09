@@ -9,10 +9,13 @@ function SearchForm(props) {
     onSearchMovie,
     filterCheckboxState,
     setFilterCheckboxState,
+    savedMoviesFilterCheckboxState,
+    setSavedMoviesFilterCheckboxState,
     isMoviesSearchButtonClick,
     setMoviesSearchButtonClick,
     setIsMovieName,
-    setMovieName
+    setMovieName,
+    setSavedMovieName,
   } = props;
 
   const location = useLocation();
@@ -29,11 +32,13 @@ function SearchForm(props) {
     evt.preventDefault();
     onSearchMovie();
     if (movieNameValue) {
-      setMovieName(movieNameValue);
       setIsMovieName(true);
       if (pathName === "/movies") {
+        setMovieName(movieNameValue);
         localStorage.setItem("movieNameValue", movieNameValue);
         localStorage.setItem("filterCheckboxState", filterCheckboxState);
+      } else {
+        setSavedMovieName(movieNameValue);
       }
     } else {
       setIsMovieName(false);
@@ -87,7 +92,11 @@ function SearchForm(props) {
           <div className="search-form__short-films-filter">
             <FilterCheckbox
               filterCheckboxState={filterCheckboxState}
+              savedMoviesFilterCheckboxState={savedMoviesFilterCheckboxState}
               setFilterCheckboxState={setFilterCheckboxState}
+              setSavedMoviesFilterCheckboxState={
+                setSavedMoviesFilterCheckboxState
+              }
             />
             <p className="search-form__text">Короткометражки</p>
           </div>
