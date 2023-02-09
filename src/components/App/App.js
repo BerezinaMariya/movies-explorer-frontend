@@ -68,6 +68,8 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(loggedInBoolean);
   const [isPreloader, setPreloader] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [isRegOrAuthLoading, setRegOrAuthLoading] = useState(false);
+  const [isUserInfoUpdating, setUserInfoUpdating] = useState(false);
   const [isMoviesSearchButtonClick, setMoviesSearchButtonClick] =
     useState(false);
   const [successStatusMessage, setSuccessStatusMessage] = useState("");
@@ -104,6 +106,7 @@ function App() {
   function handleRegister() {
     register(
       registrationInfo,
+      setRegOrAuthLoading,
       setRegistrationInfo,
       setSuccessStatusMessage,
       setRegOrLogSucsessStatus,
@@ -116,6 +119,7 @@ function App() {
   function handleLogin() {
     logIn(
       registrationInfo,
+      setRegOrAuthLoading,
       setCurrentUser,
       setLoggedIn,
       setSuccessStatusMessage,
@@ -139,6 +143,7 @@ function App() {
   function handleUpdateUserInfo(user) {
     setUserInfo(
       user,
+      setUserInfoUpdating,
       setCurrentUser,
       setSuccessStatusMessage,
       setRegOrLogSucsessStatus,
@@ -426,13 +431,14 @@ function App() {
               getUserInfo={handleGetUserInfo}
               updateUserInfo={handleUpdateUserInfo}
               onLogout={handleLogout}
+              isUserInfoUpdating={isUserInfoUpdating}
               component={Profile}
             />
             <Route path="/signup">
-              <Register onRegister={handleRegister} />
+              <Register onRegister={handleRegister} isRegOrAuthLoading={isRegOrAuthLoading} />
             </Route>
             <Route path="/signin">
-              <Login onLogin={handleLogin} />
+              <Login onLogin={handleLogin} isRegOrAuthLoading={isRegOrAuthLoading} />
             </Route>
             <Route path="/404">
               <Page404NotFound />

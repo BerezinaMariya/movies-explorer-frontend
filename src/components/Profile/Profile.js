@@ -4,7 +4,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { FormValidator } from "../FormValidator/FormValidator";
 
 function Profile(props) {
-  const { onLogout, isLoading, getUserInfo, updateUserInfo } = props;
+  const { onLogout, isLoading, getUserInfo, updateUserInfo, isUserInfoUpdating } = props;
 
   const currentUser = useContext(CurrentUserContext);
   const { values, handleChange, errors, isFormValid, resetForm } =
@@ -88,6 +88,7 @@ function Profile(props) {
           minLength="2"
           maxLength="30"
           onChange={handleChange}
+          disabled={isUserInfoUpdating ? true : false}
         />
         <span
           id="userName"
@@ -110,6 +111,7 @@ function Profile(props) {
           pattern="^\w+@\w+\.(com|net|ru)$"
           value={`${values.userEmail ? values.userEmail : email}`}
           onChange={handleChange}
+          disabled={isUserInfoUpdating ? true : false}
         />
         <span
           id="userEmail"
@@ -121,11 +123,11 @@ function Profile(props) {
         </span>
         <button
           type="submit"
-          disabled={!isFormValid || isEqualValues ? true : false}
+          disabled={!isFormValid || isEqualValues || isUserInfoUpdating ? true : false}
           className={`profile__text profile-form__submit-button ${
             isFormValid ? "" : "profile-form__submit-button_inactive"
           }
-          ${isEqualValues ? "profile-form__submit-button_inactive" : ""}`}
+          ${isEqualValues || isUserInfoUpdating ? "profile-form__submit-button_inactive" : ""}`}
         >
           Редактировать
         </button>

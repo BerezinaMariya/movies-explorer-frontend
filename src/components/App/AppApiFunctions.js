@@ -35,6 +35,7 @@ function setErrorMessage(
 
 function register(
   registrationInfo,
+  setRegOrAuthLoading,
   setRegistrationInfo,
   setSuccessStatusMessage,
   setRegOrLogSucsessStatus,
@@ -42,6 +43,7 @@ function register(
   history,
   handleLogin
 ) {
+  setRegOrAuthLoading(true);
   mainApi
     .register(
       registrationInfo.name,
@@ -64,11 +66,15 @@ function register(
         setRegOrLogSucsessStatus,
         setInfoTooltipOpen
       );
+    })
+    .finally(() => {
+      setRegOrAuthLoading(false);
     });
 }
 
 function logIn(
   registrationInfo,
+  setRegOrAuthLoading,
   setCurrentUser,
   setLoggedIn,
   setSuccessStatusMessage,
@@ -76,6 +82,7 @@ function logIn(
   setInfoTooltipOpen,
   history
 ) {
+  setRegOrAuthLoading(true);
   mainApi
     .logIn(registrationInfo.email, registrationInfo.password)
     .then((res) => {
@@ -93,6 +100,9 @@ function logIn(
         setRegOrLogSucsessStatus,
         setInfoTooltipOpen
       );
+    })
+    .finally(() => {
+      setRegOrAuthLoading(false);
     });
 }
 
@@ -128,11 +138,13 @@ function getUserInfo(
 
 function setUserInfo(
   user,
+  setUserInfoUpdating,
   setCurrentUser,
   setSuccessStatusMessage,
   setRegOrLogSucsessStatus,
   setInfoTooltipOpen
 ) {
+  setUserInfoUpdating(true);
   mainApi
     .setUserInfo(user)
     .then((res) => {
@@ -149,6 +161,9 @@ function setUserInfo(
         setRegOrLogSucsessStatus,
         setInfoTooltipOpen
       );
+    })
+    .finally(() => {
+      setUserInfoUpdating(false);
     });
 }
 

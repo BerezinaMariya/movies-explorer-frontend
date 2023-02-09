@@ -45,6 +45,7 @@ function Movies(props) {
         setMoviesSearchButtonClick={setMoviesSearchButtonClick}
         setIsMovieName={setIsMovieName}
         setMovieName={setMovieName}
+        isPreloader={isPreloader}
       />
       <MoviesCardList
         onSaveMovieCard={onSaveMovieCard}

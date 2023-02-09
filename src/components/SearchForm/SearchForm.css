@@ -139,6 +139,11 @@
     transition: opacity 0.5s ease;
 }
 
+.search-form-form__submit-button_inactive {
+    opacity: 0.4;
+    background-color: #E8E8E8;
+}
+
 .search-form__short-films-filter {
     width: 196px;
     height: 40px;

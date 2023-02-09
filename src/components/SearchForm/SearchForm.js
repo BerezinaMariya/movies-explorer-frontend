@@ -16,6 +16,7 @@ function SearchForm(props) {
     setIsMovieName,
     setMovieName,
     setSavedMovieName,
+    isPreloader
   } = props;
 
   const location = useLocation();
@@ -82,10 +83,16 @@ function SearchForm(props) {
               onChange={handleMovieNameChange}
               className="search-form-form__input"
               placeholder="Фильм"
+              disabled={isPreloader && pathName === "/movies" ? true : false}
             />
             <button
               type="submit"
-              className="search-form-form__submit-button"
+              className={`search-form-form__submit-button ${
+                isPreloader && pathName === "/movies"
+                  ? "search-form-form__submit-button_inactive"
+                  : ""
+              }`}
+              disabled={isPreloader && pathName === "/movies" ? true : false}
             ></button>
           </form>
 
