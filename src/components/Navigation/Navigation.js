@@ -15,8 +15,8 @@ function Navigation(props) {
   const location = useLocation();
   const pathName = location.pathname;
 
-  function handleMenuButtonClick() {
-    onMenuButtonClick();
+  function handleMenuButtonClick(evt) {
+    onMenuButtonClick(evt);
   }
 
   return (

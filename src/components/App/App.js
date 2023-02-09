@@ -211,7 +211,7 @@ function App() {
     );
   }
 
-  function handleMenuButtonClick() {
+  function handleMenuButtonClick(evt) {
     setNavigationMenuOpen(true);
   }
 
