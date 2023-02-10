@@ -1,7 +1,7 @@
 import RegisterAndLogin from "../RegisterAndLogin/RegisterAndLogin";
 
 function Register(props) {
-  const { onRegister } = props;
+  const { onRegister, isRegOrAuthLoading } = props;
 
   function handleSubmit() {
     onRegister();
@@ -14,6 +14,7 @@ function Register(props) {
       signText="Уже зарегистрированы?"
       signLinkText="Войти"
       onSubmit={handleSubmit}
+      isRegOrAuthLoading={isRegOrAuthLoading}
     />
   );
 }

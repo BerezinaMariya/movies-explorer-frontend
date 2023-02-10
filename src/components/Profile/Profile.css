@@ -176,6 +176,15 @@
     }
 }
 
+.profile-form__submit-button_inactive {
+    cursor: default;
+    opacity: 0.4;
+}
+
+.profile-form__submit-button_inactive:hover {
+    opacity: 0.4;
+}
+
 .profile__signOut-link {
     font-weight: 500;
     color: #EE3465;

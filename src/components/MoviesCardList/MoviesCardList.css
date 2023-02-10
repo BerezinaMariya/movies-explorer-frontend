@@ -1,7 +1,6 @@
 .movies-card-list {
     width: 100%;
     min-height: 371px;
-    max-height: 1274px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
@@ -13,16 +12,18 @@
     overflow: hidden;
 }
 
+.movies-card-list_flex {
+  display: flex;  
+}
+
 @media screen and (max-width: 1279px) {
     .movies-card-list {
       grid-template-columns: repeat(2, 1fr);
       column-gap: 30px;
       row-gap: 36px;
-      max-height: 1240px;
       padding-left: 30px;
       padding-right: 30px;
-      min-height: 652px;
-      max-height: 1240px;
+      min-height: 290px;
     }
 }
 
@@ -30,11 +31,9 @@
   .movies-card-list {
     grid-template-columns: 1fr;
     row-gap: 16px;
-    max-height: 1240px;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 40px;
-    min-height: 558px;
-    max-height: 1314px;
+    min-height: 306px;
   }
 }

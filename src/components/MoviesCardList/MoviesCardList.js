@@ -1,36 +1,67 @@
-import { useContext } from "react";
-import { useHistory } from "react-router-dom";
-
-import { MoviesCardsContext } from "../../contexts/MoviesCardsContext";
-import { SavedMoviesCardsContext } from "../../contexts/SavedMoviesCardsContext";
+import { useLocation } from "react-router-dom";
 import MoviesCard from "../MoviesCard/MoviesCard";
+import Preloader from "../Preloader/Preloader";
+import ErrorMovieMessage from "../ErrorMovieMessage/ErrorMovieMessage";
 
-function MoviesCardList() {
-  const history = useHistory();
-  const pathName = history.location.pathname;
+function MoviesCardList(props) {
+  const {
+    onSaveMovieCard,
+    onDeleteMovieCard,
+    onError,
+    cardList,
+    cardListLength,
+    isMovieName,
+    isPreloader,
+    isMoviesCardsReceived,
+    isSavedMoviesCardsReceived,
+    isErrorMessage,
+  } = props;
 
-  const moviesCardList = useContext(MoviesCardsContext);
-  const savedMoviesCardList = useContext(SavedMoviesCardsContext);
+  const location = useLocation();
+  const pathName = location.pathname;
 
+  onError();
 
-  function handleSetCardList() {
-    let cardList = "";
-    if (pathName === "/movies") {
-      cardList = moviesCardList;
-    } else if (pathName === "/saved-movies") {
-      cardList = savedMoviesCardList;
-    }
-    return cardList;
+  let isCardList;
+  if (!cardList) {
+    isCardList = false;
+  } else {
+    isCardList = true;
   }
 
   return (
-    <section className="movies-card-list">
-      {handleSetCardList().map((card) => (
-        <MoviesCard
-          key={card._id}
-          card={card}
-        />
-      ))}
+    <section
+      className={`movies-card-list ${
+        isPreloader || isErrorMessage
+          ? "movies-card-list_flex"
+          : ""
+      }`}
+    >
+      {isPreloader ? (
+        <Preloader />
+      ) : isErrorMessage ? (
+      <ErrorMovieMessage
+        isMoviesCardsReceived={isMoviesCardsReceived}
+        isSavedMoviesCardsReceived={isSavedMoviesCardsReceived}
+        isMovieName={isMovieName}
+        isCardList={isCardList}
+        cardList={cardList}
+      />
+      ) : ( isCardList &&
+         cardList.map((card, i) => {
+          return (
+            (((pathName === "/movies") & (i < cardListLength)) ||
+              (pathName === "/saved-movies")) && 
+              <MoviesCard
+                key={pathName === "/movies" ? card.id : card._id}
+                card={card}
+                onSaveMovieCard={onSaveMovieCard}
+                onDeleteMovieCard={onDeleteMovieCard}
+              />
+          );
+        })
+
+      )}
     </section>
   );
 }

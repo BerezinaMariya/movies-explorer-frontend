@@ -1,11 +1,65 @@
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import FilterCheckbox from "../../vendor/FilterCheckbox/FilterCheckbox";
+
 import searchFormIcon from "../../images/search-form-icon.svg";
 
-function SearchForm() {
+function SearchForm(props) {
+  const {
+    onSearchMovie,
+    filterCheckboxState,
+    setFilterCheckboxState,
+    savedMoviesFilterCheckboxState,
+    setSavedMoviesFilterCheckboxState,
+    isMoviesSearchButtonClick,
+    setMoviesSearchButtonClick,
+    setIsMovieName,
+    setMovieName,
+    setSavedMovieName,
+    isPreloader
+  } = props;
+
+  const location = useLocation();
+  const pathName = location.pathname;
+
+  const [movieNameValue, setMovieNameValue] = useState("");
+
+  function handleMovieNameChange(evt) {
+    const value = evt.target.value;
+    setMovieNameValue(value);
+  }
+
   function handleSubmit(evt) {
     evt.preventDefault();
-    alert("Ещё работаю над этим");
+    onSearchMovie();
+    if (movieNameValue) {
+      setIsMovieName(true);
+      if (pathName === "/movies") {
+        setMovieName(movieNameValue);
+        localStorage.setItem("movieNameValue", movieNameValue);
+        localStorage.setItem("filterCheckboxState", filterCheckboxState);
+      } else {
+        setSavedMovieName(movieNameValue);
+      }
+    } else {
+      setIsMovieName(false);
+    }
+    setMoviesSearchButtonClick(!isMoviesSearchButtonClick);
   }
+
+  useEffect(() => {
+    if (pathName === "/movies") {
+      setMovieNameValue(localStorage.getItem("movieNameValue"));
+    } else {
+      setMovieNameValue("");
+    }
+  }, [pathName]);
+
+  useEffect(() => {
+    if (pathName === "/movies") {
+      localStorage.setItem("filterCheckboxState", filterCheckboxState);
+    }
+  }, [filterCheckboxState]);
 
   return (
     <div className="search-form">
@@ -19,26 +73,38 @@ function SearchForm() {
           <form
             name="search-form-form"
             className="search-form-form"
-            // ref={formRef}
             onSubmit={handleSubmit}
             noValidate
           >
             <input
               type="text"
               name="movieName"
+              value={movieNameValue}
+              onChange={handleMovieNameChange}
               className="search-form-form__input"
               placeholder="Фильм"
+              disabled={isPreloader && pathName === "/movies" ? true : false}
             />
             <button
               type="submit"
-              className="search-form-form__submit-button"
-            >
-              {/* {preLoading()}  */}
-            </button>
+              className={`search-form-form__submit-button ${
+                isPreloader && pathName === "/movies"
+                  ? "search-form-form__submit-button_inactive"
+                  : ""
+              }`}
+              disabled={isPreloader && pathName === "/movies" ? true : false}
+            ></button>
           </form>
 
           <div className="search-form__short-films-filter">
-            <FilterCheckbox />
+            <FilterCheckbox
+              filterCheckboxState={filterCheckboxState}
+              savedMoviesFilterCheckboxState={savedMoviesFilterCheckboxState}
+              setFilterCheckboxState={setFilterCheckboxState}
+              setSavedMoviesFilterCheckboxState={
+                setSavedMoviesFilterCheckboxState
+              }
+            />
             <p className="search-form__text">Короткометражки</p>
           </div>
         </div>

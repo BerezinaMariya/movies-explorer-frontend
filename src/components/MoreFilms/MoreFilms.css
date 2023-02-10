@@ -16,19 +16,23 @@
     text-align: center;
     color: #000000;
     padding: 0;
-    margin: 50px auto 0;
+    margin: 50px auto 80px;
     cursor: pointer;
     opacity: 1;
-}
+  }
 
-.more-films__button:hover {
+  .more-films__button:hover {
     opacity: 0.6;
     transition: opacity 0.5s ease;
-}
-
-@media screen and (max-width: 767px) {
+  }
+  
+  @media screen and (max-width: 767px) {
     .more-films__button {
       width: 240px;
     }
-}
+  }
+
+  .more-films__button_hidden {
+    display: none;
+  }
 
