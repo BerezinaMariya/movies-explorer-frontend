@@ -2,13 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 function NavigationMenu(props) {
-  const {
-    loggedIn,
-    isOpen,
-    onClose,
-    onCloseByOverlay,
-    onCloseByEsc,
-  } = props;
+  const { loggedIn, isOpen, onClose, onCloseByOverlay, onCloseByEsc } = props;
 
   const location = useLocation();
   const pathName = location.pathname;
@@ -66,16 +60,17 @@ function NavigationMenu(props) {
             : "navigation-menu__container_small-screens"
         }`}
       >
-        <button
-          type="button"
-          onClick={onClose}
-          className="navigation-menu__close-button"
-        ></button>
         <div
           className={`navigation-menu__tab ${
             loggedIn ? "" : "navigation-menu__tab_hidden"
           }`}
         >
+          <button
+            type="button"
+            onClick={onClose}
+            className="navigation-menu__close-button"
+          ></button>
+
           <Link
             to="/"
             onClick={onClose}

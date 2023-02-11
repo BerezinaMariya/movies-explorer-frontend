@@ -28,7 +28,7 @@
         right: 0;
         background-color: #FFFFFF;
         flex-direction: column;
-        justify-content: start;
+        justify-content: space-between;
         box-sizing: border-box;
 } 
 
@@ -51,13 +51,6 @@
     .navigation-menu__tab {
         display: flex;
         flex-direction: column;
-        margin-top: 107px;
-    }
-}
-
-@media screen and (max-width: 520px) {
-    .navigation-menu__tab {
-        margin-top: 100px;
     }
 }
 
@@ -132,6 +125,13 @@
 @media screen and (max-width: 1023px) {
     .navigation-menu__link_main-link {
         display: inline-block;
+        margin-top: 107px;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .navigation-menu__link_main-link {
+        margin-top: 100px;
     }
 }
 
@@ -157,8 +157,6 @@
 
 .navigation-menu__profile-link {
     display: inline-block;
-    position: absolute;
-    bottom: 90px;
     width: 100px;
     height: 32px;
     background: #F9F9F9;
@@ -173,7 +171,6 @@
     text-decoration: none;
     color: #000000;
     opacity: 1;
-    margin: 0 auto;
 }
 
 .navigation-menu__profile-link:hover {
@@ -181,10 +178,15 @@
     transition: opacity 0.5s ease;
 }
 
+@media screen and (max-width: 1023px) {
+    .navigation-menu__profile-link {
+        margin: 0 auto 90px;
+    }
+}
+
 @media screen and (max-width: 520px) {
     .navigation-menu__profile-link {
-        bottom: 46px;
-        margin: 0 auto;
+        margin: 0 auto 46px;
     }
 }
 
@@ -194,9 +196,9 @@
 
 .navigation-menu__close-button {
     display: none;
-    position: absolute;
     width: 30px;
     height: 30px;
+    position: absolute;
     top: 22.5px;
     right: 22.5px;
     background-image: url(../../../src/images/navigation-menu-close-button.svg);
@@ -207,7 +209,6 @@
     border: none;
     object-fit: cover;
     padding: 0;
-    align-self: flex-end;
     cursor: pointer;
     opacity: 1;
 }
@@ -223,7 +224,7 @@
     }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 520px) {
     .navigation-menu__close-button {
         top: 13.5px;
         right: 13.5px;
