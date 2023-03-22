@@ -31,6 +31,6 @@
 * Регистрация и авторизация пользователя. Использование защищенных роутов.
 
 #### Приложение развернуто на облачном сервере
-Frontend https://movies-explorer.berez.nomoredomains.club
+https://movies-explorer.berez.nomoredomains.club
 
 Ссылка на макет, сгенерированный в Figma: https://disk.yandex.ru/d/BJOeNHYMH102dw
