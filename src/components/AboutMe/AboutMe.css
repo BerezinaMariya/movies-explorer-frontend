@@ -178,7 +178,7 @@
     background-image: url(../../../src/images/about-me-avatar.png);
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: top;
     object-fit: cover;
     margin: 66px 0 0;
     border-radius: 10px;

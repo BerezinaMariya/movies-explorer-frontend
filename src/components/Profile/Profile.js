@@ -17,21 +17,10 @@ function Profile(props) {
   function handleSubmit(evt) {
     evt.preventDefault();
 
-    let newUserName = "";
-    let newUserEmail = "";
-
-    values.userName
-      ? newUserName = values.userName
-      : newUserName = currentUser.name;
-
-    values.userEmail
-      ? newUserEmail = values.userEmail
-      : newUserEmail = currentUser.email;
-
     if (!isEqualValues) {
       updateUserInfo({
-        name: newUserName,
-        email: newUserEmail,
+        name: name,
+        email: email,
       });
       resetForm();
     }
@@ -40,6 +29,21 @@ function Profile(props) {
   useEffect(() => {
     getUserInfo();
   }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      setName(currentUser.name);
+      setEmail(currentUser.email);
+    }
+  }, [currentUser, isLoading]);
+
+  useEffect(() => {
+    setName(values.userName);
+  }, [values.userName]);
+
+  useEffect(() => {
+    setEmail(values.userEmail);
+  }, [values.userEmail]);
 
   useEffect(() => {
     let name = true;
@@ -51,22 +55,6 @@ function Profile(props) {
       email = values.userEmail === currentUser.email;
     }
     setEqualValues(name && email);
-  }, [values.userName, values.userEmail]);
-
-  useEffect(() => {
-    if (!isLoading) {
-      setName(currentUser.name);
-      setEmail(currentUser.email);
-    }
-  }, [currentUser, isLoading]);
-
-  useEffect(() => {
-    if (values.userName) {
-      setName(values.userName);
-    }
-    if (values.userEmail) {
-      setEmail(values.userEmail);
-    }
   }, [values.userName, values.userEmail]);
 
   return (
