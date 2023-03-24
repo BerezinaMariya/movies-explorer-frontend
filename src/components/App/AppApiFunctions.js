@@ -13,28 +13,6 @@ import {
   MOVIE_DELETE_UNSUCCESS_MESSAGE,
 } from "../../config/Config";
 
-function setErrorMessage(
-  errorMessage,
-  err,
-  setSuccessStatusMessage,
-  setRegOrLogSucsessStatus,
-  setInfoTooltipOpen
-) {
-  if (err.body) {
-    if (typeof err.body === "string") {
-      setSuccessStatusMessage(err.body);
-    } else {
-      err
-        .json()
-        .then((body) =>
-          setSuccessStatusMessage(body.message ? body.message : errorMessage)
-        );
-    }
-  }
-  setRegOrLogSucsessStatus(false);
-  setInfoTooltipOpen(true);
-}
-
 function register(
   registrationInfo,
   setRegOrAuthLoading,
@@ -60,14 +38,15 @@ function register(
       handleLogin();
     })
     .then(() => history.push("/movies"))
-    .catch((err) => {
-      setErrorMessage(
-        REG_UNSUCCESS_MESSAGE,
-        err,
-        setSuccessStatusMessage,
-        setRegOrLogSucsessStatus,
-        setInfoTooltipOpen
-      );
+    .catch(async (err) => {
+      if (err.body) {
+        var errBody = await err.json();
+        setSuccessStatusMessage(errBody.message);
+      } else {
+        setSuccessStatusMessage(REG_UNSUCCESS_MESSAGE);
+      }
+      setRegOrLogSucsessStatus(false);
+      setInfoTooltipOpen(true);
     })
     .finally(() => {
       setRegOrAuthLoading(false);
@@ -94,14 +73,15 @@ function logIn(
       localStorage.setItem("loggedIn", true);
       localStorage.setItem("currentUser", res);
     })
-    .catch((err) => {
-      setErrorMessage(
-        LOGIN_UNSUCCESS_MESSAGE,
-        err,
-        setSuccessStatusMessage,
-        setRegOrLogSucsessStatus,
-        setInfoTooltipOpen
-      );
+    .catch(async (err) => {
+      if (err.body) {
+        var errBody = await err.json();
+        setSuccessStatusMessage(errBody.message);
+      } else {
+        setSuccessStatusMessage(LOGIN_UNSUCCESS_MESSAGE);
+      }
+      setRegOrLogSucsessStatus(false);
+      setInfoTooltipOpen(true);
     })
     .finally(() => {
       setRegOrAuthLoading(false);
@@ -123,15 +103,15 @@ function getUserInfo(
       setLoggedIn(true);
       setCurrentUser(res);
     })
-    .catch((err) => {
-      setLoggedIn(false);
-      setErrorMessage(
-        AUTH_UNSUCCESS_MESSAGE,
-        err,
-        setSuccessStatusMessage,
-        setRegOrLogSucsessStatus,
-        setInfoTooltipOpen
-      );
+    .catch(async (err) => {
+      if (err.body) {
+        var errBody = await err.json();
+        setSuccessStatusMessage(errBody.message);
+      } else {
+        setSuccessStatusMessage(AUTH_UNSUCCESS_MESSAGE);
+      }
+      setRegOrLogSucsessStatus(false);
+      setInfoTooltipOpen(true);
     })
     .finally(() => {
       setLoading(false);
@@ -155,14 +135,15 @@ function setUserInfo(
       setRegOrLogSucsessStatus(true);
       setInfoTooltipOpen(true);
     })
-    .catch((err) => {
-      setErrorMessage(
-        USER_INFO_UPDATE_UNSUCCESS_MESSAGE,
-        err,
-        setSuccessStatusMessage,
-        setRegOrLogSucsessStatus,
-        setInfoTooltipOpen
-      );
+    .catch(async (err) => {
+      if (err.body) {
+        var errBody = await err.json();
+        setSuccessStatusMessage(errBody.message);
+      } else {
+        setSuccessStatusMessage(USER_INFO_UPDATE_UNSUCCESS_MESSAGE);
+      }
+      setRegOrLogSucsessStatus(false);
+      setInfoTooltipOpen(true);
     })
     .finally(() => {
       setUserInfoUpdating(false);
@@ -201,14 +182,15 @@ function logOut(
       localStorage.setItem("movieNameValue", "");
       localStorage.setItem("filterCheckboxState", false);
     })
-    .catch((err) => {
-      setErrorMessage(
-        LOGOUT_UNSUCCESS_MESSAGE,
-        err,
-        setSuccessStatusMessage,
-        setRegOrLogSucsessStatus,
-        setInfoTooltipOpen
-      );
+    .catch(async (err) => {
+      if (err.body) {
+        var errBody = await err.json();
+        setSuccessStatusMessage(errBody.message);
+      } else {
+        setSuccessStatusMessage(LOGOUT_UNSUCCESS_MESSAGE);
+      }
+      setRegOrLogSucsessStatus(false);
+      setInfoTooltipOpen(true);
     });
 }
 
@@ -274,14 +256,15 @@ function saveMovieCard(
       evt.target.classList.toggle("movies-card__button_save-button_inactive");
     })
     .then(() => {})
-    .catch((err) => {
-      setErrorMessage(
-        MOVIE_SAVE_UNSUCCESS_MESSAGE,
-        err,
-        setSuccessStatusMessage,
-        setRegOrLogSucsessStatus,
-        setInfoTooltipOpen
-      );
+    .catch(async (err) => {
+      if (err.body) {
+        var errBody = await err.json();
+        setSuccessStatusMessage(errBody.message);
+      } else {
+        setSuccessStatusMessage(MOVIE_SAVE_UNSUCCESS_MESSAGE);
+      }
+      setRegOrLogSucsessStatus(false);
+      setInfoTooltipOpen(true);
     });
 }
 
@@ -322,14 +305,15 @@ function deleteCard(
       setCardDeleteButtonClick(!isCardDeleteButtonClick);
     })
     .then(() => {})
-    .catch((err) => {
-      setErrorMessage(
-        MOVIE_DELETE_UNSUCCESS_MESSAGE,
-        err,
-        setSuccessStatusMessage,
-        setRegOrLogSucsessStatus,
-        setInfoTooltipOpen
-      );
+    .catch(async (err) => {
+      if (err.body) {
+        var errBody = await err.json();
+        setSuccessStatusMessage(errBody.message);
+      } else {
+        setSuccessStatusMessage(MOVIE_DELETE_UNSUCCESS_MESSAGE);
+      }
+      setRegOrLogSucsessStatus(false);
+      setInfoTooltipOpen(true);
     });
 }
 
