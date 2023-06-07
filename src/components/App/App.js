@@ -300,7 +300,7 @@ function App() {
     const isLoggedIn = JSON.parse(localStorage.getItem("loggedIn"));
     if (isLoggedIn) {
       handleGetUserInfo();
-    }
+    } 
   }, [loggedIn]);
 
   useEffect(() => {

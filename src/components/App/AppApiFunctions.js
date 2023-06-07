@@ -110,6 +110,7 @@ function getUserInfo(
       } else {
         setSuccessStatusMessage(AUTH_UNSUCCESS_MESSAGE);
       }
+      setLoggedIn(false);
       setRegOrLogSucsessStatus(false);
       setInfoTooltipOpen(true);
     })
