@@ -26,7 +26,8 @@ const CARDS_ADD_QUANTITY_WW_1280 = 3;
 const CARDS_ADD_QUANTITY_WW_320_1279 = 2;
 
 // Для MainApi
-const MAIN_BASE_URL = "https://api.movies-explorer.berez.nomoredomains.club";
+// const MAIN_BASE_URL = "https://api.movies-explorer.berez.nomoredomains.club";
+const MAIN_BASE_URL = "https://movies-explorer-yandex-diploma-api.onrender.com";
 const CARDS_IMAGE_BASE_URL = "https://api.nomoreparties.co";
 
 // Для MoviesApi
