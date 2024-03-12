@@ -34,6 +34,6 @@
 Завершен.
 
 #### Приложение развернуто на облачном сервере
-https://movies-explorer.berez.nomoredomains.club
+https://movies-explorer.ru
 
 Ссылка на макет, сгенерированный в Figma: https://disk.yandex.ru/d/BJOeNHYMH102dw
